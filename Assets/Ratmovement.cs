@@ -5,14 +5,19 @@ using UnityEngine;
 public class Ratmovement : MonoBehaviour
 {
     private Rigidbody rb; //Player rigidbody component
+    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
     private Vector3 mousePos; // Position of mouse cursor in world environment
 
+    [Header("Setup")]
     [Tooltip("How fast the rat runs")]
     public float moveSpeed = 20f;
     [Tooltip("How HIGH the rat jumps")]
     public float jumpPower = 600f;
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
+
+    [Tooltip("If true, can freely rotate while jumping")]
+    public bool canSpin = false;
 
     public enum jumpFreedom
     {
@@ -32,7 +37,8 @@ public class Ratmovement : MonoBehaviour
 
     void Start()
     {
-      rb = GetComponent<Ratmovement>(); // Get rat rigidbody
+      rb = GetComponent<Rigidbody>(); // Get rat rigidbody
+        groundedConstraints = rb.constraints;
     }
 
     // Update is called once per frame
@@ -92,6 +98,10 @@ public class Ratmovement : MonoBehaviour
            moveState = false; //Player not grounded
            isJump = true; // Player is airborne (from a jump)
 
+
+            if (!canSpin)
+            rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
+
                 rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
             //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
         }
@@ -105,8 +115,7 @@ public class Ratmovement : MonoBehaviour
 
         //If Collision breaks, pressing X should force the player to re enter grounded state
         if(Input.GetKeyDown(KeyCode.X)){
-           moveState = true;
-            isJump = false;
+            enterGrounded();
             }
 
 
@@ -114,10 +123,16 @@ public class Ratmovement : MonoBehaviour
         //Limits speed to the max of movespeed
     }
 
-    void OnCollisionEnter(Collision collision)
+    void enterGrounded()
     {
         isJump = false;
         moveState = true;
+        rb.constraints = groundedConstraints;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        enterGrounded();
         //Enters grounded state on collision with anything
 
     }
@@ -128,8 +143,13 @@ public class Ratmovement : MonoBehaviour
 
 /* Todo
 
-Unlock rat rotation for easier ramp access (also makes the rat hop when flipped, explore this)
-Lock rat rotation when jumping (make this an option, making the cube flip is funny)
+Unlock rat rotation for easier ramp access (also makes the rat hop when flipped, explore this) (Rat resets rotation on landing, hopping is due to force carry over i think? nothing to actually change here) (DONE)
+Lock rat rotation when jumping (make this an option, making the cube flip is funny) DONE
 Create three different settings for jump controls (locked, steering allowed, free, etc) DONE
-Investigate different force movement to allow different jump settings to have more options (air steering is currently useless)
+Investigate different force movement to allow different jump settings to have more options (air steering is currently useless) DONE
+
+Try putting a placeholder model on
+Setup some form of camera control
+Give the rat a tail object?
+
 */
