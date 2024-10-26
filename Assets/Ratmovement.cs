@@ -93,3 +93,4 @@ public class Ratmovement : MonoBehaviour
 Unlock rat rotation for easier ramp access (also makes the rat hop when flipped, explore this)
 Lock rat rotation when jumping (make this an option, making the cube flip is funny)
 Create three different settings for jump controls (locked, steering allowed, free, etc)
+*/
