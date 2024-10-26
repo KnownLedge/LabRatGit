@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Ratmovement : MonoBehaviour
 {
-    public Rigidbody rb;
-    Vector3 mousePos;
+    private Rigidbody rb; //Player rigidbody component
+    private Vector3 mousePos; // Position of mouse cursor in world environment
 
-    public bool moveState = true;
-    public bool isJump = false;
-
-
+    [Tooltip("How fast the rat runs")]
     public float moveSpeed = 20f;
+    [Tooltip("How HIGH the rat jumps")]
     public float jumpPower = 600f;
+    [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
 
     public enum jumpFreedom
@@ -23,11 +22,17 @@ public class Ratmovement : MonoBehaviour
         FreeMovement
     }
 
+    [Tooltip("Controls how much freedom player has while jumping")]
     public jumpFreedom jumpStyle = jumpFreedom.Locked;
+
+    [Header("Debug")]
+    public bool moveState = true;
+    public bool isJump = false;
+
 
     void Start()
     {
-      
+      rb = GetComponent<Ratmovement>(); // Get rat rigidbody
     }
 
     // Update is called once per frame
@@ -37,16 +42,15 @@ public class Ratmovement : MonoBehaviour
         mousePos = Input.mousePosition; //Get mouse position from input
 
         Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
-        //Get cannon object position on screen through the camera
+        //Get Rat position on screen through the camera
         mousePos.x = mousePos.x - objectPos.x;
         mousePos.y = mousePos.y - objectPos.y;
-        //Get the difference between the mouse position and cannon position
+        //Get the difference between the Mouse position and Rat position
 
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        //Get the angle to the mouse position using maths I don't fully understand
-        //  angle -= 90f;
-        //The cannon defaults facing up, so we need to turn the angle to accomodate
+        //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
 
+       
         if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
         {
 
@@ -54,7 +58,7 @@ public class Ratmovement : MonoBehaviour
             {
 
                 transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
-                
+                //Aim Rat towards mouse pointer
 
             }
 
@@ -63,41 +67,43 @@ public class Ratmovement : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
                 {
-                    //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
                     rb.AddForce(transform.right * moveSpeed);
+                    //Accelerate Rat.
+
+                    //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
+
+                    // ^ Unused, may be useful for finer control if we want Rat to go exactly to the mouse pointer
                 }
-                if (Input.GetKey(KeyCode.A))
+                if (false) //(Input.GetKey(KeyCode.A))
                 {
+                    //Unused, allows Rat to strafe, is kind of disorienting
                     transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
                 }
-                if (Input.GetKey(KeyCode.D))
+                if (false) //(Input.GetKey(KeyCode.D))
                 {
+                    //Unused, allows Rat to strafe, is kind of disorienting
                     transform.Translate(transform.forward * -moveSpeed * Time.deltaTime, Space.World);
                 }
             }
         }
     
-        if(Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)){
-           moveState = false;
-            isJump = true;
-            // float forcXDir = rb.velocity.x
-            // float forcX = Mathf.InverseLerp(rb.velocity)
-         //   if (jumpStyle != jumpFreedom.SteerAllowed)
-            //{
+        if(Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)){ //JUMP INPUT
+
+           moveState = false; //Player not grounded
+           isJump = true; // Player is airborne (from a jump)
+
                 rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
-          //  }
-         //   else
-         //   {
-         //       rb.AddForce(new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce), ForceMode.Acceleration);
-         //   }
+            //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
         }
 
+        //if Player is currently mid jump with jump steering allowed, allow them to change the rats direction still by holding the forward key.
         if (isJump && jumpStyle == jumpFreedom.SteerAllowed && (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W)))
         {
             rb.velocity = new Vector3(transform.right.x * jumpForce, rb.velocity.y, transform.right.z * jumpForce);
+            //Since this sets the XZ velocity to jumpForce, this might make the jump faster than the other settings, as the rigidbody likely slows that force down over the course of the jump, this resets it back to full speed.
         }
 
-
+        //If Collision breaks, pressing X should force the player to re enter grounded state
         if(Input.GetKeyDown(KeyCode.X)){
            moveState = true;
             isJump = false;
@@ -105,13 +111,14 @@ public class Ratmovement : MonoBehaviour
 
 
         rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed),rb.velocity.y,Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
-
+        //Limits speed to the max of movespeed
     }
 
     void OnCollisionEnter(Collision collision)
     {
         isJump = false;
         moveState = true;
+        //Enters grounded state on collision with anything
 
     }
 
