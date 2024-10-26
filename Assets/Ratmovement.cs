@@ -151,5 +151,6 @@ Investigate different force movement to allow different jump settings to have mo
 Try putting a placeholder model on
 Setup some form of camera control
 Give the rat a tail object?
+Option for rat to auto slow down to stop exactly on mouse pointer, rather than always charging at it
 
 */
