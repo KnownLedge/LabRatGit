@@ -77,13 +77,26 @@ public class Ratmovement : MonoBehaviour
             }
         }
     
-        if(Input.GetKeyDown(KeyCode.Space)){
+        if(Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)){
            moveState = false;
             isJump = true;
-           // float forcXDir = rb.velocity.x
-           // float forcX = Mathf.InverseLerp(rb.velocity)
-            rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
+            // float forcXDir = rb.velocity.x
+            // float forcX = Mathf.InverseLerp(rb.velocity)
+         //   if (jumpStyle != jumpFreedom.SteerAllowed)
+            //{
+                rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
+          //  }
+         //   else
+         //   {
+         //       rb.AddForce(new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce), ForceMode.Acceleration);
+         //   }
         }
+
+        if (isJump && jumpStyle == jumpFreedom.SteerAllowed && (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W)))
+        {
+            rb.velocity = new Vector3(transform.right.x * jumpForce, rb.velocity.y, transform.right.z * jumpForce);
+        }
+
 
         if(Input.GetKeyDown(KeyCode.X)){
            moveState = true;
