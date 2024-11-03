@@ -13,6 +13,8 @@ public class Ratmovement : MonoBehaviour
     public float moveSpeed = 20f;
     [Tooltip("How HIGH the rat jumps")]
     public float jumpPower = 600f;
+    [Tooltip("How fast the rat turns")]
+    public float turnPower = 100f;
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
 
@@ -37,6 +39,7 @@ public class Ratmovement : MonoBehaviour
     public bool moveState = true;
     public bool isJump = false;
 
+    public float prevAngle = 0f;
 
     void Start()
     {
@@ -65,9 +68,16 @@ public class Ratmovement : MonoBehaviour
 
             if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
             {
+                 Vector3 newDirection = Vector3.RotateTowards(transform.right, new Vector3(0, -angle, 0), turnPower * Time.deltaTime, 0.0f);
+              //  transform.Rotate(transform.right * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
+                float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, -angle, 0)), Quaternion.Euler(new Vector3(0, -prevAngle, 0)));
+                Debug.Log(turnDist);
+                 turnDist = Mathf.Clamp(turnDist, -turnPower,turnPower);
+                 Quaternion targetRotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+                transform.rotation = Quaternion.RotateTowards(transform.rotation,targetRotation,turnPower);
 
-                transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
                 //Aim Rat towards mouse pointer
+                prevAngle = angle;
 
             }
 
@@ -76,7 +86,7 @@ public class Ratmovement : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
                 {
-                    rb.AddForce(transform.right * moveSpeed);
+                    rb.AddForce(transform.forward * moveSpeed);
                     //Accelerate Rat.
 
                     //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
