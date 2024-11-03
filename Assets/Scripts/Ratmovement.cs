@@ -108,7 +108,7 @@ public class Ratmovement : MonoBehaviour
                 rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
             //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
 
-                rb.AddTorque(spinForce);
+                rb.AddRelativeTorque(spinForce);
 
         }
 
