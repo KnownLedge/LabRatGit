@@ -16,6 +16,9 @@ public class Ratmovement : MonoBehaviour
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
 
+    [Tooltip("How hard the rat spins, pure style points")]
+    public Vector3 spinForce = new Vector3(0,0,0);
+
     [Tooltip("If true, can freely rotate while jumping")]
     public bool canSpin = false;
 
@@ -104,6 +107,9 @@ public class Ratmovement : MonoBehaviour
 
                 rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
             //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
+
+                rb.AddTorque(spinForce);
+
         }
 
         //if Player is currently mid jump with jump steering allowed, allow them to change the rats direction still by holding the forward key.
