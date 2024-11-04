@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ratmovement : MonoBehaviour
 {
     private Rigidbody rb; //Player rigidbody component
+    public Rigidbody backRb; // Backend Rigidbody component
     private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
     private Vector3 mousePos; // Position of mouse cursor in world environment
 
@@ -23,7 +24,7 @@ public class Ratmovement : MonoBehaviour
 
     [Tooltip("If true, can freely rotate while jumping")]
     public bool canSpin = false;
-
+    
     public enum jumpFreedom
     {
         Locked,
@@ -86,7 +87,7 @@ public class Ratmovement : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
                 {
-                    rb.AddForce(transform.forward * moveSpeed);
+                    rb.AddForce(transform.right * moveSpeed);
                     //Accelerate Rat.
 
                     //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
@@ -117,7 +118,9 @@ public class Ratmovement : MonoBehaviour
 
                 rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
             //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
-
+                if (backRb){
+                    backRb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
+                }
                 rb.AddRelativeTorque(spinForce);
 
         }
