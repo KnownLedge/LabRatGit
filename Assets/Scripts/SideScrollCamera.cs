@@ -23,7 +23,14 @@ public class SideScrollCamera : MonoBehaviour
             transform.Translate(transform.right * camspeed * Time.deltaTime, Space.World);
         }
 
-
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.Translate(-transform.up * camspeed * Time.deltaTime, Space.World);
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            transform.Translate(transform.up* camspeed * Time.deltaTime, Space.World);
+        }
 
     }
 }
