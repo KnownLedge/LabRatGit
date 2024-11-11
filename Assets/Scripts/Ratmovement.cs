@@ -96,7 +96,7 @@ public class Ratmovement : MonoBehaviour
             }
         }
     
-        if(Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)){ //JUMP INPUT
+        if((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump==false ){ //JUMP INPUT
 
            moveState = false; //Player not grounded
            isJump = true; // Player is airborne (from a jump)
