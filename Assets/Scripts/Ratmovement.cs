@@ -45,7 +45,7 @@ public class Ratmovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
         mousePos = Input.mousePosition; //Get mouse position from input
@@ -76,7 +76,7 @@ public class Ratmovement : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
                 {
-                    rb.AddForce(transform.right * moveSpeed);
+                    rb.AddForce(transform.right * moveSpeed, ForceMode.Impulse);
                     //Accelerate Rat.
 
                     //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
