@@ -96,19 +96,28 @@ public class Ratmovement : MonoBehaviour
             }
         }
     
-        if((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump==false ){ //JUMP INPUT
 
-           moveState = false; //Player not grounded
-           isJump = true; // Player is airborne (from a jump)
+
+        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed),rb.velocity.y,Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
+        //Limits speed to the max of movespeed
+    }
+
+    void Update()
+    {
+        if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump == false)
+        { //JUMP INPUT
+
+            moveState = false; //Player not grounded
+            isJump = true; // Player is airborne (from a jump)
 
 
             if (!canSpin)
-            rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
+                rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
-                rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
+            rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
             //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
 
-                rb.AddRelativeTorque(spinForce);
+            rb.AddRelativeTorque(spinForce);
 
         }
 
@@ -120,13 +129,11 @@ public class Ratmovement : MonoBehaviour
         }
 
         //If Collision breaks, pressing X should force the player to re enter grounded state
-        if(Input.GetKeyDown(KeyCode.X)){
+        if (Input.GetKeyDown(KeyCode.X))
+        {
             enterGrounded();
-            }
+        }
 
-
-        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed),rb.velocity.y,Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
-        //Limits speed to the max of movespeed
     }
 
     void enterGrounded()
