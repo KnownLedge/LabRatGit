@@ -38,27 +38,29 @@ public class Ratmovement : MonoBehaviour
     public bool isJump = false;
 
     private WallClimbing wallClimbing;
+    private WallClimbing_2 wallClimbing_2;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>(); // Get rat rigidbody
         groundedConstraints = rb.constraints;
         wallClimbing = GetComponent<WallClimbing>();
+        wallClimbing_2 = GetComponent<WallClimbing_2>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(wallClimbing.isClimbing)
+        if (wallClimbing.isClimbing) // Prevent movement and rotation logic when climbing
         {
-            return;
+            return; // Exit the Update method and do nothing further
         }
-        if(moveState)
-        {
-            mousePos = Input.mousePosition; //Get mouse position from input
+        if(wallClimbing_2.isClimbing) { return;}
 
+        if (moveState)
+        {
+            mousePos = Input.mousePosition; // Get mouse position from input
             Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
-            //Get Rat position on screen through the camera
             mousePos.x = mousePos.x - objectPos.x;
             mousePos.y = mousePos.y - objectPos.y;
             //Get the difference between the Mouse position and Rat position
@@ -73,8 +75,7 @@ public class Ratmovement : MonoBehaviour
 
                 if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
                 {
-
-                    transform.rotation = Quaternion.Euler(0, angle, 0);
+                    rb.rotation = Quaternion.Euler(0, angle, 0);
                     //Aim Rat towards mouse pointer
 
                 }
@@ -127,6 +128,7 @@ public class Ratmovement : MonoBehaviour
                 //Since this sets the XZ velocity to jumpForce, this might make the jump faster than the other settings, as the rigidbody likely slows that force down over the course of the jump, this resets it back to full speed.
             }
         }
+        
 
         //If Collision breaks, pressing X should force the player to re enter grounded state
         if(Input.GetKeyDown(KeyCode.X)){
@@ -134,7 +136,7 @@ public class Ratmovement : MonoBehaviour
             }
 
 
-        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed),rb.velocity.y,Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
+        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
         //Limits speed to the max of movespeed
     }
 
