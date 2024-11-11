@@ -63,7 +63,8 @@ public class Ratmovement : MonoBehaviour
             mousePos.y = mousePos.y - objectPos.y;
             //Get the difference between the Mouse position and Rat position
 
-            float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+            Vector3 direction = new Vector3(mousePos.x, 0, mousePos.y).normalized; // Z-axis facing
+            float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
             //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
 
         
@@ -73,7 +74,7 @@ public class Ratmovement : MonoBehaviour
                 if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
                 {
 
-                    transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+                    transform.rotation = Quaternion.Euler(0, angle, 0);
                     //Aim Rat towards mouse pointer
 
                 }
@@ -83,7 +84,7 @@ public class Ratmovement : MonoBehaviour
 
                     if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
                     {
-                        rb.AddForce(transform.right * moveSpeed);
+                        rb.AddForce(transform.forward * moveSpeed);
                         //Accelerate Rat.
 
                         //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
@@ -112,7 +113,7 @@ public class Ratmovement : MonoBehaviour
                 if (!canSpin)
                 rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
-                    rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
+                    rb.velocity = new Vector3(transform.forward.x * jumpForce, jumpPower, transform.forward.z * jumpForce);
                 //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
 
                     rb.AddRelativeTorque(spinForce);
@@ -122,7 +123,7 @@ public class Ratmovement : MonoBehaviour
             //if Player is currently mid jump with jump steering allowed, allow them to change the rats direction still by holding the forward key.
             if (isJump && jumpStyle == jumpFreedom.SteerAllowed && (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W)))
             {
-                rb.velocity = new Vector3(transform.right.x * jumpForce, rb.velocity.y, transform.right.z * jumpForce);
+                rb.velocity = new Vector3(transform.forward.x * jumpForce, rb.velocity.y, transform.forward.z * jumpForce);
                 //Since this sets the XZ velocity to jumpForce, this might make the jump faster than the other settings, as the rigidbody likely slows that force down over the course of the jump, this resets it back to full speed.
             }
         }
