@@ -8,6 +8,7 @@ public class WallClimbing_2 : MonoBehaviour
     [SerializeField] private float climbSpeed = 7f;
     [SerializeField] private float wallDetectionDistance = 0.3f;
     [SerializeField] private float climbUpwardForce = 25f;
+    [SerializeField] private float fromWallToGround = 15f;
     public LayerMask groundMask;
     public LayerMask wallMask;
 
@@ -129,6 +130,7 @@ public class WallClimbing_2 : MonoBehaviour
         if (!isTouchingWall)
         {
             StopClimbing();
+            rb.AddForce(Vector3.up * fromWallToGround, ForceMode.Impulse);
         }
     }
 
