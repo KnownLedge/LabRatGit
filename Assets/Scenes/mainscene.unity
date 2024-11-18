@@ -964,11 +964,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 90}
---- !u!1 &1259614878 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5441095159546034802, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
-  m_PrefabInstance: {fileID: 1329841779209954127}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1281340345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,27 +1837,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1978293142445364507, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
   m_PrefabInstance: {fileID: 1329841779209954127}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &2051727953
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1259614878}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1329841779209954127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1872,8 +1846,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1960017723245819698, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+      propertyPath: maxSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960017723245819698, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: moveSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960017723245819698, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+      propertyPath: turnPower
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1978293142445364507, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1920,20 +1902,12 @@ PrefabInstance:
       value: 2.5708008
       objectReference: {fileID: 0}
     - target: {fileID: 4505357896490209247, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4505357896490209247, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_Center.x
       value: -1.1345215
       objectReference: {fileID: 0}
     - target: {fileID: 5441095159546034802, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5441095159546034802, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7155639926293728400, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1962,10 +1936,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5441095159546034802, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2051727953}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
 --- !u!1001 &3344607574073164508
 PrefabInstance:
@@ -2082,15 +2053,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0.84313726
+      value: 0.39342827
       objectReference: {fileID: 0}
     - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0.4862745
+      value: 0.6150943
       objectReference: {fileID: 0}
     - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.82883364
+      value: 0.53462154
       objectReference: {fileID: 0}
     - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_Name

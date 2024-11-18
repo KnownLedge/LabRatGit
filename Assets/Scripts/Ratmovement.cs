@@ -11,8 +11,12 @@ public class Ratmovement : MonoBehaviour
     [Header("Setup")]
     [Tooltip("How fast the rat runs")]
     public float moveSpeed = 20f;
+    [Tooltip("Max speed the rat runs")]
+    public float maxSpeed = 20f;
     [Tooltip("How HIGH the rat jumps")]
     public float jumpPower = 600f;
+    [Tooltip("How fast the rat turns")]
+    public float turnPower = 100f;
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
     [Tooltip("How long after jumping before the Rat can reneter grounded state")]
@@ -38,6 +42,7 @@ public class Ratmovement : MonoBehaviour
     [Header("Debug")]
     public bool moveState = true;
     public bool isJump = false;
+    public float prevAngle = 0f;
 
     public float jumpLockOut = 0f; 
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
@@ -119,8 +124,27 @@ public class Ratmovement : MonoBehaviour
     {
         if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
         {
+            Vector3 newDirection = Vector3.RotateTowards(transform.right, new Vector3(0, -angle, 0), turnPower * Time.deltaTime, 0.0f);
+            //  transform.Rotate(transform.right * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
+            float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, -angle, 0)), Quaternion.Euler(new Vector3(0, -prevAngle, 0)));
+          //  Debug.Log(turnDist);
+            turnDist = Mathf.Clamp(turnDist, -turnPower, turnPower);
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnPower);
+            //float turndir = 
+            //transform.rotation
+          //  rb.AddTorque(transform.right * turnPower * Mathf.Sign())
+            //Aim Rat towards mouse pointer
+            prevAngle = angle;
 
-            transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+
+
+
+
+
+
+
+            //   transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
             //Aim Rat towards mouse pointer
 
         }
@@ -151,7 +175,7 @@ public class Ratmovement : MonoBehaviour
                 transform.Translate(transform.forward * -moveSpeed * Time.deltaTime, Space.World);
             }
         }
-        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
+        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed));
         //Limits speed to the max of movespeed
     }
 
