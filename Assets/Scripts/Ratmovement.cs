@@ -38,6 +38,8 @@ public class Ratmovement : MonoBehaviour
 
     [Tooltip("Controls how much freedom player has while jumping")]
     public jumpFreedom jumpStyle = jumpFreedom.Locked;
+    [Tooltip("Iterated by number keys, sets movespeed and maxspeed for testing speed change")]
+    public Vector2[] speedStates;
 
     [Header("Debug")]
     public bool moveState = true;
@@ -78,6 +80,28 @@ public class Ratmovement : MonoBehaviour
             enterGrounded();
             }
         jumpLockOut -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            changeSpeed(0);
+        }else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            changeSpeed(1);
+        }else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            changeSpeed(2);
+        }else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            changeSpeed(3);
+        }else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            changeSpeed(4);
+        }else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            changeSpeed(4);
+        }
+
+
     }
 
     void enterGrounded()
@@ -194,6 +218,14 @@ public class Ratmovement : MonoBehaviour
         rb.AddRelativeTorque(spinForce);
     }
 
+    public void changeSpeed(int i)
+    {
+        if (speedStates[i] != null)
+        {
+            moveSpeed = speedStates[i].x;
+            maxSpeed = speedStates[i].y;
+        }
+    }
 }
 
 
