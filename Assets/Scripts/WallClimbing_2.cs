@@ -5,8 +5,9 @@ using UnityEngine;
 public class WallClimbing_2 : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float climbSpeed = 7f;
+    public float climbSpeed = 7f;
     [SerializeField] private float wallDetectionDistance = 0.3f;
+    [SerializeField] private float wallSwitchDistance = 1f;
     [SerializeField] private float climbUpwardForce = 25f;
     [SerializeField] private float fromWallToGround = 15f;
     public LayerMask groundMask;
@@ -16,6 +17,7 @@ public class WallClimbing_2 : MonoBehaviour
     private ConstantForce constantForce;
     private Rigidbody rb;
     private Ratmovement ratMovement;
+    private StaminaController staminaController;
 
     [Header("Debug")]
     public bool isTouchingWall;
@@ -27,6 +29,7 @@ public class WallClimbing_2 : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         ratMovement = GetComponent<Ratmovement>();
         constantForce = GetComponent<ConstantForce>();
+        staminaController = GetComponent<StaminaController>();
     }
 
     void Update()
@@ -50,6 +53,8 @@ public class WallClimbing_2 : MonoBehaviour
         if (isClimbing)
         {
             Climb();
+            staminaController.Climbing();
+            CheckForWallSwitch();
         }
     }
 
@@ -164,5 +169,26 @@ public class WallClimbing_2 : MonoBehaviour
         }
 
         transform.rotation = targetRotation;
+    }
+
+    void CheckForWallSwitch()
+    {
+        RaycastHit hit;
+         if (Physics.Raycast(transform.position, transform.right, out hit, wallSwitchDistance, wallMask)) 
+        {
+            SwitchToWall(hit.normal);
+        }
+        // Detect adjacent wall on the left
+        else if (Physics.Raycast(transform.position, -transform.right, out hit, wallSwitchDistance, wallMask))
+        {
+            SwitchToWall(hit.normal);
+        }
+    }
+
+    void SwitchToWall(Vector3 newWallNormal)
+    {
+        // Align the rat to the new wall's surface
+        transform.rotation = Quaternion.LookRotation(-newWallNormal, Vector3.up);
+        rb.velocity = Vector3.zero; // Reset velocity for smooth transition
     }
 }
