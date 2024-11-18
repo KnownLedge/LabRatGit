@@ -15,6 +15,8 @@ public class Ratmovement : MonoBehaviour
     public float jumpPower = 600f;
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
+    [Tooltip("How long after jumping before the Rat can reneter grounded state")]
+    public float jumpLockOutTime = 0.3f;
 
     [Tooltip("How hard the rat spins, pure style points")]
     public Vector3 spinForce = new Vector3(0,0,0);
@@ -37,6 +39,9 @@ public class Ratmovement : MonoBehaviour
     public bool moveState = true;
     public bool isJump = false;
 
+    public float jumpLockOut = 0f; 
+    //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
+
 
     void Start()
     {
@@ -48,67 +53,11 @@ public class Ratmovement : MonoBehaviour
     void Update()
     {
         
-        mousePos = Input.mousePosition; //Get mouse position from input
 
-        Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
-        //Get Rat position on screen through the camera
-        mousePos.x = mousePos.x - objectPos.x;
-        mousePos.y = mousePos.y - objectPos.y;
-        //Get the difference between the Mouse position and Rat position
-
-        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
-
-       
-        if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
-        {
-
-            if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
-            {
-
-                transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
-                //Aim Rat towards mouse pointer
-
-            }
-
-            if (moveState || jumpStyle != jumpFreedom.SteerAllowed) // speed and free can pass
-            {
-
-                if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
-                {
-                    rb.AddForce(transform.right * moveSpeed);
-                    //Accelerate Rat.
-
-                    //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
-
-                    // ^ Unused, may be useful for finer control if we want Rat to go exactly to the mouse pointer
-                }
-                if (false) //(Input.GetKey(KeyCode.A))
-                {
-                    //Unused, allows Rat to strafe, is kind of disorienting
-                    transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
-                }
-                if (false) //(Input.GetKey(KeyCode.D))
-                {
-                    //Unused, allows Rat to strafe, is kind of disorienting
-                    transform.Translate(transform.forward * -moveSpeed * Time.deltaTime, Space.World);
-                }
-            }
-        }
     
         if((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump==false ){ //JUMP INPUT
 
-           moveState = false; //Player not grounded
-           isJump = true; // Player is airborne (from a jump)
-
-
-            if (!canSpin)
-            rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
-
-                rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
-            //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
-
-                rb.AddRelativeTorque(spinForce);
+            JumpRat();
 
         }
 
@@ -123,17 +72,17 @@ public class Ratmovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.X)){
             enterGrounded();
             }
-
-
-        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed),rb.velocity.y,Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
-        //Limits speed to the max of movespeed
+        jumpLockOut -= Time.deltaTime;
     }
 
     void enterGrounded()
     {
-        isJump = false;
-        moveState = true;
-        rb.constraints = groundedConstraints;
+        if (jumpLockOut < 0f)
+        {
+            isJump = false;
+            moveState = true;
+            rb.constraints = groundedConstraints;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -143,6 +92,83 @@ public class Ratmovement : MonoBehaviour
 
     }
 
+    void FixedUpdate()
+    {
+        mousePos = Input.mousePosition; //Get mouse position from input
+
+        Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
+        //Get Rat position on screen through the camera
+        mousePos.x = mousePos.x - objectPos.x;
+        mousePos.y = mousePos.y - objectPos.y;
+        //Get the difference between the Mouse position and Rat position
+
+        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
+
+
+        if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
+        {
+
+            AimRat(angle);
+
+            MoveRat();
+        }
+    }
+
+    public void AimRat(float angle)
+    {
+        if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
+        {
+
+            transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+            //Aim Rat towards mouse pointer
+
+        }
+    }
+
+    public void MoveRat()
+    {
+        if (moveState || jumpStyle != jumpFreedom.SteerAllowed) // speed and free can pass
+        {
+
+            if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
+            {
+                rb.AddForce(transform.right * moveSpeed,ForceMode.Impulse);
+                //Accelerate Rat.
+
+                //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
+
+                // ^ Unused, may be useful for finer control if we want Rat to go exactly to the mouse pointer
+            }
+            if (false) //(Input.GetKey(KeyCode.A))
+            {
+                //Unused, allows Rat to strafe, is kind of disorienting
+                transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
+            }
+            if (false) //(Input.GetKey(KeyCode.D))
+            {
+                //Unused, allows Rat to strafe, is kind of disorienting
+                transform.Translate(transform.forward * -moveSpeed * Time.deltaTime, Space.World);
+            }
+        }
+        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
+        //Limits speed to the max of movespeed
+    }
+
+    public void JumpRat()
+    {
+        moveState = false; //Player not grounded
+        isJump = true; // Player is airborne (from a jump)
+        jumpLockOut = jumpLockOutTime;
+
+        if (!canSpin)
+            rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
+
+        rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
+        //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
+
+        rb.AddRelativeTorque(spinForce);
+    }
 
 }
 
