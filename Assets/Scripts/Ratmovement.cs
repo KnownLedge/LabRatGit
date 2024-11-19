@@ -39,6 +39,8 @@ public class Ratmovement : MonoBehaviour
 
     private WallClimbing wallClimbing;
     private WallClimbing_2 wallClimbing_2;
+    private LedgeClimbing ledgeClimbing;
+    private LedgeClimbing_2 ledgeClimbing_2;
 
     void Start()
     {
@@ -46,16 +48,22 @@ public class Ratmovement : MonoBehaviour
         groundedConstraints = rb.constraints;
         wallClimbing = GetComponent<WallClimbing>();
         wallClimbing_2 = GetComponent<WallClimbing_2>();
+        ledgeClimbing = GetComponent<LedgeClimbing>();
+        ledgeClimbing_2 = GetComponent<LedgeClimbing_2>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (wallClimbing.isClimbing) // Prevent movement and rotation logic when climbing
+        // Prevent movement and rotation logic when climbing or ledge grabbing
+        if (wallClimbing.isClimbing || wallClimbing_2.isClimbing || ledgeClimbing.isClimbing || ledgeClimbing_2.isStickingToLedge)
         {
+            // Disable rotation when climbing
+            rb.freezeRotation = true; // Keep only the Y rotation
             return; // Exit the Update method and do nothing further
+        } else {
+            rb.freezeRotation = false; // Allow full rotation
         }
-        if(wallClimbing_2.isClimbing) { return;}
 
         if (moveState)
         {
