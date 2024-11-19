@@ -7,6 +7,7 @@ public class WallClimbing : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float climbSpeed = 5f;
     [SerializeField] private float wallDetectionDistance = 1f;
+    [SerializeField] private float wallSwitchDistance = 1f;
     [SerializeField] private float climbUpwardForce = 150f;
     public LayerMask groundMask;
     public LayerMask wallMask;
@@ -37,7 +38,7 @@ public class WallClimbing : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (isClimbing)
+            if (isTouchingWall && !isClimbing)
             {
                 StopClimbing();
             }
@@ -50,6 +51,7 @@ public class WallClimbing : MonoBehaviour
         if (isClimbing)
         {
             Climb();
+            CheckForWallSwitch();
         }
     }
 
@@ -128,11 +130,35 @@ public class WallClimbing : MonoBehaviour
         if (Physics.Raycast(transform.position, -transform.forward, out hit, wallDetectionDistance, wallMask))
         {
             transform.position = hit.point + hit.normal * 0.1f; // Adjust the offset as needed
-        }
-
-        if (!isTouchingWall)
-        {
+        } else {
             StopClimbing();
         }
+    }
+
+    void CheckForWallSwitch()
+    {
+        RaycastHit hit;
+        // Detect adjacent wall in front
+        if (Physics.Raycast(transform.position, transform.forward, out hit, wallSwitchDistance, wallMask))
+        {
+            SwitchToWall(hit.normal);
+        } 
+        // Detect adjacent wall on the right
+        else if (Physics.Raycast(transform.position, transform.right, out hit, wallSwitchDistance, wallMask)) 
+        {
+            SwitchToWall(hit.normal);
+        }
+        // Detect adjacent wall on the left
+        else if (Physics.Raycast(transform.position, -transform.right, out hit, wallSwitchDistance, wallMask))
+        {
+            SwitchToWall(hit.normal);
+        }
+    }
+
+    void SwitchToWall(Vector3 newWallNormal)
+    {
+        // Align the rat to the new wall's surface
+        transform.rotation = Quaternion.LookRotation(-newWallNormal, Vector3.up);
+        rb.velocity = Vector3.zero; // Reset velocity for smooth transition
     }
 }
