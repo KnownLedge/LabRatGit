@@ -7,6 +7,7 @@ public class Ratmovement : MonoBehaviour
     private Rigidbody rb; //Player rigidbody component
     private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
     private Vector3 mousePos; // Position of mouse cursor in world environment
+    private Collider r_Collider;
 
     [Header("Setup")]
     [Tooltip("How fast the rat runs")]
@@ -46,7 +47,8 @@ public class Ratmovement : MonoBehaviour
     public bool isJump = false;
     public float prevAngle = 0f;
 
-    public float jumpLockOut = 0f; 
+    public float jumpLockOut = 0f;
+    public float rayLen = 3f;
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
 
 
@@ -54,6 +56,7 @@ public class Ratmovement : MonoBehaviour
     {
       rb = GetComponent<Rigidbody>(); // Get rat rigidbody
         groundedConstraints = rb.constraints;
+        r_Collider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -148,13 +151,34 @@ public class Ratmovement : MonoBehaviour
     {
         if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
         {
+
+            Quaternion prevRotation = transform.rotation;
+
             Vector3 newDirection = Vector3.RotateTowards(transform.right, new Vector3(0, -angle, 0), turnPower * Time.deltaTime, 0.0f);
             //  transform.Rotate(transform.right * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
             float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, -angle, 0)), Quaternion.Euler(new Vector3(0, -prevAngle, 0)));
-          //  Debug.Log(turnDist);
+            //  Debug.Log(turnDist);
             turnDist = Mathf.Clamp(turnDist, -turnPower, turnPower);
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, -angle, 0));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnPower);
+
+            //Raycast time!
+            bool hit;
+            RaycastHit rayHit;
+
+
+
+            hit = Physics.BoxCast(r_Collider.bounds.center, transform.localScale * 0.5f, -transform.right, out rayHit, transform.rotation, rayLen);
+            if (hit)
+            {
+                transform.rotation = prevRotation;
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, -turnPower);
+
+                Debug.Log("HIT: " + rayHit.collider.name);
+
+            }
+     
+
             //float turndir = 
             //transform.rotation
           //  rb.AddTorque(transform.right * turnPower * Mathf.Sign())
@@ -172,6 +196,11 @@ public class Ratmovement : MonoBehaviour
             //Aim Rat towards mouse pointer
 
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        //Gizmos.DrawWireCube((r_Collider.bounds.center, transform.localScale * 0.5f, transform.right, transform.rotation, rayLen);
     }
 
     public void MoveRat()
