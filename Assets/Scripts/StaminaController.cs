@@ -78,7 +78,9 @@ public class StaminaController : MonoBehaviour
         if (playerStamina <= 0)
         {
             playerStamina = 0;
-            wallClimbing.climbSpeed = slowedClimbSpeed;
+            wallClimbing.isClimbing = false;
+            wallClimbing.StopClimbing();
+            //wallClimbing.climbSpeed = slowedClimbSpeed;
         }
     }
 

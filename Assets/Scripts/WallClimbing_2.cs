@@ -100,7 +100,7 @@ public class WallClimbing_2 : MonoBehaviour
         }
     }
 
-    void StopClimbing()
+    public void StopClimbing()
     {
         constantForce.enabled = true;
         isClimbing = false;
