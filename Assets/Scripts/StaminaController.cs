@@ -8,7 +8,7 @@ public class StaminaController : MonoBehaviour
     [Header("Stamina Settings")]
     public float playerStamina = 100;
     [SerializeField] private float maxStamina = 100f;
-    [SerializeField] private float jumpCost = 20f;
+    public float jumpCost = 20f;
     [HideInInspector] public bool hasRegenerated = true;
 
     [Header("Stamina Regeneration Settings")]
@@ -24,10 +24,12 @@ public class StaminaController : MonoBehaviour
     [SerializeField] private CanvasGroup sliderCanvasGroup = null;
 
     private WallClimbing_2 wallClimbing;
+    private LedgeClimbing_2 ledgeClimbing;
 
     private void Start()
     {
         wallClimbing = GetComponent<WallClimbing_2>();
+        ledgeClimbing = GetComponent<LedgeClimbing_2>();
     }
 
     private void Update()
@@ -40,7 +42,7 @@ public class StaminaController : MonoBehaviour
 
     public void Climbing()
     {
-        if (wallClimbing.isClimbing)
+        if (wallClimbing.isClimbing || ledgeClimbing.isStickingToLedge)
         {
             if (playerStamina > 0)
             {
@@ -48,7 +50,7 @@ public class StaminaController : MonoBehaviour
             }
             else
             {
-                wallClimbing.climbSpeed = slowedClimbSpeed;
+                // wallClimbing.climbSpeed = slowedClimbSpeed;
                 hasRegenerated = false;
             }
         }
@@ -64,7 +66,7 @@ public class StaminaController : MonoBehaviour
         else
         {
             playerStamina = maxStamina;
-            wallClimbing.climbSpeed = normalClimbSpeed;
+            // wallClimbing.climbSpeed = normalClimbSpeed;
             sliderCanvasGroup.alpha = 0;
             hasRegenerated = true;
         }
@@ -79,13 +81,15 @@ public class StaminaController : MonoBehaviour
         {
             playerStamina = 0;
             wallClimbing.isClimbing = false;
+            ledgeClimbing.isStickingToLedge = false;
+            ledgeClimbing.FallFromLedge();
             wallClimbing.StopClimbing();
             //wallClimbing.climbSpeed = slowedClimbSpeed;
         }
     }
 
 
-    void UpdateStamina(int value)
+    public void UpdateStamina(int value)
     {
         staminaProgressUI.fillAmount = playerStamina / maxStamina;
         if(value == 0)

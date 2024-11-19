@@ -17,6 +17,7 @@ public class LedgeClimbing_2 : MonoBehaviour
     private Rigidbody rb;
     private Ratmovement ratMovement;
     private ConstantForce constantForce;
+    private StaminaController staminaController;
 
     [Header("Debug")]
     public bool isTouchingLedge;
@@ -28,6 +29,7 @@ public class LedgeClimbing_2 : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         ratMovement = GetComponent<Ratmovement>();
         constantForce = GetComponent<ConstantForce>();
+        staminaController = GetComponent<StaminaController>();
     }
 
     void Update()
@@ -41,7 +43,16 @@ public class LedgeClimbing_2 : MonoBehaviour
             if (isTouchingLedge && !isStickingToLedge)
             {
                 StickToLedge();
+                staminaController.Climbing();
+            } else if (isStickingToLedge) {
+                FallFromLedge();  // New function to handle falling off the ledge
             }
+        }
+
+        // Drain stamina while sticking to ledge
+        if (isStickingToLedge)
+        {
+            staminaController.Climbing();  // Drain stamina while stuck to the ledge
         }
 
         // Handle jumping off the ledge
@@ -138,42 +149,56 @@ public class LedgeClimbing_2 : MonoBehaviour
     // Jump off the ledge, re-enable gravity and remove freezing constraints
     void JumpOffLedge()
     {
-        isStickingToLedge = false;
-        rb.useGravity = true;  // Re-enable gravity
-
-        // Remove constraints to allow free movement
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
-
-        // Reset the vertical velocity to avoid odd behavior
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // Apply jump force to move the rat upwards
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-        // Set continuous collision detection mode to avoid clipping through walls
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        // Debug the velocity to monitor its behavior after applying the jump
-        Debug.Log($"After applying jump force: {rb.velocity}");
-
-        // Raycast to check for immediate collision after the jump
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1f, ledgeMask))
+        // Check if the player has enough stamina to jump
+        if (staminaController.playerStamina >= staminaController.jumpCost)
         {
-            // If we collide immediately after jumping, stop movement or adjust accordingly
-            rb.velocity = Vector3.zero;
-            Debug.Log("Collided with wall immediately after jump.");
+            // Drain stamina for jumping
+            staminaController.playerStamina -= staminaController.jumpCost;
+            staminaController.UpdateStamina(1);  // Update UI or any other logic for stamina
+
+            // Perform the jump
+            isStickingToLedge = false;
+            rb.useGravity = true;  // Re-enable gravity
+
+            // Remove constraints to allow free movement
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+            // Reset the vertical velocity to avoid odd behavior
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            // Apply jump force to move the rat upwards
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            // Set continuous collision detection mode to avoid clipping through walls
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+            // Debug the velocity to monitor its behavior after applying the jump
+            Debug.Log($"After applying jump force: {rb.velocity}");
+
+            // Raycast to check for immediate collision after the jump
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 1f, ledgeMask))
+            {
+                // If we collide immediately after jumping, stop movement or adjust accordingly
+                rb.velocity = Vector3.zero;
+                Debug.Log("Collided with wall immediately after jump.");
+            }
+
+            Debug.Log("Jumped off ledge.");
+
+            // Start the coroutine to enable constant force after delay
+            if (constantForceCoroutine != null)
+            {
+                StopCoroutine(constantForceCoroutine); // Stop any ongoing coroutine
+            }
+            constantForceCoroutine = StartCoroutine(EnableConstantForceAfterDelay(1f)); // 2 seconds delay
         }
-
-        Debug.Log("Jumped off ledge.");
-
-        // Start the coroutine to enable constant force after delay
-        if (constantForceCoroutine != null)
+        else
         {
-            StopCoroutine(constantForceCoroutine); // Stop any ongoing coroutine
+            Debug.Log("Not enough stamina to jump.");
         }
-        constantForceCoroutine = StartCoroutine(EnableConstantForceAfterDelay(1f)); // 2 seconds delay
     }
+
 
     // Coroutine to enable constant force after a delay
     IEnumerator EnableConstantForceAfterDelay(float delay)
@@ -208,5 +233,24 @@ public class LedgeClimbing_2 : MonoBehaviour
             Debug.Log($"Climb Direction: {climbDirection} | New velocity: {rb.velocity}");
         }
     }
+    public void FallFromLedge()
+    {
+        // Stop sticking to the ledge
+        isStickingToLedge = false;
+
+        // Re-enable gravity and stop freezing movement
+        rb.useGravity = true;
+        rb.drag = 0f; // Reset drag to normal values
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        // Reset velocity to ensure the rat falls naturally
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // Remove any vertical velocity if needed
+
+        // Log for debugging
+        Debug.Log("Rat has fallen from the ledge.");
+
+        // Optionally, you can add some additional behavior like adding a small downward force or playing an animation.
+    }
+
 
 }
