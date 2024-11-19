@@ -59,10 +59,29 @@ public class Ratmovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
 
-    
-        if((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump==false ){ //JUMP INPUT
+        mousePos = Input.mousePosition; //Get mouse position from input
+
+        Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
+        //Get Rat position on screen through the camera
+        mousePos.x = mousePos.x - objectPos.x;
+        mousePos.y = mousePos.y - objectPos.y;
+        //Get the difference between the Mouse position and Rat position
+
+        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
+
+
+        if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
+        {
+
+            AimRat(angle);
+
+
+        }
+
+
+            if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump==false ){ //JUMP INPUT
 
             JumpRat();
 
@@ -123,22 +142,9 @@ public class Ratmovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        mousePos = Input.mousePosition; //Get mouse position from input
-
-        Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
-        //Get Rat position on screen through the camera
-        mousePos.x = mousePos.x - objectPos.x;
-        mousePos.y = mousePos.y - objectPos.y;
-        //Get the difference between the Mouse position and Rat position
-
-        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
-
-
         if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
         {
 
-            AimRat(angle);
 
             MoveRat();
         }
