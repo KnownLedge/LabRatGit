@@ -50,18 +50,14 @@ public class Ratmovement : MonoBehaviour
     public float jumpLockOut = 0f; 
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
 
-    private WallClimbing wallClimbing;
     private WallClimbing_2 wallClimbing_2;
-    private LedgeClimbing ledgeClimbing;
     private LedgeClimbing_2 ledgeClimbing_2;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>(); // Get rat rigidbody
         groundedConstraints = rb.constraints;
-        wallClimbing = GetComponent<WallClimbing>();
         wallClimbing_2 = GetComponent<WallClimbing_2>();
-        ledgeClimbing = GetComponent<LedgeClimbing>();
         ledgeClimbing_2 = GetComponent<LedgeClimbing_2>();
     }
 
@@ -69,7 +65,7 @@ public class Ratmovement : MonoBehaviour
     void Update()
     {
         // Prevent movement and rotation logic when climbing or ledge grabbing
-        if (wallClimbing.isClimbing || wallClimbing_2.isClimbing || ledgeClimbing.isClimbing || ledgeClimbing_2.isStickingToLedge)
+        if (wallClimbing_2.isClimbing || ledgeClimbing_2.isStickingToLedge)
         {
             rb.freezeRotation = true; // Disable rotation when climbing
             return; // Exit Update if climbing
