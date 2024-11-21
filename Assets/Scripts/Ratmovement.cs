@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Ratmovement : MonoBehaviour
 {
-    private Rigidbody rb; //Player rigidbody component
-    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
+    private Rigidbody rb; // Player rigidbody component
+    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded in case we need to change them in the air.
     private Vector3 mousePos; // Position of mouse cursor in world environment
 
     [Header("Setup")]
@@ -19,11 +19,11 @@ public class Ratmovement : MonoBehaviour
     public float turnPower = 100f;
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
-    [Tooltip("How long after jumping before the Rat can reneter grounded state")]
+    [Tooltip("How long after jumping before the Rat can re-enter grounded state")]
     public float jumpLockOutTime = 0.3f;
 
     [Tooltip("How hard the rat spins, pure style points")]
-    public Vector3 spinForce = new Vector3(0,0,0);
+    public Vector3 spinForce = new Vector3(0, 0, 0);
 
     [Tooltip("If true, can freely rotate while jumping")]
     public bool canSpin = false;
@@ -41,6 +41,9 @@ public class Ratmovement : MonoBehaviour
     [Tooltip("Iterated by number keys, sets movespeed and maxspeed for testing speed change")]
     public Vector2[] speedStates;
 
+    [Tooltip("Iterated by number keys, sets movespeed and maxspeed for testing speed change")]
+    public Vector2[] speedStates;
+
     [Header("Debug")]
     public bool moveState = true;
     public bool isJump = false;
@@ -49,29 +52,46 @@ public class Ratmovement : MonoBehaviour
     public float jumpLockOut = 0f; 
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
 
+    private WallClimbing wallClimbing;
+    private WallClimbing_2 wallClimbing_2;
+    private LedgeClimbing ledgeClimbing;
+    private LedgeClimbing_2 ledgeClimbing_2;
 
     void Start()
     {
-      rb = GetComponent<Rigidbody>(); // Get rat rigidbody
+        rb = GetComponent<Rigidbody>(); // Get rat rigidbody
         groundedConstraints = rb.constraints;
+        wallClimbing = GetComponent<WallClimbing>();
+        wallClimbing_2 = GetComponent<WallClimbing_2>();
+        ledgeClimbing = GetComponent<LedgeClimbing>();
+        ledgeClimbing_2 = GetComponent<LedgeClimbing_2>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Prevent movement and rotation logic when climbing or ledge grabbing
+        if (wallClimbing.isClimbing || wallClimbing_2.isClimbing || ledgeClimbing.isClimbing || ledgeClimbing_2.isStickingToLedge)
+        {
+            rb.freezeRotation = true; // Disable rotation when climbing
+            return; // Exit Update if climbing
+        }
+        else
+        {
+            rb.freezeRotation = false; // Allow full rotation when not climbing
+        }
 
-        mousePos = Input.mousePosition; //Get mouse position from input
+  
 
+        mousePos = Input.mousePosition; // Get mouse position from input
         Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
-        //Get Rat position on screen through the camera
         mousePos.x = mousePos.x - objectPos.x;
         mousePos.y = mousePos.y - objectPos.y;
-        //Get the difference between the Mouse position and Rat position
+        // Get the difference between the Mouse position and Rat position
 
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
-
-
+        // Get the angle to the mouse position
+       
         if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
         {
 
@@ -85,14 +105,19 @@ public class Ratmovement : MonoBehaviour
 
             JumpRat();
 
-        }
+        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
+        // Limit speed to the max of moveSpeed
+    }
 
-        //if Player is currently mid jump with jump steering allowed, allow them to change the rats direction still by holding the forward key.
-        if (isJump && jumpStyle == jumpFreedom.SteerAllowed && (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W)))
+    void EnterGrounded()
+    {
+        if (jumpLockOut < 0f)
         {
-            rb.velocity = new Vector3(transform.right.x * jumpForce, rb.velocity.y, transform.right.z * jumpForce);
-            //Since this sets the XZ velocity to jumpForce, this might make the jump faster than the other settings, as the rigidbody likely slows that force down over the course of the jump, this resets it back to full speed.
+            isJump = false;
+            moveState = true;
+            rb.constraints = groundedConstraints;
         }
+    }
 
         //If Collision breaks, pressing X should force the player to re enter grounded state
         if(Input.GetKeyDown(KeyCode.X)){
@@ -120,10 +145,16 @@ public class Ratmovement : MonoBehaviour
             changeSpeed(4);
         }
 
-
+    void FixedUpdate()
+    {
+        if (moveState || jumpStyle != jumpFreedom.Locked) // steer, speed, and free can pass
+        {
+            MoveRat();
+        }
+    }
     }
 
-    void enterGrounded()
+    public void MoveRat()
     {
         if (jumpLockOut < 0f)
         {
@@ -133,13 +164,15 @@ public class Ratmovement : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void JumpRat()
     {
-        enterGrounded();
-        //Enters grounded state on collision with anything
+        moveState = false; // Player not grounded
+        isJump = true; // Player is airborne (from a jump)
+        jumpLockOut = jumpLockOutTime;
 
-    }
-
+        if (!canSpin)
+            rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
+            
     void FixedUpdate()
     {
         if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
