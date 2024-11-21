@@ -16,6 +16,11 @@ GameObject:
   - component: {fileID: 1960017723245819698}
   - component: {fileID: 6901058881704875607}
   - component: {fileID: 3962790405471116161}
+  - component: {fileID: 3769070975969376578}
+  - component: {fileID: 6413723077713763360}
+  - component: {fileID: 2387866752527170791}
+  - component: {fileID: 4245283642741618202}
+  - component: {fileID: 3655723426979565666}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -33,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -33.4, y: 0.94, z: 14.37}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.9890274, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7155639926293728400}
@@ -108,8 +113,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.978508, y: 1, z: 1}
-  m_Center: {x: -0.3383751, y: 0, z: 0}
+  m_Size: {x: 0.37, y: 0.88, z: 2.99}
+  m_Center: {x: -0.01, y: -0.16, z: -1.25}
 --- !u!54 &2669844818636776249
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -120,7 +125,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -136,7 +141,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1960017723245819698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06653f0b04664a46bef62eac1b08a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 8
   maxSpeed: 10
   jumpPower: 13
   turnPower: 30
@@ -196,6 +201,123 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3769070975969376578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441095159546034802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e614be77f187f541857e31e7b930d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbSpeed: 5
+  wallDetectionDistance: 1
+  wallSwitchDistance: 1
+  climbUpwardForce: 70
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 128
+  isTouchingWall: 0
+  isClimbing: 0
+  isGrounded: 0
+--- !u!114 &6413723077713763360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441095159546034802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7449ba83a61ad645b627823ce6544f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbSpeed: 7
+  wallDetectionDistance: 0.3
+  wallSwitchDistance: 1
+  climbUpwardForce: 25
+  fromWallToGround: 20
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 128
+  isTouchingWall: 0
+  isClimbing: 0
+  isGrounded: 0
+--- !u!114 &2387866752527170791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441095159546034802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5876296ba36363d419457830ab07cf04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  detectionRadius: 2
+  directionTolerance: 0.5
+  ledgeMask:
+    serializedVersion: 2
+    m_Bits: 256
+  isTouchingLedge: 0
+  isClimbing: 0
+--- !u!114 &4245283642741618202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441095159546034802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf608e21570503498c26de670b71561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbSpeed: 7
+  detectionRadius: 2
+  jumpForce: 25
+  ledgeMask:
+    serializedVersion: 2
+    m_Bits: 256
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  isStickingToLedge: 0
+  isGrounded: 0
+  isTouchingLedge: 0
+--- !u!114 &3655723426979565666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441095159546034802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddbf12d33a213b84ca5aceeeacf91389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStamina: 100
+  maxStamina: 100
+  jumpCost: 20
+  hasRegenerated: 1
+  staminaDrain: 25
+  staminaRegen: 15
+  slowedClimbSpeed: 2
+  normalClimbSpeed: 5
+  staminaProgressUI: {fileID: 0}
+  sliderCanvasGroup: {fileID: 0}
 --- !u!1001 &7261854170811624315
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -204,6 +326,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1978293142445364507}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -218,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
       propertyPath: m_LocalRotation.x
@@ -226,7 +352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
       propertyPath: m_LocalRotation.z
@@ -238,7 +364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495f43c7240b4994f800a989a66679b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
