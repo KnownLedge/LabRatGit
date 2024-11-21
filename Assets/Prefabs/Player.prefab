@@ -148,14 +148,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06653f0b04664a46bef62eac1b08a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 13
+  moveSpeed: 5
+  maxSpeed: 10
   jumpPower: 13
+  turnPower: 30
   jumpForce: 16
+  jumpLockOutTime: 0.3  # This line has been added from 'main'
   spinForce: {x: 0, y: 0, z: 0}
   canSpin: 1
   jumpStyle: 0
+  speedStates: []
   moveState: 1
   isJump: 0
+  prevAngle: 0
+  jumpLockOut: 0
 --- !u!75 &6901058881704875607
 ConstantForce:
   m_ObjectHideFlags: 0
