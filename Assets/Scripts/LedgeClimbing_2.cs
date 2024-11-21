@@ -9,7 +9,6 @@ public class LedgeClimbing_2 : MonoBehaviour
     [SerializeField] private float detectionRadius = 2f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private LayerMask ledgeMask;
-    [SerializeField] private LayerMask groundMask;
     private Vector3 targetLedgePosition;
     public bool isStickingToLedge = false;
 
@@ -33,7 +32,6 @@ public class LedgeClimbing_2 : MonoBehaviour
 
     void Update()
     {
-        CheckIfGrounded();
         CheckLedgeContact();
 
         // Trigger climbing actions with E

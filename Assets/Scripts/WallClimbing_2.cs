@@ -10,10 +10,7 @@ public class WallClimbing_2 : MonoBehaviour
     [SerializeField] private float wallSwitchDistance = 1f;
     [SerializeField] private float climbUpwardForce = 25f;
     [SerializeField] private float fromWallToGround = 15f;
-    public LayerMask groundMask;
     public LayerMask wallMask;
-
-
     private ConstantForce constantForce;
     private Rigidbody rb;
     private Ratmovement ratMovement;

@@ -46,6 +46,7 @@ public class Ratmovement : MonoBehaviour
     public bool moveState = true;
     public bool isJump = false;
     public bool isGrounded;
+    [SerializeField]LayerMask groundMask;
     public float prevAngle = 0f;
 
     public float jumpLockOut = 0f; 
