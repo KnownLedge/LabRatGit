@@ -45,6 +45,7 @@ public class Ratmovement : MonoBehaviour
     [Header("Debug")]
     public bool moveState = true;
     public bool isJump = false;
+    public bool isGrounded;
     public float prevAngle = 0f;
 
     public float jumpLockOut = 0f; 
@@ -64,6 +65,7 @@ public class Ratmovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isGrounded = Physics.CheckSphere(transform.position, 1f, groundMask);
         // Prevent movement and rotation logic when climbing or ledge grabbing
         if (wallClimbing_2.isClimbing || ledgeClimbing_2.isStickingToLedge)
         {
@@ -101,7 +103,7 @@ public class Ratmovement : MonoBehaviour
     }
 
         //If Collision breaks, pressing X should force the player to re enter grounded state
-        if(Input.GetKeyDown(KeyCode.X)){
+        if(Input.GetKeyDown(KeyCode.X) ||isGrounded){
             enterGrounded();
             }
         jumpLockOut -= Time.deltaTime;

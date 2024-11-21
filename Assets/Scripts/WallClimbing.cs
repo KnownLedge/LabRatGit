@@ -21,7 +21,7 @@ public class WallClimbing : MonoBehaviour
     [Header("Debug")]
     public bool isTouchingWall;
     public bool isClimbing;
-    public bool isGrounded;
+
 
     void Start()
     {
@@ -32,7 +32,6 @@ public class WallClimbing : MonoBehaviour
 
     void Update()
     {
-        isGrounded = Physics.CheckSphere(transform.position, 1f, groundMask);
 
         CheckWallContact();
 
@@ -73,7 +72,7 @@ public class WallClimbing : MonoBehaviour
     {
         constantForce.enabled = false;
         isClimbing = true;
-        isGrounded = false;
+        ratMovement.isGrounded = false;
         rb.useGravity = false;
         rb.velocity = Vector3.zero;
         rb.drag = 0f;
@@ -104,7 +103,7 @@ public class WallClimbing : MonoBehaviour
     {
         constantForce.enabled = true;
         isClimbing = false;
-        isGrounded = true;
+        ratMovement.isGrounded = true;
         rb.useGravity = true;
         rb.drag = 2f;
 

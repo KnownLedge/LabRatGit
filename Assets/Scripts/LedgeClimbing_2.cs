@@ -12,7 +12,6 @@ public class LedgeClimbing_2 : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     private Vector3 targetLedgePosition;
     public bool isStickingToLedge = false;
-    public bool isGrounded;
 
     private Rigidbody rb;
     private Ratmovement ratMovement;
@@ -63,23 +62,9 @@ public class LedgeClimbing_2 : MonoBehaviour
         }
 
         // Handle air movement when not sticking to ledge
-        if (!isStickingToLedge && !isTouchingLedge && !isGrounded)
+        if (!isStickingToLedge && !isTouchingLedge && !ratMovement.isGrounded)
         {
             HandleAirMovement();
-        }
-    }
-
-    // Check if the rat is grounded (for transition between climbing and walking)
-    void CheckIfGrounded()
-    {
-        if (Physics.CheckSphere(transform.position, 1f, groundMask))
-        {
-            isGrounded = true;
-            constantForce.enabled = true; // Enable constant force for climbing
-        }
-        else
-        {
-            isGrounded = false;
         }
     }
 
@@ -212,7 +197,7 @@ public class LedgeClimbing_2 : MonoBehaviour
     // Handle movement when in the air (e.g., using horizontal input)
     void HandleAirMovement()
     {
-        if (!isGrounded) // Only allow air movement if not grounded
+        if (!ratMovement.isGrounded) // Only allow air movement if not grounded
         {
             // Get horizontal input (A/D for left/right)
             float horizontal = Input.GetAxis("Horizontal"); 
