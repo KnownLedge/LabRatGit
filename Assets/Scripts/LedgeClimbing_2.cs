@@ -7,7 +7,7 @@ public class LedgeClimbing_2 : MonoBehaviour
     [Header("Settings")]
     public float climbSpeed = 7f;
     [SerializeField] private float detectionRadius = 2f;
-    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float ledgeJumpForce = 5f;
     [SerializeField] private LayerMask ledgeMask;
     private Vector3 targetLedgePosition;
     public bool isStickingToLedge = false;
@@ -32,38 +32,41 @@ public class LedgeClimbing_2 : MonoBehaviour
 
     void Update()
     {
-        CheckLedgeContact();
-
-        // Trigger climbing actions with E
-        if (Input.GetKeyDown(KeyCode.E))
+        if(!ratMovement.isJump)
         {
-            if (isTouchingLedge && !isStickingToLedge)
+            CheckLedgeContact();
+
+            // Trigger climbing actions with E
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                StickToLedge();
-                staminaController.Climbing();
-            } else if (isStickingToLedge) {
-                FallFromLedge();  // New function to handle falling off the ledge
+                if (isTouchingLedge && !isStickingToLedge)
+                {
+                    StickToLedge();
+                    staminaController.Climbing();
+                } else if (isStickingToLedge) {
+                    FallFromLedge();  // New function to handle falling off the ledge
+                }
             }
-        }
 
-        // Drain stamina while sticking to ledge
-        if (isStickingToLedge)
-        {
-            staminaController.Climbing();  // Drain stamina while stuck to the ledge
-        }
+            // Drain stamina while sticking to ledge
+            if (isStickingToLedge)
+            {
+                staminaController.Climbing();  // Drain stamina while stuck to the ledge
+            }
 
-        // Handle jumping off the ledge
-        if (isStickingToLedge && Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Space pressed - attempting to jump off ledge.");
-            JumpOffLedge();
-        }
+            // Handle jumping off the ledge
+            if (isStickingToLedge && Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("Space pressed - attempting to jump off ledge.");
+                JumpOffLedge();
+            }
 
-        // Handle air movement when not sticking to ledge
-        if (!isStickingToLedge && !isTouchingLedge && !ratMovement.isGrounded)
-        {
-            HandleAirMovement();
-        }
+            // Handle air movement when not sticking to ledge
+            if (!isStickingToLedge && !isTouchingLedge && !ratMovement.isGrounded)
+            {
+                HandleAirMovement();
+            }
+        }   
     }
 
     // Check if the rat is close to a ledge for climbing
@@ -94,10 +97,6 @@ public class LedgeClimbing_2 : MonoBehaviour
                 Debug.Log($"Ledge detected above at position: {hit.point}");
             }
         }
-
-        // Visualize the SphereCast and Raycast for debugging purposes
-        Debug.DrawRay(castStart, transform.forward * detectionRadius, Color.red, 0.5f);
-        Debug.DrawRay(castStart, Vector3.up * detectionRadius, Color.green, 0.5f);
     }
 
     // Stick the rat to the ledge by freezing its movement and aligning its position
@@ -150,7 +149,7 @@ public class LedgeClimbing_2 : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
             // Apply jump force to move the rat upwards
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * ledgeJumpForce, ForceMode.Impulse);
 
             // Set continuous collision detection mode to avoid clipping through walls
             rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -232,8 +231,5 @@ public class LedgeClimbing_2 : MonoBehaviour
         // Log for debugging
         Debug.Log("Rat has fallen from the ledge.");
 
-        // Optionally, you can add some additional behavior like adding a small downward force or playing an animation.
     }
-
-
 }

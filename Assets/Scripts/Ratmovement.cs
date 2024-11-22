@@ -49,7 +49,7 @@ public class Ratmovement : MonoBehaviour
     [SerializeField]LayerMask groundMask;
     public float prevAngle = 0f;
 
-    public float jumpLockOut = 0f; 
+    public float jumpLockOut = 0.3f; 
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
 
     private WallClimbing_2 wallClimbing_2;
@@ -208,10 +208,40 @@ public class Ratmovement : MonoBehaviour
         if (!canSpin)
             rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
+        // Store the initial position when the jump starts
+        Vector3 initialPosition = transform.position;
+
         rb.velocity = new Vector3(transform.forward.x * jumpForce, jumpPower, transform.forward.z * jumpForce);
         //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
 
         rb.AddRelativeTorque(spinForce);
+
+        // Log the initial position
+        Debug.Log($"Jump Started at Position: {initialPosition}");
+
+        // Start measuring the jump distance in FixedUpdate
+        StartCoroutine(MeasureJumpDistance(initialPosition));
+    }
+
+    IEnumerator MeasureJumpDistance(Vector3 initialPosition)
+    {
+        float jumpStartTime = Time.time; // To measure the time spent jumping
+        while (isJump) // Continue measuring while the rat is still in the air
+        {
+            float timeInAir = Time.time - jumpStartTime; // Track how much time has passed since the jump
+            float distanceTraveled = Vector3.Distance(initialPosition, transform.position); // Measure distance
+
+            // Log distance every 0.5 seconds for better readability
+            if (timeInAir % 0.5f < 0.05f) // Check if half a second has passed
+            {
+                Debug.Log($"Time in Air: {timeInAir:F2} seconds - Distance Traveled: {distanceTraveled:F2} meters");
+            }
+
+            yield return null;
+        }
+
+        // When the jump ends (rat lands or stops jumping), you can stop measuring
+        Debug.Log("Jump Ended. Total Jump Distance: " + Vector3.Distance(initialPosition, transform.position) + " meters");
     }
 
     public void changeSpeed(int i)
