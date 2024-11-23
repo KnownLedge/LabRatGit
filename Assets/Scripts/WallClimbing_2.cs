@@ -99,12 +99,12 @@ public class WallClimbing_2 : MonoBehaviour
     {
         constantForce.enabled = true;
         isClimbing = false;
-        ratMovement.isGrounded = true;
+      //  ratMovement.isGrounded = true;
         rb.useGravity = true;
         rb.drag = 2f;
 
-        ratMovement.moveState = true;
-
+        //ratMovement.moveState = true;
+        ratMovement.enterGrounded();
         // Restore constraints to prevent falling over
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }

@@ -159,13 +159,17 @@ MonoBehaviour:
   jumpPower: 13
   turnPower: 30
   jumpForce: 16
-  jumpLockOutTime: 0.3
+  jumpLockOutTime: 0.09
   spinForce: {x: 0, y: 0, z: 0}
   canSpin: 1
   jumpStyle: 0
   speedStates: []
   moveState: 1
   isJump: 0
+  isGrounded: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
   prevAngle: 0
   jumpLockOut: 0
 --- !u!75 &6901058881704875607
@@ -225,7 +229,6 @@ MonoBehaviour:
     m_Bits: 128
   isTouchingWall: 0
   isClimbing: 0
-  isGrounded: 0
 --- !u!114 &6413723077713763360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,15 +246,11 @@ MonoBehaviour:
   wallSwitchDistance: 1
   climbUpwardForce: 25
   fromWallToGround: 20
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
   wallMask:
     serializedVersion: 2
     m_Bits: 128
   isTouchingWall: 0
   isClimbing: 0
-  isGrounded: 0
 --- !u!114 &2387866752527170791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,15 +285,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   climbSpeed: 7
   detectionRadius: 2
-  jumpForce: 25
+  ledgeJumpForce: 5
   ledgeMask:
     serializedVersion: 2
     m_Bits: 256
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
   isStickingToLedge: 0
-  isGrounded: 0
   isTouchingLedge: 0
 --- !u!114 &3655723426979565666
 MonoBehaviour:

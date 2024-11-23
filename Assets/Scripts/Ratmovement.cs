@@ -130,7 +130,7 @@ public class Ratmovement : MonoBehaviour
         }
     }
 
-    void enterGrounded()
+   public void enterGrounded()
     {
         if (jumpLockOut < 0f)
         {
@@ -243,6 +243,11 @@ public class Ratmovement : MonoBehaviour
         // When the jump ends (rat lands or stops jumping), you can stop measuring
         Debug.Log("Jump Ended. Total Jump Distance: " + Vector3.Distance(initialPosition, transform.position) + " meters");
     }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    enterGrounded();
+    //}
 
     public void changeSpeed(int i)
     {
