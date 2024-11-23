@@ -244,10 +244,10 @@ public class Ratmovement : MonoBehaviour
         Debug.Log("Jump Ended. Total Jump Distance: " + Vector3.Distance(initialPosition, transform.position) + " meters");
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    enterGrounded();
-    //}
+    private void OnCollisionEnter(Collision collision)
+    {
+        enterGrounded();
+    }
 
     public void changeSpeed(int i)
     {
@@ -257,6 +257,14 @@ public class Ratmovement : MonoBehaviour
             maxSpeed = speedStates[i].y;
         }
     }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, 1);
+    }
+
 }
     
 
