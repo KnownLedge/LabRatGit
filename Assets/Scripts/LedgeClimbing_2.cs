@@ -16,6 +16,11 @@ public class LedgeClimbing_2 : MonoBehaviour
     private Ratmovement ratMovement;
     private ConstantForce constantForce;
     private StaminaController staminaController;
+    private ClimbTrigger climbTrigger;
+
+    //Default value trackers
+    private float defaultDrag;
+    private RigidbodyConstraints defaultConstraints;
 
     [Header("Debug")]
     public bool isTouchingLedge;
@@ -28,6 +33,17 @@ public class LedgeClimbing_2 : MonoBehaviour
         ratMovement = GetComponent<Ratmovement>();
         constantForce = GetComponent<ConstantForce>();
         staminaController = GetComponent<StaminaController>();
+        climbTrigger = GetComponent<ClimbTrigger>();
+
+        //Set current values to return to later
+        defaultDrag = rb.drag;
+        defaultConstraints = rb.constraints;
+
+     //   rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        CheckLedgeContact();
+        //Since the trigger script already checked if we can climb, we can climb straight away
+
     }
 
     void Update()
@@ -37,16 +53,16 @@ public class LedgeClimbing_2 : MonoBehaviour
             CheckLedgeContact();
 
             // Trigger climbing actions with E
-            if (Input.GetKeyDown(KeyCode.E))
-            {
+            //if (Input.GetKeyDown(KeyCode.E))
+            //{
                 if (isTouchingLedge && !isStickingToLedge)
                 {
                     StickToLedge();
                     staminaController.Climbing();
-                } else if (isStickingToLedge) {
-                    FallFromLedge();  // New function to handle falling off the ledge
+                } else if (isStickingToLedge && Input.GetKeyDown(KeyCode.E)) {
+                   FallFromLedge();  // New function to handle falling off the ledge
                 }
-            }
+            //}
 
             // Drain stamina while sticking to ledge
             if (isStickingToLedge)
@@ -62,7 +78,7 @@ public class LedgeClimbing_2 : MonoBehaviour
             }
 
             // Handle air movement when not sticking to ledge
-            if (!isStickingToLedge && !isTouchingLedge && !ratMovement.moveState)
+            if (!isStickingToLedge && !isTouchingLedge)
             {
                 HandleAirMovement();
             }
@@ -104,7 +120,7 @@ public class LedgeClimbing_2 : MonoBehaviour
     {
         isStickingToLedge = true;
         constantForce.enabled = false; // Disable constant force
-        rb.constraints = RigidbodyConstraints.None; // Temporarily remove constraints for testing
+        rb.constraints = RigidbodyConstraints.FreezeRotation; // Temporarily remove constraints for testing
 
         // Debugging the position before and after applying the offset
         Debug.Log("Current Position: " + transform.position);
@@ -182,6 +198,22 @@ public class LedgeClimbing_2 : MonoBehaviour
     }
 
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == 6) //6 Is the ground layer
+        {
+            resetRbVals();
+            climbTrigger.triggerMovement();
+        }
+    }
+
+    void resetRbVals()
+    {
+        rb.useGravity = true;
+        rb.drag = defaultDrag; // Reset drag to normal values
+        rb.constraints = defaultConstraints;
+    }
+
     // Coroutine to enable constant force after a delay
     IEnumerator EnableConstantForceAfterDelay(float delay)
     {
@@ -194,8 +226,8 @@ public class LedgeClimbing_2 : MonoBehaviour
     // Handle movement when in the air (e.g., using horizontal input)
     void HandleAirMovement()
     {
-        if (!ratMovement.moveState) // Only allow air movement if not grounded
-        {
+        //if (!ratMovement.moveState) // Only allow air movement if not grounded
+        //{
             // Get horizontal input (A/D for left/right)
             float horizontal = Input.GetAxis("Horizontal"); 
 
@@ -213,7 +245,7 @@ public class LedgeClimbing_2 : MonoBehaviour
 
             // Debugging output to confirm direction
             Debug.Log($"Climb Direction: {climbDirection} | New velocity: {rb.velocity}");
-        }
+        //}
     }
     public void FallFromLedge()
     {
@@ -221,15 +253,15 @@ public class LedgeClimbing_2 : MonoBehaviour
         isStickingToLedge = false;
 
         // Re-enable gravity and stop freezing movement
-        rb.useGravity = true;
-        rb.drag = 0f; // Reset drag to normal values
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        resetRbVals();
 
         // Reset velocity to ensure the rat falls naturally
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // Remove any vertical velocity if needed
 
         // Log for debugging
         Debug.Log("Rat has fallen from the ledge.");
+
+        climbTrigger.triggerMovement();
 
     }
 }

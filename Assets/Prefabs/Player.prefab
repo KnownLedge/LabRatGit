@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 6413723077713763360}
   - component: {fileID: 2387866752527170791}
   - component: {fileID: 4245283642741618202}
+  - component: {fileID: 217262778383350338}
   - component: {fileID: 3655723426979565666}
   m_Layer: 0
   m_Name: Player
@@ -166,10 +167,6 @@ MonoBehaviour:
   speedStates: []
   moveState: 1
   isJump: 0
-  isGrounded: 0
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 0
   prevAngle: 0
   jumpLockOut: 0
 --- !u!75 &6901058881704875607
@@ -278,7 +275,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5441095159546034802}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9cf608e21570503498c26de670b71561, type: 3}
   m_Name: 
@@ -291,6 +288,28 @@ MonoBehaviour:
     m_Bits: 256
   isStickingToLedge: 0
   isTouchingLedge: 0
+--- !u!114 &217262778383350338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441095159546034802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb454227d423c30419c0e3f789fa97fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallClimbOneActive: 0
+  wallsClimbTwoActive: 0
+  ledgeClimbOneActive: 0
+  ledgeClimbTwoActive: 1
+  detectionRadius: 2
+  ledgeMask:
+    serializedVersion: 2
+    m_Bits: 256
+  isTouchingLedge: 0
+  isLedgeClimbing: 0
 --- !u!114 &3655723426979565666
 MonoBehaviour:
   m_ObjectHideFlags: 0
