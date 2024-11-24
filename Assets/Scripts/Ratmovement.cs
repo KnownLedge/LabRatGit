@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Ratmovement : MonoBehaviour
 {
-    private Rigidbody rb; // Player rigidbody component
-    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded in case we need to change them in the air.
+    private Rigidbody rb; //Player rigidbody component
+    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
     private Vector3 mousePos; // Position of mouse cursor in world environment
 
     [Header("Setup")]
@@ -19,7 +19,7 @@ public class Ratmovement : MonoBehaviour
     public float turnPower = 100f;
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
-    [Tooltip("How long after jumping before the Rat can re-enter grounded state")]
+    [Tooltip("How long after jumping before the Rat can reneter grounded state")]
     public float jumpLockOutTime = 0.3f;
 
     [Tooltip("How hard the rat spins, pure style points")]
@@ -38,99 +38,100 @@ public class Ratmovement : MonoBehaviour
 
     [Tooltip("Controls how much freedom player has while jumping")]
     public jumpFreedom jumpStyle = jumpFreedom.Locked;
-
     [Tooltip("Iterated by number keys, sets movespeed and maxspeed for testing speed change")]
     public Vector2[] speedStates;
 
     [Header("Debug")]
     public bool moveState = true;
     public bool isJump = false;
-    public bool isGrounded;
-    [SerializeField]LayerMask groundMask;
     public float prevAngle = 0f;
 
-    public float jumpLockOut = 0.3f; 
+    public float jumpLockOut = 0f;
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
 
-    private WallClimbing_2 wallClimbing_2;
-    private LedgeClimbing_2 ledgeClimbing_2;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>(); // Get rat rigidbody
         groundedConstraints = rb.constraints;
-        wallClimbing_2 = GetComponent<WallClimbing_2>();
-        ledgeClimbing_2 = GetComponent<LedgeClimbing_2>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        isGrounded = Physics.CheckSphere(transform.position, 1f, groundMask);
-        // Prevent movement and rotation logic when climbing or ledge grabbing
-        if (wallClimbing_2.isClimbing || ledgeClimbing_2.isStickingToLedge)
-        {
-            rb.freezeRotation = true; // Disable rotation when climbing
-            return; // Exit Update if climbing
-        }
-        else
-        {
-            rb.freezeRotation = false; // Allow full rotation when not climbing
-        }
 
-  
+        mousePos = Input.mousePosition; //Get mouse position from input
 
-        mousePos = Input.mousePosition; // Get mouse position from input
         Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
+        //Get Rat position on screen through the camera
         mousePos.x = mousePos.x - objectPos.x;
         mousePos.y = mousePos.y - objectPos.y;
-        // Get the difference between the Mouse position and Rat position
+        //Get the difference between the Mouse position and Rat position
 
-        Vector3 direction = new Vector3(mousePos.x, 0, mousePos.y).normalized;
-        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        // Get the angle to the mouse position
-       
+        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        //Get the angle to the mouse position using maths I don't fully understand (Reused code, its a prototype, im allowed)
+        angle -= 90f;
+
+
         if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
         {
 
             AimRat(angle);
+
+
         }
-            if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump==false ){ //JUMP INPUT
+
+
+        if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && isJump == false)
+        { //JUMP INPUT
 
             JumpRat();
 
-        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -moveSpeed, moveSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -moveSpeed, moveSpeed));
-        // Limit speed to the max of moveSpeed
-    }
+        }
+
+        //if Player is currently mid jump with jump steering allowed, allow them to change the rats direction still by holding the forward key.
+        if (isJump && jumpStyle == jumpFreedom.SteerAllowed && (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W)))
+        {
+            rb.velocity = new Vector3(transform.right.x * jumpForce, rb.velocity.y, transform.right.z * jumpForce);
+            //Since this sets the XZ velocity to jumpForce, this might make the jump faster than the other settings, as the rigidbody likely slows that force down over the course of the jump, this resets it back to full speed.
+        }
 
         //If Collision breaks, pressing X should force the player to re enter grounded state
-        if(Input.GetKeyDown(KeyCode.X) ||isGrounded){
+        if (Input.GetKeyDown(KeyCode.X))
+        {
             enterGrounded();
-            }
+        }
         jumpLockOut -= Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             changeSpeed(0);
-        }else if (Input.GetKeyDown(KeyCode.Alpha2))
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             changeSpeed(1);
-        }else if (Input.GetKeyDown(KeyCode.Alpha3))
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             changeSpeed(2);
-        }else if (Input.GetKeyDown(KeyCode.Alpha4))
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             changeSpeed(3);
-        }else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            changeSpeed(4);
-        }else if (Input.GetKeyDown(KeyCode.Alpha6))
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             changeSpeed(4);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            changeSpeed(4);
+        }
+
+
     }
 
-   public void enterGrounded()
+    public void enterGrounded()
     {
         if (jumpLockOut < 0f)
         {
@@ -140,10 +141,19 @@ public class Ratmovement : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        enterGrounded();
+        //Enters grounded state on collision with anything
+
+    }
+
     void FixedUpdate()
     {
-        if (moveState || jumpStyle != jumpFreedom.Locked) // steer, speed, and free can pass
+        if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
         {
+
+
             MoveRat();
         }
     }
@@ -152,18 +162,26 @@ public class Ratmovement : MonoBehaviour
     {
         if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
         {
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, new Vector3(0, angle, 0), turnPower * Time.deltaTime, 0.0f);
-            //  transform.Rotate(transform.right * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
-            float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, angle, 0)), Quaternion.Euler(new Vector3(0, prevAngle, 0)));
-          //  Debug.Log(turnDist);
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, new Vector3(0, -angle, 0), turnPower * Time.deltaTime, 0.0f);
+            //  transform.Rotate(transform.forward * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
+            float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, -angle, 0)), Quaternion.Euler(new Vector3(0, -prevAngle, 0)));
+            //  Debug.Log(turnDist);
             turnDist = Mathf.Clamp(turnDist, -turnPower, turnPower);
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, angle, 0));
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, -angle, 0));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnPower);
             //float turndir = 
             //transform.rotation
-          //  rb.AddTorque(transform.right * turnPower * Mathf.Sign())
+            //  rb.AddTorque(transform.forward * turnPower * Mathf.Sign())
             //Aim Rat towards mouse pointer
             prevAngle = angle;
+
+
+
+
+
+
+
+
             //   transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
             //Aim Rat towards mouse pointer
 
@@ -177,10 +195,10 @@ public class Ratmovement : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
             {
-                rb.AddForce(transform.forward * moveSpeed,ForceMode.Impulse);
+                rb.AddForce(transform.forward * moveSpeed, ForceMode.Impulse);
                 //Accelerate Rat.
 
-                //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
+                //  transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
 
                 // ^ Unused, may be useful for finer control if we want Rat to go exactly to the mouse pointer
             }
@@ -208,45 +226,10 @@ public class Ratmovement : MonoBehaviour
         if (!canSpin)
             rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
-        // Store the initial position when the jump starts
-        Vector3 initialPosition = transform.position;
-
         rb.velocity = new Vector3(transform.forward.x * jumpForce, jumpPower, transform.forward.z * jumpForce);
         //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
 
         rb.AddRelativeTorque(spinForce);
-
-        // Log the initial position
-        Debug.Log($"Jump Started at Position: {initialPosition}");
-
-        // Start measuring the jump distance in FixedUpdate
-        StartCoroutine(MeasureJumpDistance(initialPosition));
-    }
-
-    IEnumerator MeasureJumpDistance(Vector3 initialPosition)
-    {
-        float jumpStartTime = Time.time; // To measure the time spent jumping
-        while (isJump) // Continue measuring while the rat is still in the air
-        {
-            float timeInAir = Time.time - jumpStartTime; // Track how much time has passed since the jump
-            float distanceTraveled = Vector3.Distance(initialPosition, transform.position); // Measure distance
-
-            // Log distance every 0.5 seconds for better readability
-            if (timeInAir % 0.5f < 0.05f) // Check if half a second has passed
-            {
-                Debug.Log($"Time in Air: {timeInAir:F2} seconds - Distance Traveled: {distanceTraveled:F2} meters");
-            }
-
-            yield return null;
-        }
-
-        // When the jump ends (rat lands or stops jumping), you can stop measuring
-        Debug.Log("Jump Ended. Total Jump Distance: " + Vector3.Distance(initialPosition, transform.position) + " meters");
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        enterGrounded();
     }
 
     public void changeSpeed(int i)
@@ -257,14 +240,6 @@ public class Ratmovement : MonoBehaviour
             maxSpeed = speedStates[i].y;
         }
     }
-
-    void OnDrawGizmosSelected()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, 1);
-    }
-
 }
     
 

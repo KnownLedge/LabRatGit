@@ -62,7 +62,7 @@ public class LedgeClimbing_2 : MonoBehaviour
             }
 
             // Handle air movement when not sticking to ledge
-            if (!isStickingToLedge && !isTouchingLedge && !ratMovement.isGrounded)
+            if (!isStickingToLedge && !isTouchingLedge && !ratMovement.moveState)
             {
                 HandleAirMovement();
             }
@@ -194,7 +194,7 @@ public class LedgeClimbing_2 : MonoBehaviour
     // Handle movement when in the air (e.g., using horizontal input)
     void HandleAirMovement()
     {
-        if (!ratMovement.isGrounded) // Only allow air movement if not grounded
+        if (!ratMovement.moveState) // Only allow air movement if not grounded
         {
             // Get horizontal input (A/D for left/right)
             float horizontal = Input.GetAxis("Horizontal"); 

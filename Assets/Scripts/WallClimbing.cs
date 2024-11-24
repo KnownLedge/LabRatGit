@@ -72,7 +72,7 @@ public class WallClimbing : MonoBehaviour
     {
         constantForce.enabled = false;
         isClimbing = true;
-        ratMovement.isGrounded = false;
+        ratMovement.moveState = false;
         rb.useGravity = false;
         rb.velocity = Vector3.zero;
         rb.drag = 0f;
