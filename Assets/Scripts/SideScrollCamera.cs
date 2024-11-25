@@ -14,31 +14,23 @@ public class SideScrollCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.A)) //move left
+        if(Input.GetKey(KeyCode.A))
         {
             transform.Translate(-transform.right * camspeed * Time.deltaTime, Space.World);
         }
-        if(Input.GetKey(KeyCode.D)) //move right
+        if(Input.GetKey(KeyCode.D))
         {
             transform.Translate(transform.right * camspeed * Time.deltaTime, Space.World);
         }
 
-        if (Input.GetKey(KeyCode.Q)) //move up
+        if (Input.GetKey(KeyCode.Q))
         {
-            transform.Translate(transform.up * camspeed * Time.deltaTime, Space.World);
+            transform.Translate(-transform.up * camspeed * Time.deltaTime, Space.World);
         }
-        if (Input.GetKey(KeyCode.E)) //move down
+        if (Input.GetKey(KeyCode.E))
         {
-            transform.Translate(-transform.up* camspeed * Time.deltaTime, Space.World);
+            transform.Translate(transform.up* camspeed * Time.deltaTime, Space.World);
         }
 
-        if (Input.GetKey(KeyCode.Z)) //move forwards
-        {
-            transform.Translate(transform.forward * camspeed * Time.deltaTime, Space.World);
-        }
-        if (Input.GetKey(KeyCode.C)) //move backwards
-        {
-            transform.Translate(-transform.forward * camspeed * Time.deltaTime, Space.World);
-        }
     }
 }
