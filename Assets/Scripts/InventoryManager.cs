@@ -76,7 +76,7 @@ public class InventoryManager : MonoBehaviour
     void OnGUI()
     {
         GUIStyle customStyle = new GUIStyle(GUI.skin.label);
-        customStyle.fontSize = 32; // changes the size of the text displayed, might need to be made bigger
+        customStyle.fontSize = 28; // changes the size of the text displayed, might need to be made bigger
 
 
         if (showInventory)  // code for drawing text on GUI, this will probably be heavily edited or changed completely at a later point so it's quite simple for now
