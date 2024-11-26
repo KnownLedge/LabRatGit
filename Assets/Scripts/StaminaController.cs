@@ -12,8 +12,8 @@ public class StaminaController : MonoBehaviour
     [HideInInspector] public bool hasRegenerated = true;
 
     [Header("Stamina Regeneration Settings")]
-    [Range(0, 50)] [SerializeField] private float staminaDrain = 0.5f;
-    [Range(0, 50)] [SerializeField] private float staminaRegen = 0.5f;
+    [Range(0, 50)][SerializeField] private float staminaDrain = 0.5f;
+    [Range(0, 50)][SerializeField] private float staminaRegen = 0.5f;
 
     [Header("Stamina Speed Settings")]
     [SerializeField] private float slowedClimbSpeed = 2f;
@@ -28,12 +28,24 @@ public class StaminaController : MonoBehaviour
 
     private void Start()
     {
+        // Get the required components
         wallClimbing = GetComponent<WallClimbing_2>();
         ledgeClimbing = GetComponent<LedgeClimbing_2>();
+
+        // Log an error if components are not assigned
+        if (wallClimbing == null)
+        {
+            Debug.LogError("WallClimbing_2 component is missing!");
+        }
+        if (ledgeClimbing == null)
+        {
+            Debug.LogError("LedgeClimbing_2 component is missing!");
+        }
     }
 
     private void Update()
     {
+        // Regenerate stamina if not climbing
         if (!wallClimbing.isClimbing)
         {
             RegenerateStamina();
@@ -42,6 +54,7 @@ public class StaminaController : MonoBehaviour
 
     public void Climbing()
     {
+        // Check if we are climbing or sticking to a ledge
         if (wallClimbing.isClimbing || ledgeClimbing.isStickingToLedge)
         {
             if (playerStamina > 0)
@@ -50,7 +63,7 @@ public class StaminaController : MonoBehaviour
             }
             else
             {
-                // wallClimbing.climbSpeed = slowedClimbSpeed;
+                // Set stamina regeneration flag to false when stamina is drained
                 hasRegenerated = false;
             }
         }
@@ -58,6 +71,7 @@ public class StaminaController : MonoBehaviour
 
     private void RegenerateStamina()
     {
+        // Regenerate stamina if it's less than max stamina
         if (playerStamina < maxStamina)
         {
             playerStamina += staminaRegen * Time.deltaTime;
@@ -66,7 +80,6 @@ public class StaminaController : MonoBehaviour
         else
         {
             playerStamina = maxStamina;
-            // wallClimbing.climbSpeed = normalClimbSpeed;
             sliderCanvasGroup.alpha = 0;
             hasRegenerated = true;
         }
@@ -74,25 +87,57 @@ public class StaminaController : MonoBehaviour
 
     private void DrainStamina()
     {
-        playerStamina -= staminaDrain * Time.deltaTime;
-        UpdateStamina(1);
-
-        if (playerStamina <= 0)
+        // If wallClimbing and ledgeClimbing components are not null, drain stamina
+        if (wallClimbing != null && ledgeClimbing != null)
         {
-            playerStamina = 0;
-            wallClimbing.isClimbing = false;
-            ledgeClimbing.isStickingToLedge = false;
-            ledgeClimbing.FallFromLedge();
-            wallClimbing.StopClimbing();
-            //wallClimbing.climbSpeed = slowedClimbSpeed;
+            playerStamina -= staminaDrain * Time.deltaTime;
+            UpdateStamina(1);
+
+            if (playerStamina <= 0)
+            {
+                playerStamina = 0;
+
+                // Stop climbing and ledge sticking
+                wallClimbing.isClimbing = false;
+                ledgeClimbing.isStickingToLedge = false;
+
+                // If ledgeClimbing is valid, call FallFromLedge
+                if (ledgeClimbing != null)
+                {
+                    Debug.Log("Calling FallFromLedge");
+                    ledgeClimbing.FallFromLedge();
+                }
+                else
+                {
+                    Debug.LogWarning("LedgeClimbing_2 is null, unable to call FallFromLedge.");
+                }
+
+                // Stop climbing
+                wallClimbing.StopClimbing();
+            }
+        }
+        else
+        {
+            // Log error if components are missing
+            if (wallClimbing == null)
+            {
+                Debug.LogError("WallClimbing_2 is not assigned!");
+            }
+
+            if (ledgeClimbing == null)
+            {
+                Debug.LogError("LedgeClimbing_2 is not assigned!");
+            }
         }
     }
 
-
     public void UpdateStamina(int value)
     {
+        // Update the stamina UI
         staminaProgressUI.fillAmount = playerStamina / maxStamina;
-        if(value == 0)
+
+        // Show or hide the stamina slider UI
+        if (value == 0)
         {
             sliderCanvasGroup.alpha = 0;
         }

@@ -10,9 +10,7 @@ public class WallClimbing_2 : MonoBehaviour
     [SerializeField] private float wallSwitchDistance = 1f;
     [SerializeField] private float climbUpwardForce = 25f;
     [SerializeField] private float fromWallToGround = 15f;
-    public LayerMask groundMask;
     public LayerMask wallMask;
-
 
     private ConstantForce constantForce;
     private Rigidbody rb;
@@ -22,7 +20,6 @@ public class WallClimbing_2 : MonoBehaviour
     [Header("Debug")]
     public bool isTouchingWall;
     public bool isClimbing;
-    public bool isGrounded;
 
     void Start()
     {
@@ -34,7 +31,6 @@ public class WallClimbing_2 : MonoBehaviour
 
     void Update()
     {
-        isGrounded = Physics.CheckSphere(transform.position, 1f, groundMask);
 
         CheckWallContact();
 
@@ -77,7 +73,7 @@ public class WallClimbing_2 : MonoBehaviour
     {
         constantForce.enabled = false;
         isClimbing = true;
-        isGrounded = false;
+        ratMovement.isGrounded = false;
         rb.useGravity = false;
         rb.velocity = Vector3.zero;
         rb.drag = 0f;
@@ -104,7 +100,7 @@ public class WallClimbing_2 : MonoBehaviour
     {
         constantForce.enabled = true;
         isClimbing = false;
-        isGrounded = true;
+        ratMovement.isGrounded = true;
         rb.useGravity = true;
         rb.drag = 2f;
 

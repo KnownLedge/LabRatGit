@@ -45,6 +45,8 @@ public class Ratmovement : MonoBehaviour
     [Header("Debug")]
     public bool moveState = true;
     public bool isJump = false;
+    public bool isGrounded;
+    [SerializeField] LayerMask groundMask;
     public float prevAngle = 0f;
 
     public float jumpLockOut = 0f; 
@@ -68,6 +70,7 @@ public class Ratmovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isGrounded = Physics.CheckSphere(transform.position, 1f, groundMask);
         // Prevent movement and rotation logic when climbing or ledge grabbing
         if (wallClimbing.isClimbing || wallClimbing_2.isClimbing || ledgeClimbing.isClimbing || ledgeClimbing_2.isStickingToLedge)
         {
@@ -87,9 +90,11 @@ public class Ratmovement : MonoBehaviour
         mousePos.y = mousePos.y - objectPos.y;
         // Get the difference between the Mouse position and Rat position
 
-        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        Vector3 direction = new Vector3(mousePos.x, 0, mousePos.y).normalized;
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
         // Get the angle to the mouse position
-       
+
         if (moveState || jumpStyle != jumpFreedom.Locked) //steer, speed and free can pass 
         {
             AimRat(angle);
@@ -103,7 +108,8 @@ public class Ratmovement : MonoBehaviour
     }
 
         //If Collision breaks, pressing X should force the player to re enter grounded state
-        if(Input.GetKeyDown(KeyCode.X)){
+        if(Input.GetKeyDown(KeyCode.X) || isGrounded)
+        {
             enterGrounded();
             }
         jumpLockOut -= Time.deltaTime;
@@ -152,22 +158,20 @@ public class Ratmovement : MonoBehaviour
     {
         if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
         {
-            Vector3 newDirection = Vector3.RotateTowards(transform.right, new Vector3(0, -angle, 0), turnPower * Time.deltaTime, 0.0f);
-            //  transform.Rotate(transform.right * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
-            float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, -angle, 0)), Quaternion.Euler(new Vector3(0, -prevAngle, 0)));
-          //  Debug.Log(turnDist);
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, new Vector3(0, angle, 0), turnPower * Time.deltaTime, 0.0f);
+            //  transform.Rotate(transform.forward * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
+            float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, angle, 0)), Quaternion.Euler(new Vector3(0, prevAngle, 0)));
+            //  Debug.Log(turnDist);
             turnDist = Mathf.Clamp(turnDist, -turnPower, turnPower);
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, angle, 0));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnPower);
             //float turndir = 
             //transform.rotation
-          //  rb.AddTorque(transform.right * turnPower * Mathf.Sign())
+            //  rb.AddTorque(transform.forward * turnPower * Mathf.Sign())
             //Aim Rat towards mouse pointer
             prevAngle = angle;
-
             //   transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
             //Aim Rat towards mouse pointer
-
         }
     }
 
@@ -178,7 +182,7 @@ public class Ratmovement : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
             {
-                rb.AddForce(transform.right * moveSpeed,ForceMode.Impulse);
+                rb.AddForce(transform.forward * moveSpeed,ForceMode.Impulse);
                 //Accelerate Rat.
 
                 //  transform.Translate(transform.right * moveSpeed * Time.deltaTime, Space.World);
@@ -209,7 +213,7 @@ public class Ratmovement : MonoBehaviour
         if (!canSpin)
             rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
-        rb.velocity = new Vector3(transform.right.x * jumpForce, jumpPower, transform.right.z * jumpForce);
+        rb.velocity = new Vector3(transform.forward.x * jumpForce, jumpPower, transform.forward.z * jumpForce);
         //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
 
         rb.AddRelativeTorque(spinForce);
