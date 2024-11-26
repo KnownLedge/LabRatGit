@@ -7,6 +7,7 @@ public class Ratmovement : MonoBehaviour
     private Rigidbody rb; //Player rigidbody component
     private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
     private Vector3 mousePos; // Position of mouse cursor in world environment
+    [SerializeField]private LayerMask groundLayer;
 
     [Header("Setup")]
     [Tooltip("How fast the rat runs")]
@@ -143,9 +144,24 @@ public class Ratmovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        enterGrounded();
-        //Enters grounded state on collision with anything
+        // Check if the collided object is on the ground layer
+        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+        {
+            enterGrounded(); // Call your method to set the grounded state
 
+            // Freeze rotation so the rat stays on its feet
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+
+            // Align the rat's rotation with the ground's normal (to keep the rat upright)
+            Vector3 groundNormal = collision.contacts[0].normal;
+            Quaternion targetRotation = Quaternion.FromToRotation(transform.up, groundNormal) * transform.rotation;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f); // Smooth the rotation
+        }
+        else
+        {
+            // If it's not the ground, you may want to unfreeze rotation if necessary
+            rb.constraints = RigidbodyConstraints.None; // Allow rotation
+        }
     }
 
     void FixedUpdate()
@@ -162,29 +178,24 @@ public class Ratmovement : MonoBehaviour
     {
         if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
         {
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, new Vector3(0, -angle, 0), turnPower * Time.deltaTime, 0.0f);
-            //  transform.Rotate(transform.forward * turnPower * (Mathf.Sign(-angle)) * Time.deltaTime);
-            float turnDist = Quaternion.Angle(Quaternion.Euler(new Vector3(0, -angle, 0)), Quaternion.Euler(new Vector3(0, -prevAngle, 0)));
-            //  Debug.Log(turnDist);
-            turnDist = Mathf.Clamp(turnDist, -turnPower, turnPower);
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, -angle, 0));
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnPower);
-            //float turndir = 
-            //transform.rotation
-            //  rb.AddTorque(transform.forward * turnPower * Mathf.Sign())
-            //Aim Rat towards mouse pointer
-            prevAngle = angle;
+            // Calculate the target rotation in the Y-axis direction
+            Quaternion targetRotation = Quaternion.Euler(0, -angle, 0);
+            
+            // Get the current rotation and the difference
+            Quaternion currentRotation = transform.rotation;
+            Quaternion rotationDifference = targetRotation * Quaternion.Inverse(currentRotation);
 
+            // Extract the yaw (rotation around the Y-axis) from the difference
+            float yaw = rotationDifference.eulerAngles.y;
 
+            // Normalize yaw to avoid weird behavior when crossing 180 degrees
+            if (yaw > 180f) yaw -= 360f;
 
+            // Apply torque to rotate the rat towards the mouse direction
+            Vector3 torque = Vector3.up * yaw * turnPower * Time.deltaTime;
 
-
-
-
-
-            //   transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
-            //Aim Rat towards mouse pointer
-
+            // Apply torque using Rigidbody's AddTorque to smoothly rotate towards the mouse
+            rb.AddTorque(torque, ForceMode.Force);
         }
     }
 
@@ -196,41 +207,43 @@ public class Ratmovement : MonoBehaviour
             if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
             {
                 rb.AddForce(transform.forward * moveSpeed, ForceMode.Impulse);
-                //Accelerate Rat.
-
-                //  transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
-
-                // ^ Unused, may be useful for finer control if we want Rat to go exactly to the mouse pointer
             }
-            if (false) //(Input.GetKey(KeyCode.A))
-            {
-                //Unused, allows Rat to strafe, is kind of disorienting
-                transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
-            }
-            if (false) //(Input.GetKey(KeyCode.D))
-            {
-                //Unused, allows Rat to strafe, is kind of disorienting
-                transform.Translate(transform.forward * -moveSpeed * Time.deltaTime, Space.World);
-            }
-        }
         rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y, Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed));
-        //Limits speed to the max of movespeed
+        }
     }
 
     public void JumpRat()
     {
-        moveState = false; //Player not grounded
+        moveState = false; // Player not grounded
         isJump = true; // Player is airborne (from a jump)
         jumpLockOut = jumpLockOutTime;
 
+        // Prevent spinning during the jump
         if (!canSpin)
             rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
-        rb.velocity = new Vector3(transform.forward.x * jumpForce, jumpPower, transform.forward.z * jumpForce);
-        //Apply force to make the rat jump, Should feel fairly "set" so this is done once (unless we need to control it for steering)
+        // Get the forward direction based on the rat's current rotation
+        Vector3 forwardDirection = transform.forward;
 
-        rb.AddRelativeTorque(spinForce);
+        // Set the jump velocity with both vertical and forward components
+        rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce); 
+
+        // Apply torque for spin (if needed)
+        rb.AddRelativeTorque(spinForce); // Adjust spin force as needed
     }
+
+
+    void OnCollisionExit(Collision collision)
+    {
+        // Check if the object leaving is part of the ground layer
+        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+        {
+            // Unfreeze rotation when leaving the ground
+            rb.constraints = RigidbodyConstraints.None; // Allow rotation when leaving ground
+        }
+    }
+
+
 
     public void changeSpeed(int i)
     {
