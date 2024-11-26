@@ -72,7 +72,7 @@ public class Ratmovement : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(transform.position, 1f, groundMask);
         // Prevent movement and rotation logic when climbing or ledge grabbing
-        if (wallClimbing.isClimbing || wallClimbing_2.isClimbing || ledgeClimbing.isClimbing || ledgeClimbing_2.isStickingToLedge)
+        if ( wallClimbing_2.isClimbing || ledgeClimbing_2.isStickingToLedge)
         {
             rb.freezeRotation = true; // Disable rotation when climbing
             return; // Exit Update if climbing
