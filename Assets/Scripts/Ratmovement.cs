@@ -150,7 +150,7 @@ public class Ratmovement : MonoBehaviour
             enterGrounded(); // Call your method to set the grounded state
 
             // Freeze rotation so the rat stays on its feet
-            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
 
             // Align the rat's rotation with the ground's normal (to keep the rat upright)
             Vector3 groundNormal = collision.contacts[0].normal;
@@ -160,7 +160,7 @@ public class Ratmovement : MonoBehaviour
         else
         {
             // If it's not the ground, you may want to unfreeze rotation if necessary
-            rb.constraints = RigidbodyConstraints.None; // Allow rotation
+            //rb.constraints = RigidbodyConstraints.None; // Allow rotation
         }
     }
 
@@ -233,15 +233,15 @@ public class Ratmovement : MonoBehaviour
     }
 
 
-    void OnCollisionExit(Collision collision)
-    {
-        // Check if the object leaving is part of the ground layer
-        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
-        {
-            // Unfreeze rotation when leaving the ground
-            rb.constraints = RigidbodyConstraints.None; // Allow rotation when leaving ground
-        }
-    }
+    //void OnCollisionExit(Collision collision)
+    //{
+    //    // Check if the object leaving is part of the ground layer
+    //    if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+    //    {
+    //        // Unfreeze rotation when leaving the ground
+    //        rb.constraints = RigidbodyConstraints.None; // Allow rotation when leaving ground
+    //    }
+    //}
 
 
 
