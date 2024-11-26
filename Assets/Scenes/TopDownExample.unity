@@ -720,7 +720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000030518, y: -508}
+  m_AnchoredPosition: {x: 10, y: -339}
   m_SizeDelta: {x: 1035.011, y: 35.425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &241963075
@@ -2875,6 +2875,10 @@ PrefabInstance:
       propertyPath: moveSpeed
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1960017723245819698, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 1978293142445364507, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.9890274
@@ -2974,6 +2978,10 @@ PrefabInstance:
     - target: {fileID: 7155639926293728400, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155639926293728400, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7155639926293728400, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3146,7 +3154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000030518, y: -508}
+  m_AnchoredPosition: {x: 10.000031, y: -339}
   m_SizeDelta: {x: 1035.011, y: 35.425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1873092998
@@ -3785,7 +3793,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5441095159608727894}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7449ba83a61ad645b627823ce6544f7, type: 3}
   m_Name: 
@@ -3795,15 +3803,11 @@ MonoBehaviour:
   wallSwitchDistance: 1
   climbUpwardForce: 25
   fromWallToGround: 20
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
   wallMask:
     serializedVersion: 2
     m_Bits: 128
   isTouchingWall: 0
   isClimbing: 0
-  isGrounded: 0
 --- !u!114 &8064222234466651879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3865,15 +3869,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   climbSpeed: 7
   detectionRadius: 2
-  jumpForce: 25
+  jumpForce: 35
   ledgeMask:
     serializedVersion: 2
     m_Bits: 256
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
   isStickingToLedge: 0
-  isGrounded: 0
   isTouchingLedge: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
