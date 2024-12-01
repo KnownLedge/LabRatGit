@@ -1,0 +1,31 @@
+AI-Enemies-instructions
+
+Pathfinder:-
+the pathfinder will patrol with in a fixed number position/targets.
+have two more assigned targets inside the inspector and the enemy will get within certain range of the current target and then 
+wait for set amount of time before move to the next target in the list, the enemy will repeat this list after completion.
+the distance and "rest time" can be altered inside unity's inspector with D2T being the distance and resetTime being the rest time.
+
+Wonder:-
+the wonder will randomly find points to move to.
+the wonder will randomly pick these within a radius of itself, you can change the size of this radius inside the inspector.
+
+chaser:- 
+the chaser will cause enemies to follow the player, there is no attack function so the enemy will just bump into the player.
+the chaser script will need the player to assigned inside the script.
+
+AI_Sight:-
+the AI sight will allow the enemies to see the player (I do have plans for it to see the environment for better navigation but there not working yet).
+the AI sight using ray to detect the player if they are Infront of enemy. the amount of rays and how far they are shot can be customized inside the 
+inspector. the chase range determines how far within a circle does the enemy chase the player.
+
+State Manager:-
+the state manager controls the current state of the enemy based on information gathered from the AI_Sight.
+make sure there are only behaviours assigned inside the behaviours list as only two states and transitions are programmed. the order of the states 
+matter, make sure the intend enemy behaviour(wonder/pathfinder) is in first and the chaser is second.
+
+problems:-
+for both pathfinder and wonder make sure the target y position is the same as the enemies or they will do weird stuff or turn off the rigidbody and 
+see what happens :>
+the right click to start the AI enemies test scene.
+
