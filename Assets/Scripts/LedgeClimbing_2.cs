@@ -39,7 +39,7 @@ public class LedgeClimbing_2 : MonoBehaviour
         defaultDrag = rb.drag;
         defaultConstraints = rb.constraints;
 
-     //   rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         CheckLedgeContact();
         //Since the trigger script already checked if we can climb, we can climb straight away
@@ -136,6 +136,12 @@ public class LedgeClimbing_2 : MonoBehaviour
         // Move the rat to the target position
         transform.position = targetPosition;
 
+        //Aim the rat at the ledge
+        Vector3 relativePos = targetPosition - transform.position;
+        transform.rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        transform.Rotate(new Vector3(0, 90, 0));//fix rat facing side on
+
+
         // Reset velocity, disable gravity, and apply drag
         rb.velocity = Vector3.zero;
         rb.useGravity = false;
@@ -159,7 +165,7 @@ public class LedgeClimbing_2 : MonoBehaviour
             rb.useGravity = true;  // Re-enable gravity
 
             // Remove constraints to allow free movement
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
+          //  rb.constraints = RigidbodyConstraints.FreezeRotation;
 
             // Reset the vertical velocity to avoid odd behavior
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
@@ -200,18 +206,22 @@ public class LedgeClimbing_2 : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.layer == 6) //6 Is the ground layer
-        {
-            resetRbVals();
-            climbTrigger.triggerMovement();
+         if(enabled){
+            if(collision.gameObject.layer == 6) //6 Is the ground layer
+            {
+             resetRbVals();
+                climbTrigger.triggerMovement();
+            }
         }
     }
 
     void resetRbVals()
     {
+        if(enabled){
         rb.useGravity = true;
         rb.drag = defaultDrag; // Reset drag to normal values
-        rb.constraints = defaultConstraints;
+          //  rb.constraints = defaultConstraints;
+        }
     }
 
     // Coroutine to enable constant force after a delay
