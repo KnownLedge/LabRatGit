@@ -17,11 +17,15 @@ public class ClimbTrigger : MonoBehaviour
 
     [SerializeField] private float detectionRadius = 2f;
     [SerializeField] private LayerMask ledgeMask;
+    [SerializeField] private float wallDetectionDistance = 0.3f;
+    public LayerMask wallMask;
 
 
     [Header("Debug")]
-    public bool isTouchingLedge;
+    public bool isTouchingWall = false;
+    public bool isTouchingLedge = false;
 
+    public bool isWallClimbing = false;
     public bool isLedgeClimbing = false;
 
     void Start()
@@ -39,44 +43,52 @@ public class ClimbTrigger : MonoBehaviour
         {
             ledgeClimbOne = GetComponent<LedgeClimbing>();
         }
-        if (ledgeClimbTwoActive) {
+        if (ledgeClimbTwoActive)
+        {
             ledgeClimbTwo = GetComponent<LedgeClimbing_2>();
         }
-         
+
     }
 
     // Update is called once per frame
     void Update()
     {
-            CheckLedgeContact();
+        //  if(ledgeClimbOneActive || ledgeClimbTwoActive)
+        CheckLedgeContact();
+        // if(wallClimbOneActive || wallsClimbTwoActive)
+        CheckWallContact();
 
-            // Trigger climbing actions with E
-            if (Input.GetKey(KeyCode.E))
+        // Trigger climbing actions with E
+        if (Input.GetKey(KeyCode.E))
+        {
+            if (isTouchingWall && !isWallClimbing)
             {
-                if (isTouchingLedge && !isLedgeClimbing)
-                {
-                    triggerLedgeClimbing();
-                }
+                triggerWallClimbing();
             }
+            else if (isTouchingLedge && !isLedgeClimbing)
+            {
+                triggerLedgeClimbing();
+            }
+        }
 
-            // Drain stamina while sticking to ledge
-            //if (isStickingToLedge)
-            //{
-            //    staminaController.Climbing();  // Drain stamina while stuck to the ledge
-            //}
+        // Drain stamina while sticking to ledge
+        //if (isStickingToLedge)
+        //{
+        //    staminaController.Climbing();  // Drain stamina while stuck to the ledge
+        //}
 
-            //// Handle jumping off the ledge
-            //if (isStickingToLedge && Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    Debug.Log("Space pressed - attempting to jump off ledge.");
-            //    JumpOffLedge();
-            //}
+        //// Handle jumping off the ledge
+        //if (isStickingToLedge && Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Debug.Log("Space pressed - attempting to jump off ledge.");
+        //    JumpOffLedge();
+        //}
 
-            //// Handle air movement when not sticking to ledge
-            //if (!isStickingToLedge && !isTouchingLedge && !ratMovement.moveState)
-            //{
-            //    HandleAirMovement();
-            //}
+        //// Handle air movement when not sticking to ledge
+        //if (!isStickingToLedge && !isTouchingLedge && !ratMovement.moveState)
+        //{
+        //    HandleAirMovement();
+        //}
     }
 
     void CheckLedgeContact()
@@ -91,7 +103,7 @@ public class ClimbTrigger : MonoBehaviour
         if (Physics.SphereCast(castStart, 0.5f, transform.forward, out hit, detectionRadius, ledgeMask))
         {
             isTouchingLedge = true;
-          //  targetLedgePosition = hit.point;
+            //  targetLedgePosition = hit.point;
             // Debugging ledge detection
             Debug.Log($"Ledge detected at position: {hit.point}");
         }
@@ -101,12 +113,29 @@ public class ClimbTrigger : MonoBehaviour
             if (Physics.Raycast(castStart, Vector3.up, out hit, detectionRadius, ledgeMask))
             {
                 isTouchingLedge = true;
-            //    targetLedgePosition = hit.point;
+                //    targetLedgePosition = hit.point;
                 // Debugging ledge detection
                 Debug.Log($"Ledge detected above at position: {hit.point}");
             }
         }
     }
+
+    void CheckWallContact()
+    {
+        // Perform Raycast directly from the rat's position to detect the wall
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, wallDetectionDistance, wallMask))
+        {
+            isTouchingWall = true;
+            Debug.Log("Hit wall");
+        }
+        else
+        {
+            isTouchingWall = false;
+        }
+    }
+
+
 
     internal void triggerMovement()
     {
@@ -129,9 +158,23 @@ public class ClimbTrigger : MonoBehaviour
         }
     }
 
+    void triggerWallClimbing()
+    {
+        if (wallClimbOneActive)
+        {
+            wallClimbOne.enabled = true;
+            ratMove.enabled = false;
+        }
+        if (wallsClimbTwoActive)
+        {
+            wallClimbTwo.enabled = true;
+            ratMove.enabled = false;
+        }
+    }
+
     void triggerLedgeClimbing()
     {
- 
+
         if (ledgeClimbOneActive)
         {
             ledgeClimbOne.enabled = true;
@@ -146,3 +189,4 @@ public class ClimbTrigger : MonoBehaviour
 
 
 }
+
