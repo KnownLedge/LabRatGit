@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Ratmovement : MonoBehaviour
 {
-    private Rigidbody rb; // Player rigidbody component
-    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded
+    private Rigidbody rb; //Player rigidbody component
+    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
     private Vector3 mousePos; // Position of mouse cursor in world environment
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField]private LayerMask groundLayer;
 
     [Header("Setup")]
     [Tooltip("How fast the rat runs")]
@@ -20,7 +20,7 @@ public class Ratmovement : MonoBehaviour
     public float turnPower = 100f;
     [Tooltip("How FAR the rat jumps")]
     public float jumpForce = 16f;
-    [Tooltip("How long after jumping before the Rat can reenter grounded state")]
+    [Tooltip("How long after jumping before the Rat can reneter grounded state")]
     public float jumpLockOutTime = 0.3f;
 
     [Tooltip("How hard the rat spins, pure style points")]
@@ -48,20 +48,16 @@ public class Ratmovement : MonoBehaviour
     public float prevAngle = 0f;
 
     public float jumpLockOut = 0f;
+    //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
 
-    [Tooltip("Target Y rotation to maintain")]
-    public float targetYRotation = 0f; // Adjust this as per your requirements
-
-    [Tooltip("Rotation smoothing speed")]
-    public float rotationSpeed = 10f; // For smoother adjustments
 
     void Start()
     {
         rb = GetComponent<Rigidbody>(); // Get rat rigidbody
         groundedConstraints = rb.constraints;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous; // Prevent clipping
     }
 
+    // Update is called once per frame
     void Update()
     {
         mousePos = Input.mousePosition;
@@ -96,11 +92,6 @@ public class Ratmovement : MonoBehaviour
             }
         }
 
-        // Only smooth the Y rotation when the rat is moving or rotating.
-        if (moveState || jumpStyle != jumpFreedom.Locked)
-        {
-            FixYAxisRotation();
-        }
     }
 
     void FixedUpdate()
@@ -111,18 +102,16 @@ public class Ratmovement : MonoBehaviour
         {
             MoveRat();
         }
+
     }
+
+
 
     void OnCollisionEnter(Collision collision)
     {
         if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
         {
             enterGrounded();
-
-            // Optionally clamp Y position to prevent sinking
-            Vector3 position = transform.position;
-            transform.position = new Vector3(position.x, Mathf.Max(position.y, 0.5f), position.z);
-
             rb.constraints = groundedConstraints;
         }
     }
@@ -133,65 +122,61 @@ public class Ratmovement : MonoBehaviour
         {
             isJump = false;
             moveState = true;
-
-            // Reset Y-axis rotation to align forward
-            Quaternion currentRotation = transform.rotation;
-            transform.rotation = Quaternion.Euler(0, currentRotation.eulerAngles.y, 0);
-
             rb.constraints = groundedConstraints;
         }
     }
 
     public void AimRat(float angle)
     {
-        if (moveState || jumpStyle != jumpFreedom.SpeedControl)
+        if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
         {
-            // Calculate target rotation
+            // Calculate the target rotation in the Y-axis direction
             Quaternion targetRotation = Quaternion.Euler(0, -angle, 0);
 
-            // Calculate the difference in rotation
-            Quaternion deltaRotation = targetRotation * Quaternion.Inverse(transform.rotation);
-            deltaRotation.ToAngleAxis(out float angleDifference, out Vector3 rotationAxis);
+            // Get the current rotation and the difference
+            Quaternion currentRotation = transform.rotation;
+            Quaternion rotationDifference = targetRotation * Quaternion.Inverse(currentRotation);
 
-            // Add a dead zone to ignore minor adjustments
-            if (Mathf.Abs(angleDifference) > 1f) // Adjust this threshold as needed
-            {
-                // Normalize the axis and apply torque
-                rotationAxis = transform.InverseTransformDirection(rotationAxis).normalized;
-                rb.AddTorque(rotationAxis * angleDifference * turnPower * Time.deltaTime, ForceMode.VelocityChange);
-            }
-            else
-            {
-                // Apply damping to smooth rotation
-                rb.angularVelocity *= 0.9f; // Adjust damping factor as needed
-            }
+            // Extract the yaw (rotation around the Y-axis) from the difference
+            float yaw = rotationDifference.eulerAngles.y;
 
-            // Clamp angular velocity to prevent excessive twitching
-            rb.angularVelocity = Vector3.ClampMagnitude(rb.angularVelocity, turnPower * 0.1f);
+            // Normalize yaw to avoid weird behavior when crossing 180 degrees
+            if (yaw > 180f) yaw -= 360f;
+
+            // Apply torque to rotate the rat towards the mouse direction
+            Vector3 torque = Vector3.up * yaw * turnPower * Time.deltaTime;
+
+            // Apply torque using Rigidbody's AddTorque to smoothly rotate towards the mouse
+            rb.AddTorque(torque, ForceMode.Force);
         }
     }
 
     public void MoveRat()
     {
+        // Prevent movement when climbing or in an invalid state
         if (moveState || jumpStyle != jumpFreedom.SteerAllowed)
         {
+            // Normal movement logic for the rat when it's not climbing
             if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
             {
                 rb.AddForce(transform.forward * moveSpeed, ForceMode.Impulse);
             }
 
-            // Ensure the rat's velocity is capped at the max speed
-            rb.velocity = new Vector3(
+                // Ensure the rat's velocity is capped at the max speed
+                rb.velocity = new Vector3(
                 Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed),
                 rb.velocity.y,
                 Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed)
             );
         }
+        // If you are in climbing state or invalid state, stop moving
         else
         {
-            rb.velocity = Vector3.zero; // Prevent unintended movement
+            rb.velocity = Vector3.zero;  // Prevent unintended movement
         }
     }
+
+
 
     public void JumpRat()
     {
@@ -199,14 +184,24 @@ public class Ratmovement : MonoBehaviour
         isJump = true;
         jumpLockOut = jumpLockOutTime;
 
-        // Freeze Z-axis rotation during jump to prevent drifting
-        rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
+        if (!canSpin)
+            rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
         Vector3 forwardDirection = transform.forward;
         rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
 
         rb.AddRelativeTorque(spinForce);
     }
+
+    //void OnCollisionExit(Collision collision)
+    //{
+    //    // Check if the object leaving is part of the ground layer
+    //    if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+    //    {
+    //        // Unfreeze rotation when leaving the ground
+    //        rb.constraints = RigidbodyConstraints.None; // Allow rotation when leaving ground
+    //    }
+    //}
 
     public void ChangeSpeed(int i)
     {
@@ -216,17 +211,20 @@ public class Ratmovement : MonoBehaviour
             maxSpeed = speedStates[i].y;
         }
     }
-
-    private void FixYAxisRotation()
-    {
-        // Get the current rotation
-        Vector3 currentRotation = transform.eulerAngles;
-
-        // Smoothly adjust the Y-axis only if the rat is moving
-        if (Mathf.Abs(rb.velocity.x) > 0 || Mathf.Abs(rb.velocity.z) > 0)
-        {
-            float smoothYRotation = Mathf.LerpAngle(currentRotation.y, targetYRotation, rotationSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(currentRotation.x, smoothYRotation, currentRotation.z);
-        }
-    }
 }
+    
+
+
+/* Todo
+
+Unlock rat rotation for easier ramp access (also makes the rat hop when flipped, explore this) (Rat resets rotation on landing, hopping is due to force carry over i think? nothing to actually change here) (DONE)
+Lock rat rotation when jumping (make this an option, making the cube flip is funny) DONE
+Create three different settings for jump controls (locked, steering allowed, free, etc) DONE
+Investigate different force movement to allow different jump settings to have more options (air steering is currently useless) DONE
+
+Try putting a placeholder model on
+Setup some form of camera control
+Give the rat a tail object?
+Option for rat to auto slow down to stop exactly on mouse pointer, rather than always charging at it
+
+*/
