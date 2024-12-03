@@ -186,7 +186,5 @@ public class ClimbTrigger : MonoBehaviour
             ratMove.enabled = false;
         }
     }
-
-
 }
 

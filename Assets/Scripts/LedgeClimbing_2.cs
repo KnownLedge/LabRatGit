@@ -48,42 +48,48 @@ public class LedgeClimbing_2 : MonoBehaviour
 
     void Update()
     {
-        if(!ratMovement.isJump)
+        if (!ratMovement.isJump)
         {
+            // Check for ledge contact
             CheckLedgeContact();
 
-            // Trigger climbing actions with E
-            //if (Input.GetKeyDown(KeyCode.E))
-            //{
-                if (isTouchingLedge && !isStickingToLedge)
-                {
-                    StickToLedge();
-                    staminaController.Climbing();
-                } else if (isStickingToLedge && Input.GetKeyDown(KeyCode.E)) {
-                   FallFromLedge();  // New function to handle falling off the ledge
-                }
-            //}
+            // If we are touching the ledge and not sticking to it, start climbing
+            if (isTouchingLedge && !isStickingToLedge)
+            {
+                StickToLedge();
+                staminaController.Climbing();
+            }
+            // If we are sticking to the ledge and press E, we will fall from the ledge
+            else if (isStickingToLedge && Input.GetKeyDown(KeyCode.E))
+            {
+                FallFromLedge();
+            }
 
-            // Drain stamina while sticking to ledge
+            // Stamina draining logic
             if (isStickingToLedge)
             {
-                staminaController.Climbing();  // Drain stamina while stuck to the ledge
+                staminaController.Climbing();
             }
 
             // Handle jumping off the ledge
             if (isStickingToLedge && Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("Space pressed - attempting to jump off ledge.");
                 JumpOffLedge();
             }
 
-            // Handle air movement when not sticking to ledge
+            // Handle movement when not climbing
             if (!isStickingToLedge && !isTouchingLedge)
             {
                 HandleAirMovement();
+
+                // Adjust velocity to prevent excessive speed when not climbing
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, 10f); // Adjust the speed cap as needed
             }
-        }   
+        }
     }
+
+
+
 
     // Check if the rat is close to a ledge for climbing
     void CheckLedgeContact()
@@ -220,8 +226,9 @@ public class LedgeClimbing_2 : MonoBehaviour
         if(enabled){
         rb.useGravity = true;
         rb.drag = defaultDrag; // Reset drag to normal values
-          //  rb.constraints = defaultConstraints;
-        }
+        rb.constraints = defaultConstraints;
+
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
     // Coroutine to enable constant force after a delay
@@ -263,15 +270,19 @@ public class LedgeClimbing_2 : MonoBehaviour
         isStickingToLedge = false;
 
         // Re-enable gravity and stop freezing movement
-        resetRbVals();
+        rb.useGravity = true;  // Ensure gravity is enabled after falling from the ledge
 
-        // Reset velocity to ensure the rat falls naturally
+        // Reset velocity to make sure we don't carry forward unwanted forces
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // Remove any vertical velocity if needed
+
+        // Adjust the drag to make falling feel more natural
+        rb.drag = defaultDrag;
 
         // Log for debugging
         Debug.Log("Rat has fallen from the ledge.");
 
+        // Trigger climb reset (if needed)
         climbTrigger.triggerMovement();
-
     }
+
 }
