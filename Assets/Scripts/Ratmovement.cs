@@ -110,11 +110,13 @@ public class Ratmovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
-        {
+        // if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+        //  {
+        var normal = collision.contacts[0].normal;
+        if (normal.y > 0) { //If colliding with the bottom of the rat
             enterGrounded();
             rb.constraints = groundedConstraints;
-        }
+       }
     }
 
     public void enterGrounded()
