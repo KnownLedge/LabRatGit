@@ -5,18 +5,15 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     public string itemName;
-    public string itemDescription; 
+    public string itemDescription;
+    public Sprite itemImage;
     public float interactionDistance = 3f;
     private GameObject player;
-
-
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
     }
-
-
 
     void Update()
     {
@@ -24,7 +21,7 @@ public class Collectable : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                InventoryItem newItem = new InventoryItem(itemName, itemDescription);
+                InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
                 InventoryManager.instance.AddItem(newItem);
                 Destroy(gameObject);
             }

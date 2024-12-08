@@ -9,9 +9,10 @@ public class InventoryManager : MonoBehaviour
     private bool showInventory = false;
     private bool isPaused = false;
     private int currentIndex = 0; // notes the currently highlighted inv item
-    private string selectedItemDescription = "";
+    private string selectedItemDescription = ""; // ensures there's no description being shown
+    private Sprite selectedItemImage = null; // does the same with the images
 
-    void Awake() // checks if the inventory is already open, prevents duplicate menus
+    void Awake()  // checks if the inventory is already open, prevents duplicate menus
     {
         if (instance == null)
         {
@@ -23,11 +24,8 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-
-
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.I)) // for closing and opening the inventory
         {
             showInventory = !showInventory;
@@ -37,10 +35,11 @@ public class InventoryManager : MonoBehaviour
             {
                 currentIndex = 0; // resets selected inventory item when the menu isnt enabled
                 selectedItemDescription = ""; // wipes description 
+                selectedItemImage = null; // clear image when closing inventory
             }
         }
 
-        if (showInventory) // code for moving cursor up and down the inventory. Arrow keys could be swapped for W and S since the game is paused
+        if (showInventory)  // code for moving cursor up and down the inventory. Arrow keys could be swapped for W and S since the game is paused
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -53,15 +52,10 @@ public class InventoryManager : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Return) && inventory.Count > 0) // gets the description of the currently selected item
             {
                 selectedItemDescription = inventory[currentIndex].description;
+                selectedItemImage = inventory[currentIndex].image; // set image for display
             }
         }
     }
-
-
-
-
-
-
 
     public void AddItem(InventoryItem item) // adds collected items to the inventory list and notes it in the console
     {
@@ -69,17 +63,12 @@ public class InventoryManager : MonoBehaviour
         Debug.Log(item.name + " added to the inventory.");
     }
 
-
-
-
-
     void OnGUI()
     {
         GUIStyle customStyle = new GUIStyle(GUI.skin.label);
-        customStyle.fontSize = 28; // changes the size of the text displayed, might need to be made bigger
+        customStyle.fontSize = 28;
 
-
-        if (showInventory)  // code for drawing text on GUI, this will probably be heavily edited or changed completely at a later point so it's quite simple for now
+        if (showInventory) // code for drawing text on GUI, this will probably be heavily edited or changed completely at a later point so it's quite simple for now
         {
             if (inventory.Count > 0)
             {
@@ -88,42 +77,58 @@ public class InventoryManager : MonoBehaviour
                 {
                     if (i == currentIndex)
                     {
-                        inventoryDisplay += $"> {inventory[i].name}\n"; // highlight selected item
+                        inventoryDisplay += $"> {inventory[i].name}\n";
                     }
                     else
                     {
                         inventoryDisplay += $"- {inventory[i].name}\n";
                     }
                 }
-                GUI.Label(new Rect(10, 10, 200, 400), inventoryDisplay, customStyle);   // displays all inv items as a Gui label, not sure if this is the best way to do this but it works
+                GUI.Label(new Rect(10, 10, 200, 400), inventoryDisplay, customStyle);
 
-
-
-                if (!string.IsNullOrEmpty(selectedItemDescription))  // displays the description of the selected item, but only if the player has actually collected something
+                if (!string.IsNullOrEmpty(selectedItemDescription))
                 {
                     GUI.Label(new Rect(220, 10, 400, 400), $"Description:\n{selectedItemDescription}", customStyle);
+
+                    if (selectedItemImage != null) // display the image if available
+                    {
+                        float imageWidth = 720f;
+                        float imageHeight = 1030f;
+                        float imageX = Screen.width - imageWidth - 20; 
+                        float imageY = 20; 
+
+                        GUI.DrawTexture(new Rect(imageX, imageY, imageWidth, imageHeight), selectedItemImage.texture); 
+                    }
                 }
             }
-            else // fallback in case the inventory is empty
+            else
             {
-                GUI.Label(new Rect(10, 10, 200, 200), "Inventory is empty.", customStyle);
+                GUI.Label(new Rect(10, 10, 200, 200), "Inventory is empty.", customStyle); // fallback in case the inventory is empty
             }
         }
     }
-}
 
-
-
-    public class InventoryItem  // stores item name and description of a collectable
+    private Texture2D SpriteToTexture(Sprite sprite)
     {
-        public string name;
-        public string description;
-
-        public InventoryItem(string name, string description)
+        if (sprite != null)
         {
-            this.name = name;
-            this.description = description;
+            return sprite.texture;
         }
+        return null;
     }
 
+}
 
+public class InventoryItem
+{
+    public string name;
+    public string description;
+    public Sprite image; 
+
+    public InventoryItem(string name, string description, Sprite image)
+    {
+        this.name = name;
+        this.description = description;
+        this.image = image; 
+    }
+}
