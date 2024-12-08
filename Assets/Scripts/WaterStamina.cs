@@ -21,6 +21,7 @@ public class WaterStamina : MonoBehaviour
         staminaRef.playerStamina -= drainSpeed;
 
         if(staminaRef.playerStamina <= 0){
+            Scenemanager.sceneCheckPoint = 0;
             sceneControl.SceneTransition();
         }
     }    

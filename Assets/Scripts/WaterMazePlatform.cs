@@ -9,6 +9,7 @@ public class WaterMazePlatform : MonoBehaviour
     public float lerpTimer = 0;
     public Transform platform;
     public Vector3 startPos;
+    public Scenemanager sceneControl; //Really shouldn't be using this for these objects, but I want this done for vertical slice
 
     private Renderer meshRend;
 
@@ -34,6 +35,8 @@ public class WaterMazePlatform : MonoBehaviour
 
         if(lerpTimer == 1){
             meshRend.enabled = true;
+            Scenemanager.scenePhase += 1;
+            sceneControl.SceneTransition();
         }else if (lerpTimer == 0){
             meshRend.enabled = false;
         }
