@@ -39,7 +39,7 @@ public class LedgeClimbing_2 : MonoBehaviour
         defaultDrag = rb.drag;
         defaultConstraints = rb.constraints;
 
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+       // rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         CheckLedgeContact();
         //Since the trigger script already checked if we can climb, we can climb straight away
@@ -81,6 +81,9 @@ public class LedgeClimbing_2 : MonoBehaviour
             if (!isStickingToLedge && !isTouchingLedge)
             {
                 HandleAirMovement();
+
+                // Adjust velocity to prevent excessive speed when not climbing
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, 10f); // Adjust the speed cap as needed
             }
         }   
     }

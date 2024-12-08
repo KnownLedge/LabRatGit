@@ -15,6 +15,7 @@ public class WallClimbing_2 : MonoBehaviour
     private Rigidbody rb;
     private Ratmovement ratMovement;
     private StaminaController staminaController;
+    private ClimbTrigger climbTrigger;
 
     [Header("Debug")]
     public bool isTouchingWall;
@@ -26,6 +27,8 @@ public class WallClimbing_2 : MonoBehaviour
         ratMovement = GetComponent<Ratmovement>();
         constantForce = GetComponent<ConstantForce>();
         staminaController = GetComponent<StaminaController>();
+        climbTrigger = GetComponent<ClimbTrigger>();
+        StartClimbing();
     }
 
     void Update()
@@ -35,14 +38,7 @@ public class WallClimbing_2 : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (isClimbing)
-            {
-                StopClimbing();
-            }
-            else if (isTouchingWall && !isClimbing)
-            {
-                StartClimbing();
-            }
+            StopClimbing();
         }
 
         if (isClimbing)
@@ -50,6 +46,10 @@ public class WallClimbing_2 : MonoBehaviour
             Climb();
             staminaController.Climbing();
             CheckForWallSwitch();
+        }
+        else
+        {
+            StartClimbing();
         }
     }
 
@@ -90,7 +90,9 @@ public class WallClimbing_2 : MonoBehaviour
             transform.position = hit.point + wallNormal * 0.1f; // Adjust the offset as needed
 
             AlignRatToWall(wallNormal);
-        } else {
+        }
+        else
+        {
             Debug.LogError("No wall detected");
         }
     }
@@ -99,14 +101,15 @@ public class WallClimbing_2 : MonoBehaviour
     {
         constantForce.enabled = true;
         isClimbing = false;
-      //  ratMovement.isGrounded = true;
+        //  ratMovement.isGrounded = true;
         rb.useGravity = true;
         rb.drag = 2f;
 
         //ratMovement.moveState = true;
-        ratMovement.enterGrounded();
+        //ratMovement.enterGrounded();
         // Restore constraints to prevent falling over
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        climbTrigger.triggerMovement();
     }
 
     public void Climb()
@@ -169,7 +172,7 @@ public class WallClimbing_2 : MonoBehaviour
     void CheckForWallSwitch()
     {
         RaycastHit hit;
-         if (Physics.Raycast(transform.position, transform.right, out hit, wallSwitchDistance, wallMask)) 
+        if (Physics.Raycast(transform.position, transform.right, out hit, wallSwitchDistance, wallMask))
         {
             SwitchToWall(hit.normal);
         }
@@ -180,6 +183,29 @@ public class WallClimbing_2 : MonoBehaviour
         }
     }
 
+    void resetRbVals()
+    {
+        if (enabled)
+        {
+            rb.useGravity = true;
+            // rb.drag = defaultDrag; // Reset drag to normal values
+            //  rb.constraints = defaultConstraints;
+        }
+    }
+
+
+    // private void OnCollisionEnter(Collision collision)
+    //  {
+    //    if(enabled){
+    ////        if(collision.gameObject.layer == 6) //6 Is the ground layer
+    //        {
+    //         resetRbVals();
+    //            climbTrigger.triggerMovement();
+    //        }
+    //     }
+    //  }
+
+
     void SwitchToWall(Vector3 newWallNormal)
     {
         // Align the rat to the new wall's surface
@@ -187,3 +213,4 @@ public class WallClimbing_2 : MonoBehaviour
         rb.velocity = Vector3.zero; // Reset velocity for smooth transition
     }
 }
+
