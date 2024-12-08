@@ -13,6 +13,7 @@ public class WaterMazePlatform : MonoBehaviour
     public Scenemanager sceneControl; //Really shouldn't be using this for these objects, but I want this done for vertical slice
 
     private Renderer meshRend;
+    private bool mazeComplete = false;
 
     private void Start()
     {
@@ -36,7 +37,10 @@ public class WaterMazePlatform : MonoBehaviour
 
         if(lerpTimer == 1){
             meshRend.enabled = true;
+            if(!mazeComplete){
             Scenemanager.scenePhase += 1;
+            mazeComplete = true;
+            }
             sceneControl.SceneTransition();
         }else if (lerpTimer == 0){
             meshRend.enabled = false;

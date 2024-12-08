@@ -10,7 +10,7 @@ public class Scenemanager : MonoBehaviour
     public string nextSceneName;
     public float fadeTime = 3f;
     private float fadeTimer = 0f;
-    public static int scenePhase = 0;
+    public static int scenePhase = 1;
     public static int sceneCheckPoint = 0;
 
     public Image fadeImage;

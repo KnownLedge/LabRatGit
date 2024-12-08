@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class WaterMazeEnter : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Scenemanager sceneControl;
+    public Transform[] platforms;
+    
+
     void Start()
     {
-        
+        if (Scenemanager.scenePhase > 0){
+          Scenemanager.scenePhase = Mathf.Clamp(Scenemanager.scenePhase, 1, platforms.Length);
+            platforms[Scenemanager.scenePhase - 1].gameObject.SetActive(true);
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

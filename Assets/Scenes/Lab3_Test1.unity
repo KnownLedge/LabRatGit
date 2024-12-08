@@ -9492,7 +9492,7 @@ MonoBehaviour:
   nextScene:
     m_Handle: 0
   nextSceneName: WaterMaze
-  fadeTime: 0.75
+  fadeTime: 0.5
   fadeImage: {fileID: 1839246918}
 --- !u!114 &1259108824
 MonoBehaviour:
@@ -9510,6 +9510,12 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 983626942}
   - {fileID: 603213036}
+  cameraRef: {fileID: 1259108825}
+--- !u!4 &1259108825 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 862102496442057503, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+  m_PrefabInstance: {fileID: 2044794262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1295121594
 PrefabInstance:
   m_ObjectHideFlags: 0
