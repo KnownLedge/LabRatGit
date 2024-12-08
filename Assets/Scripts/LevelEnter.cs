@@ -12,7 +12,7 @@ public class LevelEnter : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-
+        Debug.Log("SCENE CHECKPOINT ISSSS: " + Scenemanager.sceneCheckPoint );
         if (Scenemanager.sceneCheckPoint > 0){
             player.transform.position = spawnPoints[Scenemanager.sceneCheckPoint - 1].position;
         }

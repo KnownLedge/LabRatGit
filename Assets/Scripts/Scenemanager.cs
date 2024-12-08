@@ -10,8 +10,8 @@ public class Scenemanager : MonoBehaviour
     public string nextSceneName;
     public float fadeTime = 3f;
     private float fadeTimer = 0f;
-    public static int scenePhase = 1;
-    public static int sceneCheckPoint = 1;
+    public static int scenePhase = 0;
+    public static int sceneCheckPoint = 0;
 
     public Image fadeImage;
 
@@ -33,7 +33,7 @@ public class Scenemanager : MonoBehaviour
             float colAlpha = 1 - ((fadeTime - fadeTimer) / fadeTime);
             fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, colAlpha);
         }
-        sceneCheckPoint = 0;
+     //   sceneCheckPoint = 0;
             SceneManager.LoadScene(nextSceneName);
     }
 
