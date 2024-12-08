@@ -9,7 +9,13 @@ public class ButtonManager : MonoBehaviour
 	// create a bool for your scene and add a unique if(is____) block to link to a new scene. 
 	// change the selected bool in the inspector to make the prefab go to different screens
 
-	public bool isPuzzle;
+	public bool isLab1;
+
+	public bool isLab2;
+
+	public bool isLab3test2;
+
+	public bool isLab3;
 
 	public bool isTailtest;
 
@@ -23,9 +29,24 @@ public class ButtonManager : MonoBehaviour
 	void OnMouseUp()
 	{
 
-		if (isPuzzle)
+		if (isLab1)
 		{
-			SceneManager.LoadScene("PuzzleScene");
+			SceneManager.LoadScene("Lab1_Test1");
+		}
+
+		if (isLab2)
+		{
+			SceneManager.LoadScene("");
+		}
+
+		if (isLab3test2)
+		{
+			SceneManager.LoadScene("lab3_Test2");
+		}
+
+		if (isLab3)
+		{
+			SceneManager.LoadScene("Lab3_Test1");
 		}
 
 		if (isTailtest)
@@ -40,13 +61,14 @@ public class ButtonManager : MonoBehaviour
 
 		if (isTitle)
 		{
+			Debug.Log("Button clicked!");
 			SceneManager.LoadScene("Title");
 		}
 
-		// If the quit button is clicked
+		
 		if (isQuit)
 		{
-			// Quit the application
+			
 			Application.Quit();
 		}
 
