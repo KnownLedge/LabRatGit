@@ -7932,6 +7932,36 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
   m_PrefabInstance: {fileID: 2044794262}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1259108823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259108814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6ae383286e2d04f918d2a4fbe19a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextScene:
+    m_Handle: 0
+  nextSceneName: 
+  fadeTime: 3
+  fadeImage: {fileID: 0}
+--- !u!114 &1259108824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259108814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42bce274e4911dd4e9569387c1b8dd74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneControl: {fileID: 1259108823}
 --- !u!1001 &1295121594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12796,6 +12826,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1259108819}
+    - targetCorrespondingSourceObject: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1259108824}
+    - targetCorrespondingSourceObject: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1259108823}
   m_SourcePrefab: {fileID: 100100000, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
 --- !u!1001 &2064221428
 PrefabInstance:
