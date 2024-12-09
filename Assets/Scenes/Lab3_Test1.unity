@@ -2682,10 +2682,14 @@ PrefabInstance:
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemImage
       value: 
-      objectReference: {fileID: 21300000, guid: 9128639c217c2e746ad645931d6905d6, type: 3}
+      objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemDescription
-      value: .
+      value: " Predator units have several pre-programmed AI \u201Cflavours\u201D
+        of navigating in a space. \u201CGuards\u201D will remain in one place, only
+        moving if they detect the presence of a rodent, and returning quickly to
+        their position. \u201CPatrols\u201D are similar except they follow scripted
+        routes, which loop for the duration of the task.  "
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2756,6 +2760,16 @@ PrefabInstance:
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemName
       value: Cheese
+      objectReference: {fileID: 0}
+    - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
+      propertyPath: itemImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
+    - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
+      propertyPath: itemDescription
+      value: 'If desired, the system can be linked to a particular experimental setup,
+        allowing for remote transmission/release of sound and smell information even
+        without a predator unit being immediately present. '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6674,10 +6688,13 @@ PrefabInstance:
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemImage
       value: 
-      objectReference: {fileID: 21300000, guid: 9128639c217c2e746ad645931d6905d6, type: 3}
+      objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemDescription
-      value: .
+      value: "\u201CRoamers\u201D freely explore the experimental space, responding
+        to rodent presence if detected. A variant on the latter, the \u201CHunters\u201D,
+        can be used if you wish units to seek out rodents. They will pick up on scent
+        trails, sound and movement much more sensitively than the other AI routines. "
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9116,10 +9133,14 @@ PrefabInstance:
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemImage
       value: 
-      objectReference: {fileID: 21300000, guid: 9128639c217c2e746ad645931d6905d6, type: 3}
+      objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemDescription
-      value: ','
+      value: "If a unit \u201Ccatches\u201D a rodent, the default mode is to elicit
+        an unconscious state in the rodent immediately using GRIDS, akin to a general
+        anaesthetic. Researchers can also add in an amnesiac effect (still under
+        testing), which would remove the recent memory of being caught, and also
+        most likely the experience of the experiment that day. "
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9292,7 +9313,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemDescription
-      value: ...
+      value: 'The predator unit consists of several sensory emitters, is mobile,
+        and able to respond to direct commands or use a proprietary AI system to
+        generate complex patterns of behaviour. The unit can produce smell, sound,
+        and minor visual signals so as to trigger the fear state, with different
+        levels of arousal possible through how these are deployed. '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10274,10 +10299,14 @@ PrefabInstance:
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemImage
       value: 
-      objectReference: {fileID: 21300000, guid: 9128639c217c2e746ad645931d6905d6, type: 3}
+      objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemDescription
-      value: .
+      value: " Predator units have several pre-programmed AI \u201Cflavours\u201D
+        of navigating in a space. \u201CGuards\u201D will remain in one place, only
+        moving if they detect the presence of a rodent, and returning quickly to
+        their position. \u201CPatrols\u201D are similar except they follow scripted
+        routes, which loop for the duration of the task.  "
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16067,7 +16096,12 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemDescription
-      value: ...
+      value: 'The Maas lab is uniquely equipped with our own method of eliciting
+        natural prey behaviour. Our predator system is able to interact with GRIDS
+        to create perceptual experiences which match to brain activity seen in exposure
+        to real predators of rodents, such as owls, foxes etc. Whilst not yet able
+        to specify a particular verifiable predator, the system is highly effective
+        at triggering fear responses. '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16631,10 +16665,15 @@ PrefabInstance:
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemImage
       value: 
-      objectReference: {fileID: 21300000, guid: 9128639c217c2e746ad645931d6905d6, type: 3}
+      objectReference: {fileID: 21300000, guid: 371613a1265c5ff40b724b936696c3a9, type: 3}
     - target: {fileID: 9003889146064027503, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemDescription
-      value: .
+      value: "GRIDS is powerful but not inexhaustible, and overloading it with too
+        much runs several risks. The first is to the degradation of in particular
+        the visual perception shifts, which require a lot of processing power. Another
+        is that the implanted chip becomes too hot and damages local tissue. This
+        may lead to loss of the animal\u2019s normal cognitive function, suffering,
+        and ultimately also ruining any ongoing research. "
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
