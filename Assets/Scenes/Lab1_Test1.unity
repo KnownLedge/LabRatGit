@@ -1145,7 +1145,7 @@ GameObject:
   - component: {fileID: 55898546}
   m_Layer: 0
   m_Name: CamTrigger1
-  m_TagString: CameraTriggerBackward
+  m_TagString: CameraTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1159,8 +1159,8 @@ Transform:
   m_GameObject: {fileID: 55898544}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.66, y: -6.65, z: 51.08}
-  m_LocalScale: {x: 1.1543771, y: 1, z: 2.5545514}
+  m_LocalPosition: {x: 0.25, y: -6.914, z: 51.408}
+  m_LocalScale: {x: 1.7734296, y: 1.7251, z: 1.6284384}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1845326646}
@@ -2849,59 +2849,6 @@ Transform:
   - {fileID: 1021158031}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &280564419
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 280564420}
-  - component: {fileID: 280564421}
-  m_Layer: 0
-  m_Name: CamTrigger6
-  m_TagString: CameraTriggerForward
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &280564420
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 280564419}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 129.18, y: 2.16, z: 51.08}
-  m_LocalScale: {x: 1.1543771, y: 1, z: 2.5545514}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1845326646}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &280564421
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 280564419}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &286047176
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4739,11 +4686,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameras:
-  - {fileID: 1259108814}
-  - {fileID: 1321115340}
-  - {fileID: 636174396}
-  - {fileID: 717174451}
-  cameraAnimator: {fileID: 929733565}
+  - {fileID: 1259108822}
+  - {fileID: 1321115344}
+  - {fileID: 636174400}
+  - {fileID: 717174455}
+  animator: {fileID: 929733565}
+  animationTrigger: Change
+  ratMovement: {fileID: 622414769}
+--- !u!114 &622414769 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1960017723245819698, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+  m_PrefabInstance: {fileID: 472653662}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622414743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06653f0b04664a46bef62eac1b08a3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &625062133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4978,12 +4938,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: field of view
       value: 60.000004
       objectReference: {fileID: 0}
     - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_Name
-      value: Main Camera (2)
+      value: Room3Camera
       objectReference: {fileID: 0}
     - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_IsActive
@@ -5021,6 +4985,11 @@ MonoBehaviour:
   axisChoice: 0
   movedir: {x: 1, y: 0, z: 0}
   isScroll: 0
+--- !u!20 &636174400 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+  m_PrefabInstance: {fileID: 636174395}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &639237009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5765,12 +5734,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: field of view
       value: 60.000004
       objectReference: {fileID: 0}
     - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_Name
-      value: Main Camera (3)
+      value: Room4Camera
       objectReference: {fileID: 0}
     - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_IsActive
@@ -5808,6 +5781,11 @@ MonoBehaviour:
   axisChoice: 0
   movedir: {x: 1, y: 0, z: 0}
   isScroll: 0
+--- !u!20 &717174455 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+  m_PrefabInstance: {fileID: 717174450}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &718736191
 GameObject:
   m_ObjectHideFlags: 0
@@ -8086,8 +8064,8 @@ GameObject:
   - component: {fileID: 1009450116}
   - component: {fileID: 1009450117}
   m_Layer: 0
-  m_Name: CamTrigger5
-  m_TagString: CameraTriggerBackward
+  m_Name: CamTrigger3
+  m_TagString: CameraTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8101,8 +8079,8 @@ Transform:
   m_GameObject: {fileID: 1009450115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 125.46, y: 2.16, z: 51.08}
-  m_LocalScale: {x: 1.1543771, y: 1, z: 2.5545514}
+  m_LocalPosition: {x: 125.31, y: 1.554, z: 51.301}
+  m_LocalScale: {x: 2.051271, y: 1.5679, z: 2.4297924}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1845326646}
@@ -8159,59 +8137,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2107960061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1018124123
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1018124124}
-  - component: {fileID: 1018124125}
-  m_Layer: 0
-  m_Name: CamTrigger4
-  m_TagString: CameraTriggerForward
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1018124124
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018124123}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 48.67, y: -1.76, z: 51.08}
-  m_LocalScale: {x: 1.1543771, y: 1, z: 2.5545514}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1845326646}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1018124125
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018124123}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1021158030
 GameObject:
   m_ObjectHideFlags: 0
@@ -10582,16 +10507,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: field of view
       value: 60.000004
       objectReference: {fileID: 0}
     - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_Name
-      value: Main Camera (1)
+      value: Room2Camera
       objectReference: {fileID: 0}
     - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10625,6 +10558,11 @@ MonoBehaviour:
   axisChoice: 0
   movedir: {x: 1, y: 0, z: 0}
   isScroll: 0
+--- !u!20 &1321115344 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7698969872023251115, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+  m_PrefabInstance: {fileID: 1321115339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1344895338 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5cf42941b14cc0146adc15e53add7dd4, type: 3}
@@ -10978,8 +10916,8 @@ GameObject:
   - component: {fileID: 1377008349}
   - component: {fileID: 1377008350}
   m_Layer: 0
-  m_Name: CamTrigger3
-  m_TagString: CameraTriggerBackward
+  m_Name: CamTrigger2
+  m_TagString: CameraTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10993,8 +10931,8 @@ Transform:
   m_GameObject: {fileID: 1377008348}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.13, y: -1.76, z: 51.08}
-  m_LocalScale: {x: 1.1543771, y: 1, z: 2.5545514}
+  m_LocalPosition: {x: 44.68, y: -1.93, z: 51.285}
+  m_LocalScale: {x: 2.0411222, y: 1.7642, z: 1.9750831}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1845326646}
@@ -11192,59 +11130,6 @@ Transform:
   - {fileID: 1626541489}
   m_Father: {fileID: 324531808}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1410270751
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1410270752}
-  - component: {fileID: 1410270753}
-  m_Layer: 0
-  m_Name: CamTrigger2
-  m_TagString: CameraTriggerForward
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1410270752
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410270751}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.46, y: -6.65, z: 51.08}
-  m_LocalScale: {x: 1.1543771, y: 1, z: 2.5545514}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1845326646}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1410270753
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1410270751}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1411974123
 GameObject:
   m_ObjectHideFlags: 0
@@ -15020,11 +14905,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 55898545}
-  - {fileID: 1410270752}
   - {fileID: 1377008349}
-  - {fileID: 1018124124}
   - {fileID: 1009450116}
-  - {fileID: 280564420}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1848251744

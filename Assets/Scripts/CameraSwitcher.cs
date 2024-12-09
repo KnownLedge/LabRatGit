@@ -1,73 +1,75 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraSwitcher : MonoBehaviour
 {
-    [SerializeField] private GameObject[] cameras; // Array of cameras
-    private int currentCameraIndex = 0;  // Tracks the current camera index
-    public Ratmovement ratmovement; // Reference to the rat movement script
+    public Camera[] cameras;           // Array of cameras to switch between
+    private int currentCameraIndex = 0; // Tracks the current active camera
+    public Animator animator;          // Animator for triggering the "Change" animation
+    public string animationTrigger = "Change"; // Name of the animation trigger
+    public Ratmovement ratMovement;    // Reference to the Ratmovement script
 
-    // Reference to the Animator controlling camera transitions
-    [SerializeField] private Animator cameraAnimator;
-
-    private void Start()
+    void Start()
     {
-        ratmovement = GetComponent<Ratmovement>();
-        // Initially, enable the first camera in the array
-        Debug.Log("Starting CameraSwitcher. Enabling camera at index: " + currentCameraIndex);
-        SwitchCamera(currentCameraIndex);
+        // Disable all cameras except the first one
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].gameObject.SetActive(i == currentCameraIndex);
+        }
+
+        if (ratMovement == null)
+        {
+            Debug.LogWarning("Ratmovement script not assigned!");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("CameraTriggerForward"))
+        // Check if the player collides with a trigger tagged "CameraTrigger"
+        if (other.CompareTag("CameraTrigger"))
         {
-            // Switch to next camera on the list (forward)
-            int nextCameraIndex = (currentCameraIndex + 1) % cameras.Length;
-            SwitchCamera(nextCameraIndex);
-        }
-        else if (other.CompareTag("CameraTriggerBackward"))
-        {
-            // Switch to previous camera on the list (backward)
-            int prevCameraIndex = Mathf.Max(currentCameraIndex - 1, 0);
-            SwitchCamera(prevCameraIndex);
+            PlayChangeAnimation();
         }
     }
 
-    private void SwitchCamera(int newCameraIndex)
+    void PlayChangeAnimation()
     {
-        // Disable movement while the camera is switching
-        ratmovement.moveState = false; 
+        if (animator != null)
+        {
+            animator.SetTrigger(animationTrigger);
+            Debug.Log("Animation trigger sent: " + animationTrigger);
 
-        // Disable current camera
-        cameras[currentCameraIndex].SetActive(false);
+            // Disable rat movement at the start of the animation
+            if (ratMovement != null)
+            {
+                ratMovement.enabled = false;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Animator is not assigned. Switching camera without animation.");
+        }
 
-        // Enable new camera
-        cameras[newCameraIndex].SetActive(true);
-
-        // Trigger the existing "change" animation
-        cameraAnimator.SetTrigger("Change");
-
-        // Update the current camera index
-        currentCameraIndex = newCameraIndex;
-
-        // Log the camera switch for debugging
-        Debug.Log("Switched to camera: " + (newCameraIndex + 1));
-
-        // Start a coroutine to wait for the animation to finish before re-enabling movement
-        StartCoroutine(WaitForAnimation());
+        // Switch camera after animation (adjust delay based on animation duration)
+        Invoke(nameof(SwitchToNextCamera), 1f); // Adjust "1f" to match your animation duration
     }
 
-    // Coroutine to wait for the animation to finish and then re-enable movement
-    private IEnumerator WaitForAnimation()
+    void SwitchToNextCamera()
     {
-        // Wait for the duration of the "Change" animation to finish
-        float animationDuration = cameraAnimator.GetCurrentAnimatorStateInfo(0).length;
-        yield return new WaitForSeconds(animationDuration);
+        // Disable the current camera
+        cameras[currentCameraIndex].gameObject.SetActive(false);
 
-        // Re-enable movement after the animation has finished
-        ratmovement.moveState = true;
-        Debug.Log("Movement enabled again.");
+        // Move to the next camera (loop back to the first camera if at the end)
+        currentCameraIndex = (currentCameraIndex + 1) % cameras.Length;
+
+        // Enable the next camera
+        cameras[currentCameraIndex].gameObject.SetActive(true);
+
+        // Re-enable rat movement after the camera switch
+        if (ratMovement != null)
+        {
+            ratMovement.enabled = true;
+        }
+
+        Debug.Log("Switched to camera: " + cameras[currentCameraIndex].name);
     }
 }
