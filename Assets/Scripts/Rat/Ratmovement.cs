@@ -54,8 +54,8 @@ public class Ratmovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>(); // Get rat rigidbody
-        rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
-        groundedConstraints = rb.constraints;
+      //  rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
+    //    groundedConstraints = rb.constraints;
     }
 
     // Update is called once per frame
@@ -115,7 +115,7 @@ public class Ratmovement : MonoBehaviour
         var normal = collision.contacts[0].normal;
         if (normal.y > 0) { //If colliding with the bottom of the rat
             enterGrounded();
-            rb.constraints = groundedConstraints;
+         //   rb.constraints = groundedConstraints;
        }
     }
 
@@ -125,7 +125,8 @@ public class Ratmovement : MonoBehaviour
         {
             isJump = false;
             moveState = true;
-            rb.constraints = groundedConstraints;
+         //   rb.constraints = groundedConstraints;
+		transform.rotation = new Quaternion();
         }
     }
 
@@ -187,8 +188,8 @@ public class Ratmovement : MonoBehaviour
         isJump = true;
         jumpLockOut = jumpLockOutTime;
 
-        if (!canSpin)
-            rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
+      //  if (!canSpin)
+          //  rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
 
         Vector3 forwardDirection = transform.forward;
         rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
@@ -202,7 +203,7 @@ public class Ratmovement : MonoBehaviour
     //    if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
     //    {
     //        // Unfreeze rotation when leaving the ground
-    //        rb.constraints = RigidbodyConstraints.None; // Allow rotation when leaving ground
+    //    //    rb.constraints = RigidbodyConstraints.None; // Allow rotation when leaving ground
     //    }
     //}
 
