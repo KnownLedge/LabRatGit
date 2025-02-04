@@ -42,6 +42,14 @@ public class Ratmovement : MonoBehaviour
     [Tooltip("Iterated by number keys, sets movespeed and maxspeed for testing speed change")]
     public Vector2[] speedStates;
 
+    [Header("Body")]
+    public Transform backLeg; //Reference to back legs of rat
+    public Rigidbody backRB; //Back legs rigidbody
+
+    public float backJumpForce = 16f;
+    public float backJumpPower = 100f;
+
+
     [Header("Debug")]
     public bool moveState = true;
     public bool isJump = false;
@@ -54,6 +62,7 @@ public class Ratmovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>(); // Get rat rigidbody
+        backRB = backLeg.GetComponent<Rigidbody>();
       //  rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
     //    groundedConstraints = rb.constraints;
     }
@@ -126,7 +135,7 @@ public class Ratmovement : MonoBehaviour
             isJump = false;
             moveState = true;
          //   rb.constraints = groundedConstraints;
-		transform.rotation = new Quaternion();
+	//	transform.rotation = new Quaternion();
         }
     }
 
@@ -155,6 +164,13 @@ public class Ratmovement : MonoBehaviour
         }
     }
 
+    public void BalanceRat(float angle)
+    {
+        Quaternion currentRotation = transform.rotation;
+
+    }
+
+
     public void MoveRat()
     {
         // Prevent movement when climbing or in an invalid state
@@ -163,7 +179,7 @@ public class Ratmovement : MonoBehaviour
             // Normal movement logic for the rat when it's not climbing
             if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
             {
-                rb.AddForce(transform.forward * moveSpeed, ForceMode.Impulse);
+                rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
             }
 
             // Ensure the rat's velocity is capped at the max speed
@@ -193,6 +209,9 @@ public class Ratmovement : MonoBehaviour
 
         Vector3 forwardDirection = transform.forward;
         rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
+
+        //Should maybe put a delay on this with a coroutine to give the impression the back legs jump seperately?
+        backRB.velocity = new Vector3(forwardDirection.x * backJumpForce, backJumpPower, forwardDirection.z * backJumpForce);
 
         rb.AddRelativeTorque(spinForce);
     }
