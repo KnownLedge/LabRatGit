@@ -39,24 +39,18 @@ public class PipeTransport : MonoBehaviour
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb == null) yield break;
 
-        // Disable colliders
         entryTrigger.enabled = false;
         exitTrigger.enabled = false;
 
-        // Determine waypoints inside the function
         List<Transform> waypoints = (entry == entryA) ? waypointsA : waypointsB;
 
-        // Cache Transform for performance
-        Transform playerTransform = player.transform;
+        //rb.isKinematic = true;
+        //rb.freezeRotation = true;
+        player.transform.position = entry.position;
 
-        rb.isKinematic = true;
-        rb.freezeRotation = true;
-        playerTransform.position = entry.position;
-
-        // Make the rat look towards the first waypoint or exit
         Vector3 lookTarget = (waypoints != null && waypoints.Count > 0) ? waypoints[0].position : exit.position;
-        playerTransform.rotation = Quaternion.LookRotation(lookTarget - playerTransform.position);
-        playerTransform.rotation = Quaternion.Euler(0f, playerTransform.eulerAngles.y, 0f); // Reset X and Z rotation
+        player.transform.rotation = Quaternion.LookRotation(lookTarget - player.transform.position);
+        player.transform.rotation = Quaternion.Euler(0f, player.transform.eulerAngles.y, 0f);
 
         if (waypoints == null || waypoints.Count == 0)
         {
@@ -64,39 +58,34 @@ public class PipeTransport : MonoBehaviour
         }
         else
         {
-            // Move smoothly through waypoints
             foreach (Transform target in waypoints)
             {
                 Vector3 targetPosition = target.position;
-                while (Vector3.Distance(playerTransform.position, targetPosition) > 0.1f)
+                while (Vector3.Distance( player.transform.position, targetPosition) > 0.1f)
                 {
-                    playerTransform.position = Vector3.MoveTowards(playerTransform.position, targetPosition, travelSpeed * Time.deltaTime);
+                    player.transform.position = Vector3.MoveTowards(player.transform.position, targetPosition, travelSpeed * Time.deltaTime);
 
-                    // Make sure the rat always faces forward and remains upright
-                    Quaternion targetRotation = Quaternion.LookRotation(targetPosition - playerTransform.position);
-                    playerTransform.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
+                    Quaternion targetRotation = Quaternion.LookRotation(targetPosition - player.transform.position);
+                    player.transform.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
 
                     yield return null;
                 }
             }
         }
 
-        // Move to final exit position
-        playerTransform.position = exit.position;
+        player.transform.position = exit.position;
 
-        // Ensure the rat is looking at the exit before exiting
-        playerTransform.rotation = Quaternion.LookRotation(exit.position - playerTransform.position);
-        playerTransform.rotation = Quaternion.Euler(0f, playerTransform.eulerAngles.y, 0f); // Keep upright
+        player.transform.rotation = Quaternion.LookRotation(exit.position - player.transform.position);
+        player.transform.rotation = Quaternion.Euler(0f, player.transform.eulerAngles.y, 0f); // Keep upright
 
-        // Apply exit force
-        rb.isKinematic = false;
-        rb.freezeRotation = false;
+        //rb.isKinematic = false;
+        //rb.freezeRotation = false;
         Vector3 exitDirection = (exit.position - (waypoints.Count > 0 ? waypoints[^1].position : entry.position)).normalized;
-        rb.velocity = (exitDirection + Vector3.up * 0.5f) * Mathf.Clamp(exitForce, 1f, 10f);
+        rb.velocity = (exitDirection + Vector3.back) * Mathf.Clamp(exitForce, 1f, 100f);
         ratmovement.enabled = true;
-        
-        // Cooldown before re-enabling colliders
         yield return new WaitForSeconds(cooldownTime);
+        //ratmovement.enabled = true;
+        entryTrigger.enabled = true;
         exitTrigger.enabled = true;
     }
 }
