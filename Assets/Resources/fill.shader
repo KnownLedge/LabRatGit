@@ -1,20 +1,12 @@
-﻿//
-//  OutlineFill.shader
-//  QuickOutline
-//
-//  Created by Chris Nolet on 2/21/18.
-//  Copyright © 2018 Chris Nolet. All rights reserved.
-//
+Shader "Custom/fill"
+{
+    Properties
+    {
+        [ENUM(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest",Float) = 0
+        _OutlineColor("_OutlineColorr", Color) = (1,1,1,1)
 
-Shader "Custom/Outline Fill" {
-  Properties {
-    [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest", Float) = 0
-
-    _OutlineColor("Outline Color", Color) = (1, 1, 1, 1)
-    _OutlineWidth("Outline Width", Range(0, 10)) = 2
-  }
-
-  SubShader {
+    }
+    SubShader {
     Tags {
       "Queue" = "Transparent+110"
       "RenderType" = "Transparent"
