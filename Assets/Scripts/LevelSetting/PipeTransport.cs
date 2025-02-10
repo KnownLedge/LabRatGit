@@ -4,18 +4,28 @@ using System.Collections.Generic;
 
 public class PipeTransport : MonoBehaviour
 {
+    [SerializeField] private Ratmovement ratmovement;
+    
+    [Header("Settings")]
     [SerializeField] private Transform entryA;
     [SerializeField] private Transform entryB;
     [SerializeField] private Collider triggerA;
     [SerializeField] private Collider triggerB;
     [SerializeField] private float travelSpeed = 10f;
-    [SerializeField] private float accelerationFactor = 5f; // Прискорення руху
+    [SerializeField] private float accelerationFactor = 5f;
     [SerializeField] private float exitForce = 5f;
     [SerializeField] private float cooldownTime = 1.5f;
 
-    [SerializeField] private List<Transform> waypointsA; // Waypoints for entryA → exitB
-    [SerializeField] private List<Transform> waypointsB; // Waypoints for entryB → exitA
-    [SerializeField] private Ratmovement ratmovement;
+    [Header("Waypoints")]
+    [SerializeField] private List<Transform> waypointsA; //A->B
+    [SerializeField] private List<Transform> waypointsB; //B->A
+
+    [Header("Effects and Sounds")]
+    [SerializeField] private ParticleSystem entryEffect;
+    [SerializeField] private ParticleSystem exitEffect;
+    [SerializeField] private AudioClip enterSound;
+    [SerializeField] private AudioClip exitSound; 
+    [SerializeField] private AudioSource audioSource;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -25,10 +35,27 @@ public class PipeTransport : MonoBehaviour
             Transform exitPoint = (entryPoint == entryA) ? entryB : entryA;
             Collider entryTrigger = (entryPoint == entryA) ? triggerA : triggerB;
             Collider exitTrigger = (entryPoint == entryA) ? triggerB : triggerA;
+
             ratmovement.enabled = false;
+
+            if (entryPoint == entryA && entryEffect != null)
+            {
+                entryEffect.transform.position = entryA.position; 
+                entryEffect.Play();
+            }
+            else if (entryPoint == entryB && entryEffect != null)
+            {
+                entryEffect.transform.position = entryB.position;
+                entryEffect.Play();
+            }
+
+            if (enterSound != null && audioSource != null) 
+                audioSource.PlayOneShot(enterSound);
+
             StartCoroutine(TransportPlayer(other.gameObject, entryPoint, exitPoint, entryTrigger, exitTrigger));
         }
     }
+
 
     private Transform GetClosestEntry(Vector3 playerPosition)
     {
@@ -74,6 +101,9 @@ public class PipeTransport : MonoBehaviour
         }
 
         player.transform.position = exit.position;
+
+        if (exitEffect != null) exitEffect.Play();
+        if (exitSound != null && audioSource != null) audioSource.PlayOneShot(exitSound);
 
         rb.isKinematic = false;
 
