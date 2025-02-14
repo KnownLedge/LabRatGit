@@ -56,9 +56,12 @@ public class Simon_light : MonoBehaviour
         switches[1] = GameObject.Find("Green-light");
         switches[2] = GameObject.Find("Blue-light");
         switches[3] = GameObject.Find("Yellow-light");
-        for (int i = 0; i < barriers.Length; i++)
+        if (barriers != null)
         {
-            barriers[i].SetActive(false);
+            for (int i = 0; i < barriers.Length; i++)
+            {
+                barriers[i].SetActive(false);
+            }
         }
     }
 
@@ -181,13 +184,16 @@ public class Simon_light : MonoBehaviour
 
     protected virtual void Finish()
     {
-        for (int i = 0; i < barriers.Length; i++)
+        if (barriers != null)
         {
-            barriers[i].SetActive(false);
+            for (int i = 0; i < barriers.Length; i++)
+            {
+                barriers[i].SetActive(false);
+            }
         }
     }
 
-    private void setState(States newState)//set the state of the simon
+        private void setState(States newState)//set the state of the simon
     {
         Debug.Log($"new State {newState}");
         state = newState;
