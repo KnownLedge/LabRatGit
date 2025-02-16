@@ -43,31 +43,31 @@ public class Ratmovement : MonoBehaviour
     public Vector2[] speedStates;
 
     [Header("Body")]
-    public Transform backLeg; //Reference to back legs of rat
-    public Rigidbody backRB; //Back legs rigidbody
+    [SerializeField] private Transform frontLeg;
+    [SerializeField] private Transform backLeg;
+    [SerializeField] private Rigidbody backRB; 
+    [SerializeField] private float groundCheckDistance = 0.2f;
 
     public float backJumpForce = 16f;
     public float backJumpPower = 100f;
 
 
     [Header("Debug")]
+    [SerializeField] private bool isFrontGrounded = false;
+    [SerializeField] private bool isBackGrounded = false;
     public bool moveState = true;
     public bool isJump = false;
     public float prevAngle = 0f;
-
     public float jumpLockOut = 0f;
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
 
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>(); // Get rat rigidbody
+        rb = GetComponent<Rigidbody>();
         backRB = backLeg.GetComponent<Rigidbody>();
-      //  rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
-    //    groundedConstraints = rb.constraints;
     }
 
-    // Update is called once per frame
     void Update()
     {
         mousePos = Input.mousePosition;
@@ -102,6 +102,7 @@ public class Ratmovement : MonoBehaviour
             }
         }
 
+        CheckGroundedState();
     }
 
     void FixedUpdate()
@@ -112,30 +113,30 @@ public class Ratmovement : MonoBehaviour
         {
             MoveRat();
         }
-
     }
 
-
-
-    void OnCollisionEnter(Collision collision)
+    public void MoveRat()
     {
-        // if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
-        //  {
-        var normal = collision.contacts[0].normal;
-        if (normal.y > 0) { //If colliding with the bottom of the rat
-            enterGrounded();
-         //   rb.constraints = groundedConstraints;
-       }
-    }
-
-    public void enterGrounded()
-    {
-        if (jumpLockOut < 0f)
+        // Prevent movement when climbing or in an invalid state
+        if (moveState || jumpStyle != jumpFreedom.SteerAllowed)
         {
-            isJump = false;
-            moveState = true;
-         //   rb.constraints = groundedConstraints;
-	//	transform.rotation = new Quaternion();
+            // Normal movement logic for the rat when it's not climbing
+            if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
+            {
+                rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
+            }
+
+            // Ensure the rat's velocity is capped at the max speed
+            rb.velocity = new Vector3(
+            Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed),
+            rb.velocity.y,
+            Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed)
+        );
+        }
+        // If you are in climbing state or invalid state, stop moving
+        else
+        {
+            rb.velocity = Vector3.zero;  // Prevent unintended movement
         }
     }
 
@@ -164,56 +165,55 @@ public class Ratmovement : MonoBehaviour
         }
     }
 
+    public void JumpRat()
+    {
+        if(!CanJump()) return;
+
+        moveState = false;
+        isJump = true;
+        jumpLockOut = jumpLockOutTime;
+
+        Vector3 forwardDirection = transform.forward;
+        rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
+
+        StartCoroutine(DelayedBackLegJump(0.1f));
+
+        rb.AddRelativeTorque(spinForce);
+    }
+
     public void BalanceRat(float angle)
     {
         Quaternion currentRotation = transform.rotation;
 
     }
 
-
-    public void MoveRat()
+    public void ChangeSpeed(int i)
     {
-        // Prevent movement when climbing or in an invalid state
-        if (moveState || jumpStyle != jumpFreedom.SteerAllowed)
+        if (speedStates[i] != null)
         {
-            // Normal movement logic for the rat when it's not climbing
-            if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
-            {
-                rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
-            }
-
-            // Ensure the rat's velocity is capped at the max speed
-            rb.velocity = new Vector3(
-            Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed),
-            rb.velocity.y,
-            Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed)
-        );
-        }
-        // If you are in climbing state or invalid state, stop moving
-        else
-        {
-            rb.velocity = Vector3.zero;  // Prevent unintended movement
+            moveSpeed = speedStates[i].x;
+            maxSpeed = speedStates[i].y;
         }
     }
 
-
-
-    public void JumpRat()
+    void OnCollisionEnter(Collision collision)
     {
-        moveState = false;
-        isJump = true;
-        jumpLockOut = jumpLockOutTime;
+        if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
+        {
+            CheckGroundedState();
 
-      //  if (!canSpin)
-          //  rb.constraints = rb.constraints | RigidbodyConstraints.FreezeRotationZ;
+            if(isFrontGrounded && isBackGrounded)
+            {
+                isJump = false;
+            }
 
-        Vector3 forwardDirection = transform.forward;
-        rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
-
-        //Should maybe put a delay on this with a coroutine to give the impression the back legs jump seperately?
-        backRB.velocity = new Vector3(forwardDirection.x * backJumpForce, backJumpPower, forwardDirection.z * backJumpForce);
-
-        rb.AddRelativeTorque(spinForce);
+            var normal = collision.contacts[0].normal;
+            if (normal.y > 0) 
+            { //If colliding with the bottom of the rat
+                enterGrounded();
+                rb.constraints = groundedConstraints;
+            }
+        }
     }
 
     //void OnCollisionExit(Collision collision)
@@ -226,12 +226,32 @@ public class Ratmovement : MonoBehaviour
     //    }
     //}
 
-    public void ChangeSpeed(int i)
+    private void CheckGroundedState()
     {
-        if (speedStates[i] != null)
+        isFrontGrounded = Physics.Raycast(frontLeg.position, Vector3.down, groundCheckDistance, groundLayer);
+        isBackGrounded = Physics.Raycast(backLeg.position, Vector3.down, groundCheckDistance, groundLayer);
+    }
+
+    private bool CanJump()
+    {
+        return isFrontGrounded && isBackGrounded && !isJump && jumpLockOut < 0f;
+    }
+
+    private IEnumerator DelayedBackLegJump(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Vector3 forwardDirection = transform.forward;
+        backRB.velocity = new Vector3(forwardDirection.x * backJumpForce, backJumpPower, forwardDirection.z * backJumpForce);
+    }
+
+    public void enterGrounded()
+    {
+        if (jumpLockOut < 0f)
         {
-            moveSpeed = speedStates[i].x;
-            maxSpeed = speedStates[i].y;
+            isJump = false;
+            moveState = true;
+            // rb.constraints = groundedConstraints;
+		    // transform.rotation = new Quaternion();
         }
     }
 }
