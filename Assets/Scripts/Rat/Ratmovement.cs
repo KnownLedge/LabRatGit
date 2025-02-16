@@ -51,6 +51,8 @@ public class Ratmovement : MonoBehaviour
     public float backJumpForce = 16f;
     public float backJumpPower = 100f;
 
+    public float backJumpDelay = 0.1f;
+
 
     [Header("Debug")]
     [SerializeField] private bool isFrontGrounded = false;
@@ -176,7 +178,7 @@ public class Ratmovement : MonoBehaviour
         Vector3 forwardDirection = transform.forward;
         rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
 
-        StartCoroutine(DelayedBackLegJump(0.1f));
+        StartCoroutine(DelayedBackLegJump(backJumpDelay));
 
         rb.AddRelativeTorque(spinForce);
     }
