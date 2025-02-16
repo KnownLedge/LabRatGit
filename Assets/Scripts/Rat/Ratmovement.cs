@@ -48,10 +48,10 @@ public class Ratmovement : MonoBehaviour
     [SerializeField] private Rigidbody backRB; 
     [SerializeField] private float groundCheckDistance = 0.2f;
 
-    public float backJumpForce = 16f;
-    public float backJumpPower = 100f;
-
-    public float backJumpDelay = 0.1f;
+    [SerializeField] private float backJumpForce = 16f;
+    [SerializeField] private float backJumpPower = 100f;
+    [SerializeField] private float backJumpDelay = 0.1f;
+    [SerializeField] private float frontJumpDelay = 0.1f;
 
 
     [Header("Debug")]
@@ -176,9 +176,15 @@ public class Ratmovement : MonoBehaviour
         jumpLockOut = jumpLockOutTime;
 
         Vector3 forwardDirection = transform.forward;
-        rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
 
-        StartCoroutine(DelayedBackLegJump(backJumpDelay));
+        if((isFrontGrounded && !isBackGrounded) || (isFrontGrounded && isBackGrounded))
+        {
+            rb.velocity = new Vector3(forwardDirection.x * jumpForce, jumpPower, forwardDirection.z * jumpForce);
+            StartCoroutine(DelayedBackLegJump(backJumpDelay));
+        } else if(isBackGrounded && !isFrontGrounded) {
+            backRB.velocity = new Vector3(forwardDirection.x * backJumpForce, backJumpPower, forwardDirection.z * backJumpForce);
+            StartCoroutine(DelayedFrontLegJump(frontJumpDelay));
+        }
 
         rb.AddRelativeTorque(spinForce);
     }
@@ -236,12 +242,23 @@ public class Ratmovement : MonoBehaviour
 
     private bool CanJump()
     {
-        return isFrontGrounded && isBackGrounded && !isJump && jumpLockOut < 0f;
+        return (isFrontGrounded || isBackGrounded) && !isJump && jumpLockOut < 0f;
+    }
+
+    private IEnumerator DelayedFrontLegJump(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if(!isFrontGrounded) yield break;
+
+        Vector3 forwardDirection = transform.forward;
+        rb.velocity = new Vector3(forwardDirection.x * backJumpForce, jumpPower, forwardDirection.z * jumpForce);
     }
 
     private IEnumerator DelayedBackLegJump(float delay)
     {
         yield return new WaitForSeconds(delay);
+        if(!isBackGrounded) yield break;
+
         Vector3 forwardDirection = transform.forward;
         backRB.velocity = new Vector3(forwardDirection.x * backJumpForce, backJumpPower, forwardDirection.z * backJumpForce);
     }
