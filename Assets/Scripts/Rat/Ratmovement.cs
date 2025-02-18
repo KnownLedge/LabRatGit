@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,6 +54,10 @@ public class Ratmovement : MonoBehaviour
     [SerializeField] private float backJumpDelay = 0.1f;
     [SerializeField] private float frontJumpDelay = 0.1f;
 
+    [Header("Balance")]
+    [SerializeField] private float balanceForceMultiplier = 10f;
+    [SerializeField] private float tiltThreshold = 60f;
+    [SerializeField] private float correctiveSpeed = 2f;
 
     [Header("Debug")]
     [SerializeField] private bool isFrontGrounded = false;
@@ -61,8 +66,8 @@ public class Ratmovement : MonoBehaviour
     public bool isJump = false;
     public float prevAngle = 0f;
     public float jumpLockOut = 0f;
-    //How long before the player is allowed to land on an object when jumping, designed to prevent the player triggering ground state at the start of a jump.
-
+    //How long before the player is allowed to land on an object when jumping, designed to prevent the player 
+    //triggering ground state at the start of a jump.
 
     void Start()
     {
@@ -115,6 +120,7 @@ public class Ratmovement : MonoBehaviour
         {
             MoveRat();
         }
+        BalanceRat();
     }
 
     public void MoveRat()
@@ -127,13 +133,12 @@ public class Ratmovement : MonoBehaviour
             {
                 rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
             }
-
             // Ensure the rat's velocity is capped at the max speed
             rb.velocity = new Vector3(
-            Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed),
-            rb.velocity.y,
-            Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed)
-        );
+                Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed),
+                rb.velocity.y,
+                Mathf.Clamp(rb.velocity.z, -maxSpeed, maxSpeed)
+            );
         }
         // If you are in climbing state or invalid state, stop moving
         else
@@ -148,22 +153,22 @@ public class Ratmovement : MonoBehaviour
         {
             // Calculate the target rotation in the Y-axis direction
             Quaternion targetRotation = Quaternion.Euler(0, -angle, 0);
-
+            
             // Get the current rotation and the difference
             Quaternion currentRotation = transform.rotation;
             Quaternion rotationDifference = targetRotation * Quaternion.Inverse(currentRotation);
-
+            
             // Extract the yaw (rotation around the Y-axis) from the difference
             float yaw = rotationDifference.eulerAngles.y;
-
+            
             // Normalize yaw to avoid weird behavior when crossing 180 degrees
             if (yaw > 180f) yaw -= 360f;
 
-            // Apply torque to rotate the rat towards the mouse direction
-            Vector3 torque = Vector3.up * yaw * turnPower * Time.deltaTime;
-
-            // Apply torque using Rigidbody's AddTorque to smoothly rotate towards the mouse
-            rb.AddTorque(torque, ForceMode.Force);
+            if (Mathf.Abs(yaw) > 0.1f)
+            {
+                Vector3 torque = Vector3.up * yaw * turnPower * Time.deltaTime;
+                rb.AddTorque(torque, ForceMode.Force);
+            }
         }
     }
 
@@ -189,10 +194,18 @@ public class Ratmovement : MonoBehaviour
         rb.AddRelativeTorque(spinForce);
     }
 
-    public void BalanceRat(float angle)
+    private void BalanceRat()
     {
-        Quaternion currentRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
 
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * correctiveSpeed);
+
+        float tiltAngle = Vector3.Angle(transform.up, Vector3.up);
+        if (tiltAngle > tiltThreshold)
+        {
+            Vector3 correctiveTorque = Vector3.Cross(transform.up, Vector3.up) * balanceForceMultiplier;
+            rb.AddTorque(correctiveTorque, ForceMode.Acceleration);
+        }
     }
 
     public void ChangeSpeed(int i)
