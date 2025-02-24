@@ -8,7 +8,7 @@ public class StressTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.GetComponent<Ratmovement>())
+        if (collision.gameObject.GetComponentInParent<Ratmovement>())
         {
             soundManager.EnableHeartBeat();
         }
