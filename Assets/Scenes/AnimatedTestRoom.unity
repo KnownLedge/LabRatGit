@@ -1245,7 +1245,7 @@ GameObject:
   - component: {fileID: 114892399}
   m_Layer: 6
   m_Name: Cube (57)
-  m_TagString: Untagged
+  m_TagString: Ledge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1260,7 +1260,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -35.94, y: 1.08, z: 17.5}
-  m_LocalScale: {x: 1.1078062, y: 7.5285, z: 5.842784}
+  m_LocalScale: {x: 1.872414, y: 7.5285, z: 5.842784}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 214513657}
@@ -3975,7 +3975,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 217262778383350338, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+    - {fileID: 3655723426979565666, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+    - {fileID: 4245283642741618202, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -6911,7 +6914,7 @@ GameObject:
   - component: {fileID: 1053670893}
   m_Layer: 6
   m_Name: Cube (56)
-  m_TagString: Untagged
+  m_TagString: Ledge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6926,7 +6929,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -47.26, y: -0.6, z: 17.5}
-  m_LocalScale: {x: 1.1078062, y: 7.5285, z: 5.842784}
+  m_LocalScale: {x: 1.7213093, y: 7.5285, z: 5.842784}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 214513657}
@@ -7982,10 +7985,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4712986449840127216, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+    - {fileID: 2490417922204915402, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+    - {fileID: 1974305362389342866, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+    - {fileID: 3088983404345651378, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6045902338466454178, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+      insertIndex: 6
+      addedObject: {fileID: 1616112094}
   m_SourcePrefab: {fileID: 100100000, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
 --- !u!1 &1193342194
 GameObject:
@@ -10670,6 +10680,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cf42941b14cc0146adc15e53add7dd4, type: 3}
+--- !u!1 &1616112079 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6045902338466454178, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+  m_PrefabInstance: {fileID: 1190426389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1616112094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616112079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8dbb57f00b96c5438b3aaeb95eab816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ledgeDetectDistance: 1.5
+  climbUpHeight: 3
+  climbForwardDistance: 1
+  climbDuration: 0.25
 --- !u!1 &1623549409
 GameObject:
   m_ObjectHideFlags: 0
@@ -12086,13 +12117,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882176677}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4341917, y: 0.90079546, z: -0.0029175538, w: -0.0060529}
-  m_LocalPosition: {x: -77.05, y: -8.24, z: 16.818}
+  m_LocalRotation: {x: 0.4805973, y: 0.8769157, z: -0.002597789, w: -0.0061968705}
+  m_LocalPosition: {x: -77.67, y: -8.03, z: 16.818}
   m_LocalScale: {x: 6.1047645, y: 11.815261, z: 7.5206537}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 214513657}
-  m_LocalEulerAnglesHint: {x: 0, y: 180.77, z: 51.469}
+  m_LocalEulerAnglesHint: {x: -0.08, y: 180.766, z: 57.45}
 --- !u!65 &1882176679
 BoxCollider:
   m_ObjectHideFlags: 0
