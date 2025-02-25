@@ -381,6 +381,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a8f603bfc3d8ad44e80865f5a80dcb42, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 292b4e815566eb44faeb8a56b07ce507, type: 2}
     - target: {fileID: 919132149155446097, guid: a8f603bfc3d8ad44e80865f5a80dcb42, type: 3}
       propertyPath: m_Name
       value: Morris_Water_Platform
@@ -545,7 +549,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1247,7 +1251,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1612,7 +1616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd9191be92229ab48ba2d446a1e6b9cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 265
+  pushForce: 400
 --- !u!114 &1000086319
 MonoBehaviour:
   m_ObjectHideFlags: 0
