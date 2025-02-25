@@ -70,7 +70,7 @@ public class Ratmovement : MonoBehaviour
 
         if (moveState || jumpStyle != jumpFreedom.Locked)
         {
-            AimRat(angle);
+            AimRat();
         }
 
         if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && !isJump)
@@ -129,30 +129,34 @@ public class Ratmovement : MonoBehaviour
         }
     }
 
-    public void AimRat(float angle)
+    public void AimRat()
     {
-        if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
+        if (Camera.main == null)
+            return;
+
+        // Get the player's screen position (including its depth)
+        Vector3 playerScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+
+        // Use the mouse position but set its z to the player's depth from the camera
+        Vector3 mouseScreenPos = Input.mousePosition;
+        mouseScreenPos.z = playerScreenPos.z;
+
+        // Convert the mouse position into world coordinates
+        Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+        // Calculate the direction from the player to the mouse world position
+        Vector3 direction = worldMousePos - transform.position;
+        direction.y = 0f; // flatten the direction to ignore vertical differences
+
+        if (direction.sqrMagnitude > 0.001f)
         {
-            // Calculate the target rotation in the Y-axis direction
-            Quaternion targetRotation = Quaternion.Euler(0, -angle, 0);
-
-            // Get the current rotation and the difference
-            Quaternion currentRotation = transform.rotation;
-            Quaternion rotationDifference = targetRotation * Quaternion.Inverse(currentRotation);
-
-            // Extract the yaw (rotation around the Y-axis) from the difference
-            float yaw = rotationDifference.eulerAngles.y;
-
-            // Normalize yaw to avoid weird behavior when crossing 180 degrees
-            if (yaw > 180f) yaw -= 360f;
-
-            // Apply torque to rotate the rat towards the mouse direction
-            Vector3 torque = Vector3.up * yaw * turnPower * Time.deltaTime;
-
-            // Apply torque using Rigidbody's AddTorque to smoothly rotate towards the mouse
-            rb.AddTorque(torque, ForceMode.Force);
+            // Smoothly rotate the player toward the direction
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnPower * Time.deltaTime);
         }
     }
+
+
 
     public void MoveRat()
     {
