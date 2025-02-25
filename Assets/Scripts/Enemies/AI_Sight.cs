@@ -145,7 +145,7 @@ public class AI_Sight : MonoBehaviour
         }
 
 
-        Handles.DrawWireDisc(dir + transform.position, transform.forward, radius);
+        //Handles.DrawWireDisc(dir + transform.position, transform.forward, radius);
 
      
 
