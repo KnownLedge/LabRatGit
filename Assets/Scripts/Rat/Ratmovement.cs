@@ -249,8 +249,11 @@ public class Ratmovement : MonoBehaviour
 
     private void CheckGroundedState()
     {
-        isFrontGrounded = Physics.Raycast(frontLeg.position, Vector3.down, groundCheckDistance, groundLayer);
-        isBackGrounded = Physics.Raycast(backLeg.position, Vector3.down, groundCheckDistance, groundLayer);
+        RaycastHit sphereRay;
+        isFrontGrounded = Physics.SphereCast(frontLeg.position, frontLeg.localScale.y, Vector3.down,out sphereRay, groundCheckDistance, groundLayer, QueryTriggerInteraction.UseGlobal);
+        isBackGrounded = Physics.SphereCast(backLeg.position, backLeg.localScale.y, Vector3.down, out sphereRay, groundCheckDistance, groundLayer, QueryTriggerInteraction.UseGlobal);
+        
+        //   isBackGrounded = Physics.Raycast(backLeg.position, Vector3.down, groundCheckDistance, groundLayer);
     }
 
     private bool CanJump()
