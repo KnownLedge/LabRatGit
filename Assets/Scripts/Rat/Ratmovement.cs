@@ -23,6 +23,8 @@ public class Ratmovement : MonoBehaviour
     public float jumpForce = 16f;
     [Tooltip("How long after jumping before the Rat can reneter grounded state")]
     public float jumpLockOutTime = 0.3f;
+    [Tooltip("Stops rat drifting by dividing by this value")]
+    public float driftStop = 1;
 
     [Tooltip("How hard the rat spins, pure style points")]
     public Vector3 spinForce = new Vector3(0, 0, 0);
@@ -133,6 +135,11 @@ public class Ratmovement : MonoBehaviour
             {
                 rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
             }
+            else
+            {
+                rb.velocity = new Vector3(rb.velocity.x / driftStop, rb.velocity.y, rb.velocity.z / driftStop);
+                backRB.velocity = new Vector3(backRB.velocity.x / driftStop, backRB.velocity.y, backRB.velocity.z / driftStop);
+            }
             // Ensure the rat's velocity is capped at the max speed
             rb.velocity = new Vector3(
                 Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed),
@@ -206,6 +213,8 @@ public class Ratmovement : MonoBehaviour
             Vector3 correctiveTorque = Vector3.Cross(transform.up, Vector3.up) * balanceForceMultiplier;
             rb.AddTorque(correctiveTorque, ForceMode.Acceleration);
         }
+
+
     }
 
     public void ChangeSpeed(int i)
