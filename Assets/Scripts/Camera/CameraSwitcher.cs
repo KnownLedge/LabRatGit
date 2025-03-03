@@ -5,8 +5,8 @@ public class CameraSwitcher : MonoBehaviour
 {
     [SerializeField] public Camera[] cameras;
     [SerializeField] public int currentCameraIndex = 0;
-    [SerializeField] private Collider triggerNext;
-    [SerializeField] private Collider triggerPrev;
+    [SerializeField] private Collider[] nextTriggers;  // Array for next triggers
+    [SerializeField] private Collider[] prevTriggers;  // Array for previous triggers
     [SerializeField] private float cameraSwitchDelay = 0.5f;
 
     void Start()
@@ -25,10 +25,17 @@ public class CameraSwitcher : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other == triggerNext || other == triggerPrev)
+        // Check if the triggered collider is in the nextTriggers array
+        if (System.Array.Exists(nextTriggers, trigger => trigger == other))
         {
             StartCoroutine(DisableTriggersForSeconds(3f));
-            StartCoroutine(SwitchCameraWithDelay(other == triggerNext));
+            StartCoroutine(SwitchCameraWithDelay(true)); // Go next
+        }
+        // Check if the triggered collider is in the prevTriggers array
+        else if (System.Array.Exists(prevTriggers, trigger => trigger == other))
+        {
+            StartCoroutine(DisableTriggersForSeconds(3f));
+            StartCoroutine(SwitchCameraWithDelay(false)); // Go previous
         }
     }
 
@@ -61,10 +68,22 @@ public class CameraSwitcher : MonoBehaviour
 
     IEnumerator DisableTriggersForSeconds(float seconds)
     {
-        triggerNext.enabled = false;
-        triggerPrev.enabled = false;
+        foreach (Collider trigger in nextTriggers)
+        {
+            trigger.enabled = false;
+        }
+        foreach (Collider trigger in prevTriggers)
+        {
+            trigger.enabled = false;
+        }
         yield return new WaitForSeconds(seconds);
-        triggerNext.enabled = true;
-        triggerPrev.enabled = true;
+        foreach (Collider trigger in nextTriggers)
+        {
+            trigger.enabled = true;
+        }
+        foreach (Collider trigger in prevTriggers)
+        {
+            trigger.enabled = true;
+        }
     }
 }
