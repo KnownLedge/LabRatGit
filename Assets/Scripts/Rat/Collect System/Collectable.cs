@@ -7,6 +7,7 @@ public class Collectable : MonoBehaviour
     public string itemName;
     public string itemDescription;
     public Sprite itemImage;
+    public Sprite itemBackground;
     public float interactionDistance = 3f;
     private GameObject player;
 
@@ -21,8 +22,13 @@ public class Collectable : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
+                // shows popup
+                PopupManager.instance.ShowPopup(itemDescription, itemBackground);
+
+                // adds to inventory
                 InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
                 InventoryManager.instance.AddItem(newItem);
+
                 Destroy(gameObject);
             }
         }

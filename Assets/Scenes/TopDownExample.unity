@@ -814,6 +814,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1340235168}
+    - targetCorrespondingSourceObject: {fileID: 9121492497299856626, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1340235171}
   m_SourcePrefab: {fileID: 100100000, guid: 836ff81b452c07f49a907d8098f87766, type: 3}
 --- !u!20 &413571987 stripped
 Camera:
@@ -2524,6 +2527,25 @@ MonoBehaviour:
   moveScroll: 1
   axisChoice: 2
   movedir: {x: 0, y: 0, z: 1}
+  isScroll: 0
+--- !u!114 &1340235171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340235167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbccbeda90efed04ea41bb7ad239b59f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1978293142382310975}
+  camspeed: 15
+  startScroll: 2
+  moveScroll: 1
+  axisChoice: 0
+  movedir: {x: 1, y: 0, z: 0}
   isScroll: 0
 --- !u!225 &1410641484 stripped
 CanvasGroup:

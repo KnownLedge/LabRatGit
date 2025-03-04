@@ -51,7 +51,7 @@ public class WaterMazePlatform : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Ratmovement>())
+        if (other.gameObject.GetComponentInParent<Ratmovement>())
         {
             Debug.Log("Overlap Ocurred");
             onPlatform = true;
@@ -59,7 +59,7 @@ public class WaterMazePlatform : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.GetComponent<Ratmovement>()) {
+        if (other.gameObject.GetComponentInParent<Ratmovement>()) {
             onPlatform = false;
         }
     }

@@ -51,12 +51,12 @@ public class ButtonManager : MonoBehaviour
 
 		if (isTailtest)
 		{
-			SceneManager.LoadScene("TailTestRoom");
+			SceneManager.LoadScene("Lab2_Test");
 		}
 
 		if (isTopdown)
 		{
-			SceneManager.LoadScene("TopDownExample");
+			SceneManager.LoadScene("cbLab2");
 		}
 
 		if (isTitle)
