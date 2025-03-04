@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class PipeTransport : MonoBehaviour
 {
     [SerializeField] private Ratmovement ratmovement;
+    [SerializeField] private CameraSwitcher cameraSwitcher;
     
     [Header("Settings")]
     [SerializeField] private Transform entryA;
@@ -113,8 +114,26 @@ public class PipeTransport : MonoBehaviour
         rb.freezeRotation = false;
         ratmovement.enabled = true;
 
+        if(cameraSwitcher != null)
+        {
+           StartCoroutine(SwitchCameraAndEnableAxisCamera());
+           Debug.Log("SwitchCameraAndEnableAxisCamera");
+        }
+
         yield return new WaitForSeconds(cooldownTime);
         entryTrigger.enabled = true;
         exitTrigger.enabled = true;
+    }
+
+    private IEnumerator SwitchCameraAndEnableAxisCamera()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Camera activeCamera = cameraSwitcher.cameras[cameraSwitcher.currentCameraIndex];
+        AxisCamera axisCamera = activeCamera.GetComponent<AxisCamera>();
+        if (axisCamera != null)
+        {
+            axisCamera.enabled = true;
+        }
+        Debug.Log("AxisCamera enabled");
     }
 }
