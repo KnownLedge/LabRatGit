@@ -7,6 +7,7 @@ public class Collectable : MonoBehaviour
     public string itemName;
     public string itemDescription;
     public Sprite itemImage;
+    public Sprite itemBackground;
     public float interactionDistance = 3f;
     private GameObject player;
 
@@ -19,6 +20,7 @@ public class Collectable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            PopupManager.instance.ShowPopup(itemDescription, itemBackground);
             InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
             InventoryManager.instance.AddItem(newItem);
             Destroy(gameObject); // Destroy the collectable item after adding it to the inventory
