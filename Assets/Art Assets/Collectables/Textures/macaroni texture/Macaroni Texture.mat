@@ -7,16 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: standardSurface1
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: Macaroni Texture
+  m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _METALLICGLOSSMAP
   - _NORMALMAP
   - _PARALLAXMAP
+  - _SPECGLOSSMAP
+  m_InvalidKeywords:
   - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -28,7 +29,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 139c3637e1d4f84429cd318ef0ad7728, type: 3}
+        m_Texture: {fileID: 2800000, guid: a31d25993e10f414b8b37133902b2775, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -48,11 +49,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 190813a1620e6d44ea59e9bce718da94, type: 3}
+        m_Texture: {fileID: 2800000, guid: 034ba6ae206cd9b4fa59a77a17819c63, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: e67f3031f72086c48b82475b84ad9afc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 159c39b9c189e16449bd38e594145002, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -60,7 +61,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 6688a65ebf6ca04499412f88003d1d9f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2e7846161abea864f80ef443ba38804f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 06b71d17c0111ef409373fdd9110d5b0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -69,7 +74,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _GlossMapScale: 0.127
+    - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _Metallic: 0
