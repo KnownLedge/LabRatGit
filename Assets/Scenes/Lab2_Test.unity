@@ -4995,6 +4995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ratmovement: {fileID: 2070021761}
+  cameraSwitcher: {fileID: 0}
   entryA: {fileID: 0}
   entryB: {fileID: 0}
   triggerA: {fileID: 0}
@@ -5557,6 +5558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ratmovement: {fileID: 2070021761}
+  cameraSwitcher: {fileID: 0}
   entryA: {fileID: 1482446036}
   entryB: {fileID: 1846810045}
   triggerA: {fileID: 676132717}
@@ -8925,7 +8927,6 @@ GameObject:
   - component: {fileID: 942902648}
   - component: {fileID: 942902647}
   - component: {fileID: 942902650}
-  - component: {fileID: 942902651}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9041,19 +9042,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &942902651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942902646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b68eca73d7e2754ab2f14273a20320c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicClip: {fileID: 8300000, guid: a07238bff58c32e489ff43b2d9d11119, type: 3}
 --- !u!1 &949544848
 GameObject:
   m_ObjectHideFlags: 0
@@ -12860,6 +12848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ratmovement: {fileID: 2070021761}
+  cameraSwitcher: {fileID: 0}
   entryA: {fileID: 757822197}
   entryB: {fileID: 920231989}
   triggerA: {fileID: 1486414338}
@@ -14244,8 +14233,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1455985901723170575, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1599436280}
   m_SourcePrefab: {fileID: 100100000, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+--- !u!1 &1599436279 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1455985901723170575, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+  m_PrefabInstance: {fileID: 1599436278}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1599436280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599436279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b68eca73d7e2754ab2f14273a20320c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicClip: {fileID: 8300000, guid: a07238bff58c32e489ff43b2d9d11119, type: 3}
 --- !u!1 &1603745945
 GameObject:
   m_ObjectHideFlags: 0
