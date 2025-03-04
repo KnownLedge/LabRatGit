@@ -47,7 +47,7 @@ public class Ratmovement : MonoBehaviour
 
     [Header("Body")]
     [SerializeField] private Transform frontLeg;
-    [SerializeField] private Transform backLeg;
+    [SerializeField] public Transform backLeg; //Changed to public to make killbox script easier, we can set back to private later
     [SerializeField] private Rigidbody backRB; 
     [SerializeField] private float groundCheckDistance = 0.2f;
 

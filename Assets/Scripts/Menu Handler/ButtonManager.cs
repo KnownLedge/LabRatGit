@@ -51,7 +51,7 @@ public class ButtonManager : MonoBehaviour
 
 		if (isTailtest)
 		{
-			SceneManager.LoadScene("AnimatedTestRoom");
+			SceneManager.LoadScene("Lab2_Test");
 		}
 
 		if (isTopdown)
