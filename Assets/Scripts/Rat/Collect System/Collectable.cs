@@ -16,21 +16,14 @@ public class Collectable : MonoBehaviour
         player = GameObject.FindWithTag("Player");
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= interactionDistance)
+        if (other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                // shows popup
-                PopupManager.instance.ShowPopup(itemDescription, itemBackground);
-
-                // adds to inventory
-                InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
-                InventoryManager.instance.AddItem(newItem);
-
-                Destroy(gameObject);
-            }
+            PopupManager.instance.ShowPopup(itemDescription, itemBackground);
+            InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
+            InventoryManager.instance.AddItem(newItem);
+            Destroy(gameObject); // Destroy the collectable item after adding it to the inventory
         }
     }
 }
