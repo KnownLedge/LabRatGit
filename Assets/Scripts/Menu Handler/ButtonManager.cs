@@ -31,7 +31,7 @@ public class ButtonManager : MonoBehaviour
 
 		if (isLab1)
 		{
-			SceneManager.LoadScene("Lab1_Test1");
+			SceneManager.LoadScene("Lab1");
 		}
 
 		if (isLab2)

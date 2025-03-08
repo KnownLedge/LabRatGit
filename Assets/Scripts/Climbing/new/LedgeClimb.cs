@@ -4,18 +4,20 @@ using UnityEngine;
 public class LedgeClimb : MonoBehaviour
 {
     public float ledgeDetectDistance = 1f; // Forward distance for raycast to check for a ledge
-    public float climbUpHeight = 2.0f; // Height to move the player up during a climb
-    public float climbForwardDistance = 1.0f; // Distance to move the player forward onto the ledge
-    public float climbDuration = 0.5f; // Duration of the climbing animation
+    public float climbUpHeight = 4.75f; // Height to move the player up during a climb
+    public float climbForwardDistance = 1f; // Distance to move the player forward onto the ledge
+    public float climbDuration = 0.3f; // Duration of the climbing animation
     private bool hasTouchedGround = false; // Ensures the player has touched the ground before climbing again
     private bool isClimbing = false; // Check for if the player is currently climbing
     private Rigidbody rb;
     private Ratmovement ratMovement;
+    private BackCollisionHandler backCollisionHandler;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
         ratMovement = GetComponent<Ratmovement>(); // Get the movement script
+        //backCollisionHandler = FindObjectOfType<BackCollisionHandler>(); 
     }
 
     void Update()
@@ -26,8 +28,8 @@ public class LedgeClimb : MonoBehaviour
             hasTouchedGround = true;
         }
 
-        // Attempt a ledge climb if not already climbing and the player has touched the ground
-        if (!isClimbing && hasTouchedGround)
+        // Ensure the player has jumped before attempting a ledge climb
+        if (!isClimbing && hasTouchedGround && ratMovement.isJump)
         {
             AttemptLedgeClimb();
         }
@@ -48,39 +50,56 @@ public class LedgeClimb : MonoBehaviour
             if (hit.collider.CompareTag("Ledge"))
             {
                 Vector3 ledgePosition = hit.point; // Get the ledge position
-                StartCoroutine(ClimbLedge(ledgePosition)); // Start climbing
+                StartCoroutine(ClimbLedge(ledgePosition)); 
             }
         }
     }
 
-
     IEnumerator ClimbLedge(Vector3 ledgePosition)
     {
-        isClimbing = true; 
+        isClimbing = true;
         ratMovement.enabled = false; // Disable movement during climb
         rb.isKinematic = true; // Disable physics during climb
 
-        // Define start position and target position for the climb
+      
+        //if (backCollisionHandler != null)
+        {
+       //     backCollisionHandler.DisableBackCollisions();
+        }
+
+        // Store the initial rotation before climbing
+        Quaternion startRotation = transform.rotation;
+
+        // Set start position and target position for the climb
         Vector3 startPosition = transform.position;
         Vector3 climbTarget = new Vector3(ledgePosition.x, ledgePosition.y + climbUpHeight, ledgePosition.z) + transform.forward * climbForwardDistance;
 
         float elapsedTime = 0f;
 
-        // Smoothly rotates the rat over the climb duration
+        // Climb animation
         while (elapsedTime < climbDuration)
         {
             transform.position = Vector3.Lerp(startPosition, climbTarget, elapsedTime / climbDuration);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-60, transform.rotation.eulerAngles.y, 0), elapsedTime / climbDuration / 2);
+            transform.rotation = Quaternion.Lerp(startRotation, Quaternion.Euler(-60, transform.rotation.eulerAngles.y, 0), elapsedTime / climbDuration / 2);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         // Ensure final position and reset state after climbing
         transform.position = climbTarget;
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        transform.rotation = startRotation; // Reset to original rotation
         rb.isKinematic = false; // Re-enable physics
         ratMovement.enabled = true; // Re-enable movement
         isClimbing = false; // Reset climbing state
         hasTouchedGround = false; // Prevent repeated climbing without touching the ground
+
+        
+        //yield return new WaitForSeconds(40f);
+
+       // if (backCollisionHandler != null)
+        {
+        //    backCollisionHandler.EnableBackCollisions();
+        }
     }
+
 }
