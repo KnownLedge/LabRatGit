@@ -5101,6 +5101,22 @@ MonoBehaviour:
   - {fileID: 400608231}
   - {fileID: 1454449411}
   cameraSwitchDelay: 0.7
+--- !u!114 &542466472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517485997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8dbb57f00b96c5438b3aaeb95eab816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ledgeDetectDistance: 1
+  climbUpHeight: 4.75
+  climbForwardDistance: 1
+  climbDuration: 0.3
 --- !u!1001 &614225850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10764,7 +10780,10 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1070995914}
     - targetCorrespondingSourceObject: {fileID: 6045902338466454178, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
-      insertIndex: 13
+      insertIndex: 6
+      addedObject: {fileID: 542466472}
+    - targetCorrespondingSourceObject: {fileID: 6045902338466454178, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+      insertIndex: 14
       addedObject: {fileID: 542466454}
     - targetCorrespondingSourceObject: {fileID: 6045902338466454178, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
       insertIndex: -1
