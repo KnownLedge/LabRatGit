@@ -28,19 +28,20 @@ public class CameraSwitcher : MonoBehaviour
         // Check if the triggered collider is in the nextTriggers array
         if (System.Array.Exists(nextTriggers, trigger => trigger == other))
         {
-            StartCoroutine(DisableTriggersForSeconds(3f));
+            //StartCoroutine(DisableTriggersForSeconds(3.5f));
             StartCoroutine(SwitchCameraWithDelay(true)); // Go next
         }
         // Check if the triggered collider is in the prevTriggers array
         else if (System.Array.Exists(prevTriggers, trigger => trigger == other))
         {
-            StartCoroutine(DisableTriggersForSeconds(3f));
+           //StartCoroutine(DisableTriggersForSeconds(3.5f));
             StartCoroutine(SwitchCameraWithDelay(false)); // Go previous
         }
     }
 
     public IEnumerator SwitchCameraWithDelay(bool isNext)
     {
+        DisableTriggers();
         yield return new WaitForSeconds(cameraSwitchDelay);
 
         Camera activeCamera = cameras[currentCameraIndex];
@@ -66,7 +67,7 @@ public class CameraSwitcher : MonoBehaviour
         Debug.Log("Switched to camera: " + cameras[currentCameraIndex].name);
     }
 
-    IEnumerator DisableTriggersForSeconds(float seconds)
+    public void DisableTriggers()
     {
         foreach (Collider trigger in nextTriggers)
         {
@@ -76,7 +77,10 @@ public class CameraSwitcher : MonoBehaviour
         {
             trigger.enabled = false;
         }
-        yield return new WaitForSeconds(seconds);
+    }
+
+    public void EnableTriggers()
+    {
         foreach (Collider trigger in nextTriggers)
         {
             trigger.enabled = true;

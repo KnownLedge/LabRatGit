@@ -123,6 +123,7 @@ public class PipeTransport : MonoBehaviour
         yield return new WaitForSeconds(cooldownTime);
         entryTrigger.enabled = true;
         exitTrigger.enabled = true;
+        cameraSwitcher.EnableTriggers();
     }
 
     private IEnumerator SwitchCameraAndEnableAxisCamera()
