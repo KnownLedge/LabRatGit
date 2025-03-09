@@ -169,8 +169,24 @@ public class Ratmovement : MonoBehaviour
 
         if (direction.sqrMagnitude > 0.001f)
         {
+            // Calculate the target rotation in the Y-axis direction
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnPower * Time.deltaTime);
+            
+            // Get the current rotation and the difference
+            Quaternion currentRotation = transform.rotation;
+            Quaternion rotationDifference = targetRotation * Quaternion.Inverse(currentRotation);
+            
+            // Extract the yaw (rotation around the Y-axis) from the difference
+            float yaw = rotationDifference.eulerAngles.y;
+            
+            // Normalize yaw to avoid weird behavior when crossing 180 degrees
+            if (yaw > 180f) yaw -= 360f;
+
+            if (Mathf.Abs(yaw) > 0.1f)
+            {
+                Vector3 torque = Vector3.up * yaw * turnPower * Time.deltaTime;
+                rb.AddTorque(torque, ForceMode.Force);
+            }
         }
     }
 
