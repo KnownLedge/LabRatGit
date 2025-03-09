@@ -84,8 +84,6 @@ public class Ratmovement : MonoBehaviour
         mousePos.x -= objectPos.x;
         mousePos.y -= objectPos.y;
 
-        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg - 90f;
-
         if (moveState || jumpStyle != jumpFreedom.Locked)
         {
             AimRat();
@@ -159,23 +157,18 @@ public class Ratmovement : MonoBehaviour
         if (Camera.main == null)
             return;
 
-        // Get the player's screen position (including its depth)
         Vector3 playerScreenPos = Camera.main.WorldToScreenPoint(transform.position);
 
-        // Use the mouse position but set its z to the player's depth from the camera
         Vector3 mouseScreenPos = Input.mousePosition;
         mouseScreenPos.z = playerScreenPos.z;
 
-        // Convert the mouse position into world coordinates
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
-        // Calculate the direction from the player to the mouse world position
         Vector3 direction = worldMousePos - transform.position;
-        direction.y = 0f; // flatten the direction to ignore vertical differences
+        direction.y = 0f;
 
         if (direction.sqrMagnitude > 0.001f)
         {
-            // Smoothly rotate the player toward the direction
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnPower * Time.deltaTime);
         }
