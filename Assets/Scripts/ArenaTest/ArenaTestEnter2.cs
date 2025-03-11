@@ -19,6 +19,7 @@ public class ArenaTestEnter2 : MonoBehaviour
 
     private IEnumerator EnableMovementAfterBlowOut()
     {
+        player.GetComponent<Ratmovement>().enabled = false;
         pipeAnimator.SetBool("isBlowing", true);
         Debug.Log("Blowing");
 
