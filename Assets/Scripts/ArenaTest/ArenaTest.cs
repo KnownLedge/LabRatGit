@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ArenaTest : MonoBehaviour
 {
+    [SerializeField]private ArenaTestEnter2 arenaTestEnter2Script;
     [SerializeField] private Transform[] ratSpawnPositions;
     [SerializeField] private Transform[] cheeseSpawnPositions;
     [SerializeField] private GameObject player;
@@ -12,11 +13,19 @@ public class ArenaTest : MonoBehaviour
 
     void Start()
     {
-        SpawnRatAndCheese();
+        if(arenaTestEnter2Script.isReadyToPlay)
+        {
+            SpawnRatAndCheese();
+        }
     }
 
     void Update()
     {
+        if(arenaTestEnter2Script.isReadyToPlay)
+        {
+            SpawnRatAndCheese();
+            arenaTestEnter2Script.isReadyToPlay = false;
+        }
         OnCheeseCollected();
     }
 
