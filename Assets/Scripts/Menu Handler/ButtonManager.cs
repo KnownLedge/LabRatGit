@@ -56,7 +56,7 @@ public class ButtonManager : MonoBehaviour
 
 		if (isTopdown)
 		{
-			SceneManager.LoadScene("cbLab2");
+			SceneManager.LoadScene("Hub");
 		}
 
 		if (isTitle)
