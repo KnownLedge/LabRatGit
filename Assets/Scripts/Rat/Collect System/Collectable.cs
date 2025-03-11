@@ -24,11 +24,11 @@ public class Collectable : MonoBehaviour
             InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
             InventoryManager.instance.AddItem(newItem);
             Destroy(gameObject);
-            
-            // if (itemName == arenaTestEnterScript.requiredCollectableName)
-            // {
-            //     arenaTestEnterScript.OnCollectableCollected();
-            // }
+
+            if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
+            {
+                arenaTestEnterScript.OnCollectableCollected();
+            }
         }
     }
 }
