@@ -612,7 +612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cfd24a1f784fd4ea7837b1d9c6ede6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: {fileID: 102900000, guid: 312d9cc84bf2db44f97b3b925464b680, type: 3}
+  sceneToLoad: Lab3_Test2
 --- !u!1 &271246592
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,7 +1103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cfd24a1f784fd4ea7837b1d9c6ede6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: {fileID: 102900000, guid: 1bc06b04a4c746241b5b8558cd80d00a, type: 3}
+  sceneToLoad: Lab2
 --- !u!1 &796159997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,7 +1251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cfd24a1f784fd4ea7837b1d9c6ede6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: {fileID: 102900000, guid: 8fa8706d7d5b7674eba605eb899323dd, type: 3}
+  sceneToLoad: Lab1
 --- !u!1 &910323595
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,6 +2186,7 @@ GameObject:
   - component: {fileID: 1465967775}
   - component: {fileID: 1465967774}
   - component: {fileID: 1465967773}
+  - component: {fileID: 1465967776}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2267,6 +2268,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1465967776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465967772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b68eca73d7e2754ab2f14273a20320c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicClip: {fileID: 8300000, guid: 26589e512d4631548babe3a1259cfd84, type: 3}
 --- !u!1 &1521451930
 GameObject:
   m_ObjectHideFlags: 0
@@ -2627,7 +2641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cfd24a1f784fd4ea7837b1d9c6ede6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: {fileID: 102900000, guid: 038a850a4171993488c6d0ed885f2853, type: 3}
+  sceneToLoad: Lab3_Test1
 --- !u!1 &1583475373
 GameObject:
   m_ObjectHideFlags: 0
@@ -3064,7 +3078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cfd24a1f784fd4ea7837b1d9c6ede6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: {fileID: 102900000, guid: 9c3ccfd851462ea4db3e42d5a0993926, type: 3}
+  sceneToLoad: 
 --- !u!1 &1981810505
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,20 +6,19 @@ using UnityEditor;
 //then click "No Function" and select "MenuButtonManager" then select "LoadScene ()"
 public class MenuButtonManager : MonoBehaviour
 {
-    [SerializeField] private SceneAsset sceneToLoad;//dropdown menu to choose a scene you want it to load (needs to be added to the build menu to work)
+    [SerializeField] private string sceneToLoad;//Change to string to be more compatible with the build
     
     public void LoadScene()
     {
         if (sceneToLoad != null)//checks for scene selected
         {
-            string sceneName = sceneToLoad.name;
-            if (sceneName == "Quit")
+            if (sceneToLoad == "Quit")
             {
                 Application.Quit();//game will close if selected
             }
             else
             {
-                SceneManager.LoadScene(sceneName);//loads the scene chosen in inspector menu
+                SceneManager.LoadScene(sceneToLoad);//loads the scene chosen in inspector menu
             }
             Time.timeScale = 1f;
         }
