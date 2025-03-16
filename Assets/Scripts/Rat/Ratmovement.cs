@@ -51,6 +51,8 @@ public class Ratmovement : MonoBehaviour
     [SerializeField] private Rigidbody backRB; 
     [SerializeField] private float groundCheckDistance = 0.2f;
 
+
+    [SerializeField] private float backMoveSpeed = 5f;
     [SerializeField] private float backJumpForce = 16f;
     [SerializeField] private float backJumpPower = 100f;
     [SerializeField] private float backJumpDelay = 0.1f;
@@ -132,11 +134,17 @@ public class Ratmovement : MonoBehaviour
             if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
             {
                 rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
-            }
-            else
-            {
+
+                //Going to apply force to back of rat to aim it towards the center of the rat, should make the body move more controlled of itself
+                Vector3 middleDir = (transform.position - backLeg.position) / 2;
+                backRB.AddForce(new Vector3(middleDir.x,0, middleDir.z) *backMoveSpeed, ForceMode.Impulse);
+          //  }
+           // else
+           // {
                 rb.velocity = new Vector3(rb.velocity.x / driftStop, rb.velocity.y, rb.velocity.z / driftStop);
                 backRB.velocity = new Vector3(backRB.velocity.x / driftStop, backRB.velocity.y, backRB.velocity.z / driftStop);
+            }else{
+                backRB.velocity = new Vector3(0, backRB.velocity.y, 0);
             }
             // Ensure the rat's velocity is capped at the max speed
             rb.velocity = new Vector3(
@@ -188,6 +196,11 @@ public class Ratmovement : MonoBehaviour
                 rb.AddTorque(torque, ForceMode.Force);
             }
         }
+
+ 
+        
+
+
     }
 
     public void JumpRat()

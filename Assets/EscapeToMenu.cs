@@ -11,7 +11,7 @@ public class EscapeToMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            SceneManager.LoadScene("title");
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
