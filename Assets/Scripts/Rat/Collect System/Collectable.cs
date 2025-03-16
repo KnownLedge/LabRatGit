@@ -9,11 +9,12 @@ public class Collectable : MonoBehaviour
     public float interactionDistance = 3f;
     private GameObject player;
     private ArenaTestEnter arenaTestEnterScript;
+    private bool Iscollected;
+
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        arenaTestEnterScript = GameObject.Find("ArenaTestEnter").GetComponent<ArenaTestEnter>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,5 +31,10 @@ public class Collectable : MonoBehaviour
                 arenaTestEnterScript.OnCollectableCollected();
             }
         }
+    }
+
+    public bool GetState()
+    {
+        return Iscollected;
     }
 }

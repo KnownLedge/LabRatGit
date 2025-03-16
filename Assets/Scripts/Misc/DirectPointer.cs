@@ -11,6 +11,7 @@ public class DirectPointer : MonoBehaviour
         pointer.name = "Pointer(Instance)";
         cam = Camera.main;
     }
+
     private void Update()
     {
         if (Input.GetMouseButton(0))
