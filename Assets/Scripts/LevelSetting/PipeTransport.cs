@@ -32,6 +32,10 @@ public class PipeTransport : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (ratmovement == null && other.gameObject.GetComponentInParent<Ratmovement>()){
+                // If Ratmovement wasn't set in editor, find it and set it here if possible
+            ratmovement = other.gameObject.GetComponentInParent<Ratmovement>();
+            }            
             Transform entryPoint = GetClosestEntry(other.transform.position);
             Transform exitPoint = (entryPoint == entryA) ? entryB : entryA;
             Collider entryTrigger = (entryPoint == entryA) ? triggerA : triggerB;

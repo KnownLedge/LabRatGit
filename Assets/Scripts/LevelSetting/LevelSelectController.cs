@@ -9,6 +9,7 @@ public class LevelSelectController : MonoBehaviour
     public GameObject[] levelSets;
     public string[] levelSceneNames;
     public GameObject laddersRef;
+    public GameObject pipePrefab;
     public int totalLevels = 1;
     public int levelsUnlocked = 1;
     public int nextLevel = 1;
@@ -23,6 +24,20 @@ public class LevelSelectController : MonoBehaviour
     void Start()
     {
         levelSets[levelsUnlocked - 1].SetActive(true);
+
+        Transform[] pipeEntrances = levelSets[levelsUnlocked - 1].transform.GetComponentsInChildren<Transform>();
+
+        for(int i = 1; i < pipeEntrances.Length; i++){
+           GameObject newPipe;
+           newPipe =  Instantiate(pipePrefab, pipeEntrances[i]);
+          Transform newPipeEntrance = newPipe.transform.Find("EntryA"); //bad code
+
+           LevelTransition pipeLevel = newPipeEntrance.GetComponent<LevelTransition>();
+
+           pipeLevel.level = i;
+           pipeLevel.levelControl = transform.GetComponent<LevelSelectController>();
+            // This is a really stupid way to reference this very script, but im not gonna spend long researching this 
+        }
         if(levelsUnlocked < 5){
             laddersRef.SetActive(false);
         }
