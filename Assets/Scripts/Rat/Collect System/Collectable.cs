@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Collectable : MonoBehaviour
@@ -7,24 +5,36 @@ public class Collectable : MonoBehaviour
     public string itemName;
     public string itemDescription;
     public Sprite itemImage;
+    public Sprite itemBackground;
     public float interactionDistance = 3f;
     private GameObject player;
+    private ArenaTestEnter arenaTestEnterScript;
+    private bool Iscollected;
+
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= interactionDistance)
+        if (other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            PopupManager.instance.ShowPopup(itemDescription, itemBackground);
+            InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
+            InventoryManager.instance.AddItem(newItem);
+            Destroy(gameObject);
+
+            if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
             {
-                InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
-                InventoryManager.instance.AddItem(newItem);
-                Destroy(gameObject);
+                arenaTestEnterScript.OnCollectableCollected();
             }
         }
+    }
+
+    public bool GetState()
+    {
+        return Iscollected;
     }
 }

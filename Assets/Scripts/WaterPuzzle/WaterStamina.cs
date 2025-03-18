@@ -17,13 +17,13 @@ public class WaterStamina : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-    if (ratRef.isJump && ratRef.moveState) { // Really dodgy method of checking if the rats swimming
+ //   if (ratRef.isJump && ratRef.moveState) { // Really dodgy method of checking if the rats swimming
         staminaRef.playerStamina -= drainSpeed;
 
         if(staminaRef.playerStamina <= 0){
             Scenemanager.sceneCheckPoint = 0;
             sceneControl.SceneTransition();
         }
-    }    
+   // }    
     }
 }

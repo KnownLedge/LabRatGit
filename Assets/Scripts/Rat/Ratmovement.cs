@@ -23,6 +23,8 @@ public class Ratmovement : MonoBehaviour
     public float jumpForce = 16f;
     [Tooltip("How long after jumping before the Rat can reneter grounded state")]
     public float jumpLockOutTime = 0.3f;
+    [Tooltip("Stops rat drifting by dividing by this value")]
+    public float driftStop = 1;
 
     [Tooltip("How hard the rat spins, pure style points")]
     public Vector3 spinForce = new Vector3(0, 0, 0);
@@ -45,10 +47,12 @@ public class Ratmovement : MonoBehaviour
 
     [Header("Body")]
     [SerializeField] private Transform frontLeg;
-    [SerializeField] private Transform backLeg;
+    [SerializeField] public Transform backLeg; //Changed to public to make killbox script easier, we can set back to private later
     [SerializeField] private Rigidbody backRB; 
     [SerializeField] private float groundCheckDistance = 0.2f;
 
+
+    [SerializeField] private float backMoveSpeed = 5f;
     [SerializeField] private float backJumpForce = 16f;
     [SerializeField] private float backJumpPower = 100f;
     [SerializeField] private float backJumpDelay = 0.1f;
@@ -82,11 +86,9 @@ public class Ratmovement : MonoBehaviour
         mousePos.x -= objectPos.x;
         mousePos.y -= objectPos.y;
 
-        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg - 90f;
-
         if (moveState || jumpStyle != jumpFreedom.Locked)
         {
-            AimRat(angle);
+            AimRat();
         }
 
         if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Space)) && !isJump)
@@ -132,6 +134,17 @@ public class Ratmovement : MonoBehaviour
             if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
             {
                 rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
+
+                //Going to apply force to back of rat to aim it towards the center of the rat, should make the body move more controlled of itself
+                Vector3 middleDir = (transform.position - backLeg.position) / 2;
+                backRB.AddForce(new Vector3(middleDir.x,0, middleDir.z) *backMoveSpeed, ForceMode.Impulse);
+          //  }
+           // else
+           // {
+                rb.velocity = new Vector3(rb.velocity.x / driftStop, rb.velocity.y, rb.velocity.z / driftStop);
+                backRB.velocity = new Vector3(backRB.velocity.x / driftStop, backRB.velocity.y, backRB.velocity.z / driftStop);
+            }else{
+                backRB.velocity = new Vector3(0, backRB.velocity.y, 0);
             }
             // Ensure the rat's velocity is capped at the max speed
             rb.velocity = new Vector3(
@@ -147,12 +160,25 @@ public class Ratmovement : MonoBehaviour
         }
     }
 
-    public void AimRat(float angle)
+    public void AimRat()
     {
-        if (moveState || jumpStyle != jumpFreedom.SpeedControl) // steer and free can pass
+        if (Camera.main == null)
+            return;
+
+        Vector3 playerScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+
+        Vector3 mouseScreenPos = Input.mousePosition;
+        mouseScreenPos.z = playerScreenPos.z;
+
+        Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+        Vector3 direction = worldMousePos - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude > 0.001f)
         {
             // Calculate the target rotation in the Y-axis direction
-            Quaternion targetRotation = Quaternion.Euler(0, -angle, 0);
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
             
             // Get the current rotation and the difference
             Quaternion currentRotation = transform.rotation;
@@ -170,6 +196,11 @@ public class Ratmovement : MonoBehaviour
                 rb.AddTorque(torque, ForceMode.Force);
             }
         }
+
+ 
+        
+
+
     }
 
     public void JumpRat()
@@ -206,6 +237,8 @@ public class Ratmovement : MonoBehaviour
             Vector3 correctiveTorque = Vector3.Cross(transform.up, Vector3.up) * balanceForceMultiplier;
             rb.AddTorque(correctiveTorque, ForceMode.Acceleration);
         }
+
+
     }
 
     public void ChangeSpeed(int i)
@@ -249,8 +282,11 @@ public class Ratmovement : MonoBehaviour
 
     private void CheckGroundedState()
     {
-        isFrontGrounded = Physics.Raycast(frontLeg.position, Vector3.down, groundCheckDistance, groundLayer);
-        isBackGrounded = Physics.Raycast(backLeg.position, Vector3.down, groundCheckDistance, groundLayer);
+        RaycastHit sphereRay;
+        isFrontGrounded = Physics.SphereCast(frontLeg.position, frontLeg.localScale.y, Vector3.down,out sphereRay, groundCheckDistance, groundLayer, QueryTriggerInteraction.UseGlobal);
+        isBackGrounded = Physics.SphereCast(backLeg.position, backLeg.localScale.y, Vector3.down, out sphereRay, groundCheckDistance, groundLayer, QueryTriggerInteraction.UseGlobal);
+        
+        //   isBackGrounded = Physics.Raycast(backLeg.position, Vector3.down, groundCheckDistance, groundLayer);
     }
 
     private bool CanJump()

@@ -20,7 +20,7 @@ public class StageEnd : MonoBehaviour
     IEnumerator ReturnToMenu()
     {
         yield return new WaitForSeconds(WaitTime);
-        SceneManager.LoadScene("Title", LoadSceneMode.Single);
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
 

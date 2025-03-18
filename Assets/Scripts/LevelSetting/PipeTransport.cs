@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class PipeTransport : MonoBehaviour
 {
     [SerializeField] private Ratmovement ratmovement;
+    [SerializeField] private CameraSwitcher cameraSwitcher;
     
     [Header("Settings")]
     [SerializeField] private Transform entryA;
@@ -31,6 +32,10 @@ public class PipeTransport : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (ratmovement == null && other.gameObject.GetComponentInParent<Ratmovement>()){
+                // If Ratmovement wasn't set in editor, find it and set it here if possible
+            ratmovement = other.gameObject.GetComponentInParent<Ratmovement>();
+            }            
             Transform entryPoint = GetClosestEntry(other.transform.position);
             Transform exitPoint = (entryPoint == entryA) ? entryB : entryA;
             Collider entryTrigger = (entryPoint == entryA) ? triggerA : triggerB;
@@ -113,8 +118,27 @@ public class PipeTransport : MonoBehaviour
         rb.freezeRotation = false;
         ratmovement.enabled = true;
 
+        if(cameraSwitcher != null)
+        {
+           StartCoroutine(SwitchCameraAndEnableAxisCamera());
+           Debug.Log("SwitchCameraAndEnableAxisCamera");
+        }
+
         yield return new WaitForSeconds(cooldownTime);
         entryTrigger.enabled = true;
         exitTrigger.enabled = true;
+        cameraSwitcher.EnableTriggers();
+    }
+
+    private IEnumerator SwitchCameraAndEnableAxisCamera()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Camera activeCamera = cameraSwitcher.cameras[cameraSwitcher.currentCameraIndex];
+        AxisCamera axisCamera = activeCamera.GetComponent<AxisCamera>();
+        if (axisCamera != null)
+        {
+            axisCamera.enabled = true;
+        }
+        Debug.Log("AxisCamera enabled");
     }
 }

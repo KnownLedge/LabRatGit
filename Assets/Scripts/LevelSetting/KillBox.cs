@@ -15,7 +15,9 @@ public class KillBox : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
+            Ratmovement ratMove = col.gameObject.GetComponent<Ratmovement>();
             player.gameObject.transform.position = spawnPoint.position;
+            ratMove.backLeg.position = spawnPoint.position;
         }
     }
 }
