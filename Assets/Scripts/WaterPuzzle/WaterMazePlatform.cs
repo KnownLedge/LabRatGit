@@ -32,10 +32,10 @@ public class WaterMazePlatform : MonoBehaviour
         {
             lerpTimer -= (3f * Time.deltaTime);
         }
-       lerpTimer = Mathf.Clamp(lerpTimer, 0.0f, 1.0f);
+       lerpTimer = Mathf.Clamp(lerpTimer, 0.0f, 0.5f);
         //Debug.Log();
 
-        if(lerpTimer == 1){
+        if(lerpTimer >= 0.5){
             meshRend.enabled = true;
             if(!mazeComplete){
             Scenemanager.scenePhase += 1;
