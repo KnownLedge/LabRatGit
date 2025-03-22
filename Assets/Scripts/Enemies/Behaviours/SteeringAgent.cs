@@ -12,6 +12,10 @@ public class SteeringAgent : MonoBehaviour
     public Vector3 steeringVelocity { get; protected set; }
     public Vector3 currentVelocity { get; protected set; }
 
+    //Multiply the speed of the agent
+    [Range(0.1f, 5f)]
+    public float MoveSpeedMulti = 1f;
+
     //AI-time variables
     [Range(0.1f, 1f)]
     public float MaxTime;
@@ -69,7 +73,7 @@ public class SteeringAgent : MonoBehaviour
         currentVelocity += LimitVelocity;
         currentVelocity = limitVelocity(currentVelocity, MaxVelocity);
 
-        transform.position += currentVelocity * Time.deltaTime;
+        transform.position += currentVelocity * Time.deltaTime * MoveSpeedMulti;
     }
 
     //this function when called will rotate the agent towards the currentTarget

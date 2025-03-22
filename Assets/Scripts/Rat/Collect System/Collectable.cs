@@ -9,7 +9,7 @@ public class Collectable : MonoBehaviour
     public float interactionDistance = 3f;
     private GameObject player;
     private ArenaTestEnter arenaTestEnterScript;
-    private bool Iscollected;
+    public bool Iscollected;
 
 
     void Start()
