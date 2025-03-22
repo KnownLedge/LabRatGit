@@ -7,7 +7,9 @@ public class CollectableButton : MonoBehaviour
     private string ItemDescripton = "cheese";
     public static CollectableButton Instance;
     private Sprite Spriteoff, Spriteon;
+    private Image ChildIm;
     public bool IsUnlocked;
+
 
     private void Awake()
     {
@@ -16,24 +18,17 @@ public class CollectableButton : MonoBehaviour
     }
 
     public void DisplayDescripton() {
-        textBox.text = getState() ? ItemDescripton : "Entry not Found";
+        textBox.text = IsUnlocked ? ItemDescripton : "Entry not Found";
     }
 
-    public void IStart(string Descrption, Sprite on, Sprite off)
+    public void IStart(string Descrption, Sprite on, Sprite off, bool state)
     {
+        ChildIm = transform.GetChild(0).GetComponent<Image>();
         ItemDescripton = Descrption;
         Spriteoff = off;
         Spriteon = on;
+        IsUnlocked = state;
+        ChildIm.sprite = IsUnlocked ? Spriteon : Spriteoff;
     }
-    private void Update()
-    {
-        gameObject.GetComponent<Image>().sprite = getState() ? Spriteon : Spriteoff;
-
-    }
-    public bool getState() {
-        return IsUnlocked;
-    } 
-    public void  SetTrue() {
-        IsUnlocked = !IsUnlocked;
-    }
+   
 }
