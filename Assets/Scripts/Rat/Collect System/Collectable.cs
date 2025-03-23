@@ -7,34 +7,52 @@ public class Collectable : MonoBehaviour
     public Sprite itemImage;
     public Sprite itemBackground;
     public float interactionDistance = 3f;
+    public bool Iscollected;
     private GameObject player;
     private ArenaTestEnter arenaTestEnterScript;
-    public bool Iscollected;
 
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        GameObject arenaObject = GameObject.Find("ArenaTestEnter");
+        if (arenaObject != null)
+        {
+            arenaTestEnterScript = arenaObject.GetComponent<ArenaTestEnter>();
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if (other.CompareTag("Player"))
+        if (Vector3.Distance(transform.position, player.transform.position) <= interactionDistance)
         {
-            PopupManager.instance.ShowPopup(itemDescription, itemBackground);
-            InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
-            InventoryManager.instance.AddItem(newItem);
-            Destroy(gameObject);
-
-            if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                arenaTestEnterScript.OnCollectableCollected();
+                CollectItem();
             }
         }
     }
+
+    private void CollectItem()
+    {
+       
+            PopupManager.instance.ShowPopup(itemDescription, itemBackground);
+            InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
+            InventoryManager.instance.AddItem(newItem);
+
+            if (arenaTestEnterScript != null && !string.IsNullOrEmpty(itemName) && itemName == arenaTestEnterScript.requiredCollectableName)
+            {
+                arenaTestEnterScript.OnCollectableCollected();
+            }
+
+            Destroy(gameObject); 
+        
+    }
+
 
     public bool GetState()
     {
         return Iscollected;
     }
+
 }
