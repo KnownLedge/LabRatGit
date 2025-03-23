@@ -7,7 +7,7 @@ public class Collectable : MonoBehaviour
     public Sprite itemImage;
     public Sprite itemBackground;
     public float interactionDistance = 3f;
-    public bool Iscollected;
+    public bool Iscollected = false;
     private GameObject player;
     private ArenaTestEnter arenaTestEnterScript;
 
@@ -35,19 +35,20 @@ public class Collectable : MonoBehaviour
 
     private void CollectItem()
     {
-       
-            PopupManager.instance.ShowPopup(itemDescription, itemBackground);
-            InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
-            InventoryManager.instance.AddItem(newItem);
+        PopupManager.instance.ShowPopup(itemDescription, itemBackground);
+        InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
+        InventoryManager.instance.AddItem(newItem);
 
-            if (arenaTestEnterScript != null && !string.IsNullOrEmpty(itemName) && itemName == arenaTestEnterScript.requiredCollectableName)
-            {
-                arenaTestEnterScript.OnCollectableCollected();
-            }
+        CollectableOverlay overlay = FindObjectOfType<CollectableOverlay>();
+        if (overlay != null)
+        {
+            int index = overlay.GetIndexOfItem(itemImage); // Find correct index
+            overlay.MarkCollected(index); // Mark this as collected
+        }
 
-            Destroy(gameObject); 
-        
+        Destroy(gameObject);
     }
+
 
 
     public bool GetState()
