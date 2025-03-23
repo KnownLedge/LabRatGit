@@ -8220,7 +8220,7 @@ GameObject:
   - component: {fileID: 236382746}
   m_Layer: 6
   m_Name: texturedRatBall
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40468,6 +40468,104 @@ Transform:
   m_Children: []
   m_Father: {fileID: 621491858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1355760838
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 8.26961
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8.26961
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 8.26961
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 147.32
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.35
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.41163
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      propertyPath: m_Name
+      value: Cork
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1355760840}
+  m_SourcePrefab: {fileID: 100100000, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+--- !u!1 &1355760839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+  m_PrefabInstance: {fileID: 1355760838}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1355760840
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355760839}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4c5704e9e2466504d8b920e9376eeb51, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1357944550
 GameObject:
   m_ObjectHideFlags: 0
@@ -61364,6 +61462,8 @@ GameObject:
   - component: {fileID: 2057698287}
   - component: {fileID: 2057698286}
   - component: {fileID: 2057698285}
+  - component: {fileID: 2057698289}
+  - component: {fileID: 2057698290}
   m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -61457,6 +61557,42 @@ Transform:
   m_Children: []
   m_Father: {fileID: 853712672}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &2057698289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057698284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2cf8ffac85ee844839d1389ee5a4e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectSound: {fileID: 0}
+  corkAnimator: {fileID: 1355760840}
+  pipeTransport: {fileID: 1078734833}
+--- !u!65 &2057698290
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057698284}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000001, y: 1.48, z: 1}
+  m_Center: {x: 0, y: 0.51, z: -0.000000029802322}
 --- !u!1001 &2057817783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64280,3 +64416,4 @@ SceneRoots:
   - {fileID: 2070758121}
   - {fileID: 663186537}
   - {fileID: 1850879573}
+  - {fileID: 1355760838}

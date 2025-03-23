@@ -10,8 +10,8 @@ public class PipeTransport : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private Transform entryA;
     [SerializeField] private Transform entryB;
-    [SerializeField] private Collider triggerA;
-    [SerializeField] private Collider triggerB;
+    public Collider triggerA;
+    public Collider triggerB;
     [SerializeField] private float travelSpeed = 10f;
     [SerializeField] private float accelerationFactor = 5f;
     [SerializeField] private float exitForce = 5f;
