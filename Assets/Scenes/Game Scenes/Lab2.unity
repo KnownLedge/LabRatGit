@@ -30595,6 +30595,8 @@ GameObject:
   - component: {fileID: 968667708}
   - component: {fileID: 968667707}
   - component: {fileID: 968667706}
+  - component: {fileID: 968667711}
+  - component: {fileID: 968667710}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -30688,6 +30690,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 586464493}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!65 &968667710
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968667705}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.89, z: 0.99999994}
+  m_Center: {x: 0, y: 0.39, z: 0.00000011920929}
+--- !u!114 &968667711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968667705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11aed22a065b8344e86b86a8d471da23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectable: {fileID: 1850879574}
 --- !u!1001 &968902327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54251,7 +54287,7 @@ GameObject:
   - component: {fileID: 1816681771}
   m_Layer: 6
   m_Name: texturedRatBall (1)
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55102,6 +55138,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
+--- !u!1 &1850879574 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 749281386615762222, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
+  m_PrefabInstance: {fileID: 1850879573}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1851330820
 GameObject:
   m_ObjectHideFlags: 0
