@@ -25,13 +25,16 @@ public class BallBlockade : MonoBehaviour
     {
         if (other.CompareTag("Ball"))
         {
+            //Play sound when ball in hole
             if (collectSound != null)
             {
                 audioSource.clip = collectSound;
                 audioSource.Play();
             }
+            
             ballCount++;
             Debug.Log("Ball Count: " + ballCount);
+
             if (ballCount == 3)
             {
                 blockadeAnimator.SetTrigger("PlayAnimation"); 

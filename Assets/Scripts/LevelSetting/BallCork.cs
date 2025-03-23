@@ -21,11 +21,12 @@ public class BallCork : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    //When ball enters the trigger, the cork animation will play
+    //When ball enters the trigger, the cork animation will play and pipe triggers will be enabled
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ball"))
         {
+            //PLay sound when ball in hole
             if (collectSound != null)
             {
                 audioSource.clip = collectSound;

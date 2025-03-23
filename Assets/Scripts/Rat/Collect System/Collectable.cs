@@ -30,12 +30,13 @@ public class Collectable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            //Play sound when collect
             if (collectSound != null)
             {
                 audioSource.clip = collectSound;
                 audioSource.Play();
             }
-
+            //PLay effect when collect
             if(collectEffect != null)
             {
                 ParticleSystem effectInstance = Instantiate(collectEffect, transform.position, Quaternion.identity);
