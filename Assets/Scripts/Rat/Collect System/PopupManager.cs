@@ -23,7 +23,7 @@ public class PopupManager : MonoBehaviour
 
     void Update()
     {
-        if (showPopup && Input.GetKeyDown(KeyCode.F))
+        if (showPopup && Input.GetKeyDown(KeyCode.E))
         {
             ClosePopup();
         }
