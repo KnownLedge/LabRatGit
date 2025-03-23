@@ -25,11 +25,14 @@ public class CollectableManager : MonoBehaviour
             case "Lab2":
                 sceneIndex = 1;
                 break; 
-            case "Lab3":
+            case "Lab3_Test1" or "Lab3_Test2":
                 sceneIndex = 2;
                 break; 
             case "RPS test":
                 sceneIndex = 0;
+                break;
+            default:
+                sceneIndex = 2;
                 break;
         }
     }

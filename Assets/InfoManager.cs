@@ -46,7 +46,7 @@ public class InfoManager : MonoBehaviour
 
     private void Awake()
     {
-        panel = GameObject.Find("Canvas/Panel");
+        panel = GameObject.Find("CollectableUIHud/CollectableUIPanel");
         panelSetDeActive();
         SetSprite();
     }
@@ -133,7 +133,7 @@ public class InfoManager : MonoBehaviour
     #region Collectable buttons list
     private void CreateButtons(int SCA)
     {
-        GameObject UIButtonsParent = GameObject.Find("Panel/CollectList/Grid");
+        GameObject UIButtonsParent = GameObject.Find("CollectableUIPanel/CollectList/Grid");
         Button ButtonPrefab = Resources.Load<Button>(@"UI/Button");
         string[] Descriptline = File.ReadAllLines(ItemDesPathWay[pageIndex]);
         bs = CollectableManager.instance.GetBools(SCA);

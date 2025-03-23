@@ -14,7 +14,7 @@ public class CollectableButton : MonoBehaviour
     private void Awake()
     {
         Instance = this;   
-        textBox = GameObject.Find("Panel/CollectFile/Text").GetComponent<Text>();
+        textBox = GameObject.Find("CollectableUIHud/CollectableUIPanel/CollectFile/Text").GetComponent<Text>();
     }
 
     public void DisplayDescripton() {
