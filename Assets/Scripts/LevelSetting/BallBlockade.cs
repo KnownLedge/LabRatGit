@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class BallBlockade : MonoBehaviour
 {
+    [SerializeField] private AudioClip collectSound;
+    private AudioSource audioSource;
     [SerializeField] private Animator blockadeAnimator;
     private int ballCount = 0;
+
+    private void Start()
+    {
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        audioSource.playOnAwake = false;
+    }
 
     //When ball enters the trigger, the ball count will increase and when it reaches 3, 
     // the blockade animation will play
@@ -13,6 +25,11 @@ public class BallBlockade : MonoBehaviour
     {
         if (other.CompareTag("Ball"))
         {
+            if (collectSound != null)
+            {
+                audioSource.clip = collectSound;
+                audioSource.Play();
+            }
             ballCount++;
             Debug.Log("Ball Count: " + ballCount);
             if (ballCount == 3)
