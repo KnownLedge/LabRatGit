@@ -1695,6 +1695,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: texturedRatBall
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c625e0e2e5f12b348a82742d70f843e2, type: 3}
+      propertyPath: m_TagString
+      value: Ball
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3144,8 +3148,10 @@ GameObject:
   - component: {fileID: 657590999}
   - component: {fileID: 657590998}
   - component: {fileID: 657590997}
+  - component: {fileID: 657591000}
+  - component: {fileID: 657591001}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: BallTriggerFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3237,6 +3243,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657590995}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &657591000
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657590995}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.92, y: 6.67, z: 0.82}
+  m_Center: {x: -0.015, y: 0.92, z: 0.00000023841858}
+--- !u!114 &657591001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657590995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc01f3dc0e5518c47a9c74c0259a363c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockadeAnimator: {fileID: 0}
 --- !u!1 &723038858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3866,8 +3906,9 @@ GameObject:
   - component: {fileID: 876187070}
   - component: {fileID: 876187069}
   - component: {fileID: 876187068}
+  - component: {fileID: 876187071}
   m_Layer: 0
-  m_Name: Cube (10)
+  m_Name: Blockade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3882,7 +3923,7 @@ Transform:
   m_GameObject: {fileID: 876187066}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 66.5207, y: 11.4, z: -6.792572}
+  m_LocalPosition: {x: 66.521, y: -1.34, z: -6.7926}
   m_LocalScale: {x: 1, y: 18.0508, z: 16.249928}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3959,6 +4000,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 876187066}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &876187071
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876187066}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5afeb005980b8f54eb8a7b9bc7eef04d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &898904453
 GameObject:
   m_ObjectHideFlags: 0
@@ -4110,6 +4172,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1978293142445364507, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3655723426979565666, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5441095159546034802, guid: c1671128f7a6aa04faa88966819c08b2, type: 3}
@@ -4309,7 +4375,6 @@ GameObject:
   m_Component:
   - component: {fileID: 942902649}
   - component: {fileID: 942902648}
-  - component: {fileID: 942902647}
   - component: {fileID: 942902650}
   m_Layer: 0
   m_Name: Main Camera
@@ -4318,14 +4383,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &942902647
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942902646}
-  m_Enabled: 1
 --- !u!20 &942902648
 Camera:
   m_ObjectHideFlags: 0
@@ -5873,6 +5930,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c625e0e2e5f12b348a82742d70f843e2, type: 3}
       propertyPath: m_Name
       value: texturedRatBall (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c625e0e2e5f12b348a82742d70f843e2, type: 3}
+      propertyPath: m_TagString
+      value: Ball
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7597,6 +7658,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c625e0e2e5f12b348a82742d70f843e2, type: 3}
       propertyPath: m_Name
       value: texturedRatBall (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c625e0e2e5f12b348a82742d70f843e2, type: 3}
+      propertyPath: m_TagString
+      value: Ball
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
