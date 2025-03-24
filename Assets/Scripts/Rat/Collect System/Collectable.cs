@@ -78,7 +78,7 @@ public class Collectable : MonoBehaviour
     private IEnumerator DestroyAfterSound()
     {
         float startTime = Time.realtimeSinceStartup;
-        float duration = collectSound.length;
+        float duration = 2;
         while (Time.realtimeSinceStartup < startTime + duration)
         {
             yield return null; 

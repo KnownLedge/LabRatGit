@@ -8,6 +8,15 @@ public class FadeManager : MonoBehaviour
     [SerializeField] private Image fadeImage;
     [SerializeField] private float fadeDuration = 1f;
 
+    private void Start()
+    {
+        if(SceneManager.GetActiveScene().name == "Arena_Test")
+        {
+            fadeImage.enabled = true;
+            StartCoroutine(Fade(0));
+        }
+    }
+
     private void Awake()
     {
         fadeImage.enabled = false;

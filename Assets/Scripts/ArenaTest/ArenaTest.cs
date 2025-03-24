@@ -13,6 +13,7 @@ public class ArenaTest : MonoBehaviour
 
     void Start()
     {
+        SpawnRat();
         if(arenaTestEnter2Script.isReadyToPlay)
         {
             SpawnRatAndCheese();
@@ -28,6 +29,7 @@ public class ArenaTest : MonoBehaviour
         }
         OnCheeseCollected();
     }
+    
 
     private void SpawnRatAndCheese()
     {
@@ -39,32 +41,49 @@ public class ArenaTest : MonoBehaviour
         Debug.Log("Rat index: " + ratIndex);
 
         Ratmovement ratMove = player.gameObject.GetComponent<Ratmovement>();
-        player.gameObject.transform.position = ratSpawnPositions[ratIndex].position;
+        if(arenaTestEnter2Script.isReadyToPlay == false)
+        {
+            player.gameObject.transform.position = ratSpawnPositions[ratIndex].position;
+        }
+
         ratMove.backLeg.position = ratSpawnPositions[ratIndex].position;
         Debug.Log("Player position: " + player.transform.position);
 
         currentCheese = Instantiate(cheesePrefab, cheeseSpawnPositions[cheeseIndex].position, Quaternion.identity);
     }
 
+    private void SpawnRat()
+    {
+        int ratIndex = Random.Range(0, ratSpawnPositions.Length);
+        Debug.Log("Rat index: " + ratIndex);
+
+        Ratmovement ratMove = player.gameObject.GetComponent<Ratmovement>();
+        if(arenaTestEnter2Script.isReadyToPlay == false)
+        {
+            player.gameObject.transform.position = ratSpawnPositions[ratIndex].position;
+        }
+        ratMove.backLeg.position = ratSpawnPositions[ratIndex].position;
+        Debug.Log("Player position: " + player.transform.position);
+    }
+
     private void OnCheeseCollected()
     {
-        if(currentCheese == null)
+        if (/*currentCheese == null &&*/ Input.GetKeyDown(KeyCode.E))
         {
-            if(Input.GetKeyDown(KeyCode.F))
+            if (spawnCount + 1 >= maxSpawns) // Check BEFORE increasing spawnCount
             {
-                if(spawnCount < maxSpawns)
-                {
-                    Debug.Log("Cheese collected");
-                    spawnCount++;
-                    SpawnRatAndCheese();
-                }
-                else
-                {
-                    
-                }
+                Debug.Log("All cheese collected, leaving arena...");
+                SpawnRat();
+                StartCoroutine(arenaTestEnter2Script.LeaveArena()); // Start coroutine immediately
             }
-
+            else
+            {
+                spawnCount++;
+                Debug.Log("Cheese collected");
+                SpawnRatAndCheese();
+                arenaTestEnter2Script.isReadyToPlay = false;
+            }
         }
-        
     }
+
 }

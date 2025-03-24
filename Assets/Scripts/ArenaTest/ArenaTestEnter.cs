@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 public class ArenaTestEnter : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject pipe;
-    [SerializeField] private Animator pipeAnimator;
+    //[SerializeField] private GameObject net;
+    //[SerializeField] private Animator netAnimator;
     [SerializeField] private float animationTime = 6f;
     [SerializeField] private FadeManager fadeManager;
 
@@ -18,9 +18,10 @@ public class ArenaTestEnter : MonoBehaviour
         player = GameObject.FindWithTag("Player");
     }
 
+
     void Update()
     {
-        if (isCollectableCollected && Input.GetKeyDown(KeyCode.F))
+        if (isCollectableCollected && Input.GetKeyDown(KeyCode.E))
         {
             StartCoroutine(EnterArena());
         }
@@ -29,15 +30,30 @@ public class ArenaTestEnter : MonoBehaviour
     private IEnumerator EnterArena()
     {
         player.GetComponent<Ratmovement>().enabled = false;
-        player.transform.position = new Vector3(-128.550003f,78.1999969f,15.96f);
-        Debug.Log("Player position: " + player.transform.position);
+        //player.gameObject.transform.position = new Vector3(-128.550003f, 78.1999969f, 15.96f);
         
-        pipeAnimator.SetBool("isSucking", true);
+        Debug.Log("Player position before arena: " + player.transform.position);
+        
+        //netAnimator.SetTrigger("GoingDown");
         
         yield return new WaitForSeconds(3);
-        player.SetActive(false);
+        //player.SetActive(false);
 
         fadeManager.FadeOutAndLoadScene("Arena_Test");
+    }
+
+    private IEnumerator EnableMovementAfterBlowOut()
+    {
+        player.GetComponent<Ratmovement>().enabled = false;
+        // netAnimator.SetBool("isBlowing", true);
+        Debug.Log("Blowing");
+
+        yield return StartCoroutine(fadeManager.Fade(0));
+        yield return new WaitForSeconds(animationTime);
+        
+        //netAnimator.SetBool("isBlowing", false);
+        Debug.Log("Ready to play");
+        player.GetComponent<Ratmovement>().enabled = true;
     }
 
 
