@@ -42,12 +42,15 @@ public class InfoManager : MonoBehaviour
     private Sprite[,] Unlocked = new Sprite[3,10];
     private Sprite[,] Locked = new Sprite[3, 10];
 
+    private bool[] bs;
+
     private void Awake()
     {
-        panel = GameObject.Find("Canvas/Panel");
+        panel = GameObject.Find("CollectableUIHud/CollectableUIPanel");
         panelSetDeActive();
         SetSprite();
     }
+   
     void SetSprite()
     {
         for (int i = 0; i < CollectCount[0]; i++) 
@@ -130,17 +133,19 @@ public class InfoManager : MonoBehaviour
     #region Collectable buttons list
     private void CreateButtons(int SCA)
     {
-        GameObject UIButtonsParent = GameObject.Find("Panel/CollectList/Grid");
+        GameObject UIButtonsParent = GameObject.Find("CollectableUIPanel/CollectList/Grid");
         Button ButtonPrefab = Resources.Load<Button>(@"UI/Button");
         string[] Descriptline = File.ReadAllLines(ItemDesPathWay[pageIndex]);
+        bs = CollectableManager.instance.GetBools(SCA);
         
+
         if (buttons != null)
         {
             ClearList();
             for (int i = 0; i < CollectCount[SCA]; i++)
             {
                 buttons.Add(Instantiate(ButtonPrefab, UIButtonsParent.transform));
-                buttons[i].GetComponent<CollectableButton>().IStart(Descriptline[i], Unlocked[pageIndex,i], Locked[pageIndex,i]);
+                buttons[i].GetComponent<CollectableButton>().IStart(Descriptline[i], Unlocked[pageIndex, i], Locked[pageIndex, i], bs[i]);
             }
         }
 
@@ -149,7 +154,7 @@ public class InfoManager : MonoBehaviour
             for (int i = 0; i < CollectCount[SCA]; i++)
             {
                 buttons.Add(Instantiate(ButtonPrefab, UIButtonsParent.transform));
-                buttons[i].GetComponent<CollectableButton>().IStart(Descriptline[i], Unlocked[pageIndex,i], Locked[pageIndex,i]);
+                buttons[i].GetComponent<CollectableButton>().IStart(Descriptline[i], Unlocked[pageIndex,i], Locked[pageIndex,i], bs[i]);
             }
         }
     }

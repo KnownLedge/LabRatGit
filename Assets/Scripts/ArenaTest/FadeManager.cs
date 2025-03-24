@@ -8,8 +8,15 @@ public class FadeManager : MonoBehaviour
     [SerializeField] private Image fadeImage;
     [SerializeField] private float fadeDuration = 1f;
 
+    private void Awake()
+    {
+        fadeImage.enabled = false;
+    }
+
     public void FadeOutAndLoadScene(string sceneName)
     {
+        if(fadeImage.enabled == false)
+            fadeImage.enabled = true;
         StartCoroutine(FadeOutCoroutine(sceneName));
     }
 
