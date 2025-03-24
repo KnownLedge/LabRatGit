@@ -24,7 +24,7 @@ public class CollectableOverlay : MonoBehaviour
             if (collectableScript != null && collectableScript.itemImage != null)
             {
                 collectableImages.Add(collectableScript.itemImage);
-                collectedStatus.Add(false); // Start as uncollected
+                collectedStatus.Add(false);
             }
         }
     }
