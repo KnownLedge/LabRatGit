@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
+    [SerializeField] private AudioClip collectSound;
+    private AudioSource audioSource;
+    [SerializeField] private ParticleSystem collectEffect;
     public string itemName;
     public string itemDescription;
     public Sprite itemImage;
@@ -15,11 +18,18 @@ public class Collectable : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+
         GameObject arenaObject = GameObject.Find("ArenaTestEnter");
         if (arenaObject != null)
         {
             arenaTestEnterScript = arenaObject.GetComponent<ArenaTestEnter>();
         }
+
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
     }
 
     void Update()
@@ -35,6 +45,19 @@ public class Collectable : MonoBehaviour
 
     private void CollectItem()
     {
+        //Play Sound when collect
+        if (collectSound != null)
+        {
+            audioSource.clip = collectSound;
+            audioSource.Play();
+        }
+        //PLay effect when collect
+        if(collectEffect != null)
+        {
+            ParticleSystem effectInstance = Instantiate(collectEffect, transform.position, Quaternion.identity);
+            Destroy(effectInstance.gameObject, effectInstance.main.duration);
+        }
+
         PopupManager.instance.ShowPopup(itemDescription, itemBackground);
         InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
         InventoryManager.instance.AddItem(newItem);
@@ -46,10 +69,13 @@ public class Collectable : MonoBehaviour
             overlay.MarkCollected(index); // Mark this as collected
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject, collectSound.length);
+
+        if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
+        {
+            arenaTestEnterScript.OnCollectableCollected();
+        }
     }
-
-
 
     public bool GetState()
     {
@@ -57,3 +83,4 @@ public class Collectable : MonoBehaviour
     }
 
 }
+
