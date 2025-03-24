@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Collectable : MonoBehaviour
 {
@@ -32,14 +33,11 @@ public class Collectable : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= interactionDistance)
+        if (other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                CollectItem();
-            }
+            CollectItem();
         }
     }
 
@@ -51,12 +49,13 @@ public class Collectable : MonoBehaviour
             audioSource.clip = collectSound;
             audioSource.Play();
         }
-        //PLay effect when collect
+        //Play effect when collect
         if(collectEffect != null)
         {
             ParticleSystem effectInstance = Instantiate(collectEffect, transform.position, Quaternion.identity);
             Destroy(effectInstance.gameObject, effectInstance.main.duration);
         }
+
 
         PopupManager.instance.ShowPopup(itemDescription, itemBackground);
         InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
@@ -69,12 +68,23 @@ public class Collectable : MonoBehaviour
             overlay.MarkCollected(index); // Mark this as collected
         }
 
-        Destroy(gameObject, collectSound.length);
+        StartCoroutine(DestroyAfterSound());
 
         if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
         {
             arenaTestEnterScript.OnCollectableCollected();
         }
+    }
+    private IEnumerator DestroyAfterSound()
+    {
+        float startTime = Time.realtimeSinceStartup;
+        float duration = collectSound.length;
+        while (Time.realtimeSinceStartup < startTime + duration)
+        {
+            yield return null; 
+        }
+
+        Destroy(gameObject);
     }
 
     public bool GetState()
