@@ -22,14 +22,11 @@ public class Collectable : MonoBehaviour
         }
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= interactionDistance)
+        if (other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                CollectItem();
-            }
+            CollectItem();
         }
     }
 
