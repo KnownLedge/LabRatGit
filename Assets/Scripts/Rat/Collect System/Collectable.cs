@@ -68,23 +68,10 @@ public class Collectable : MonoBehaviour
             overlay.MarkCollected(index); // Mark this as collected
         }
 
-        StartCoroutine(DestroyAfterSound());
-
         if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
         {
             arenaTestEnterScript.OnCollectableCollected();
         }
-    }
-    private IEnumerator DestroyAfterSound()
-    {
-        float startTime = Time.realtimeSinceStartup;
-        float duration = 2;
-        while (Time.realtimeSinceStartup < startTime + duration)
-        {
-            yield return null; 
-        }
-
-        Destroy(gameObject);
     }
 
     public bool GetState()

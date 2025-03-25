@@ -27782,12 +27782,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8529345046817709543, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemName
-      value: 
+      value: Cherry
       objectReference: {fileID: 0}
     - target: {fileID: 8529345046817709543, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemImage
       value: 
       objectReference: {fileID: 21300000, guid: 4047921c8cfb84e469197609cdcddfba, type: 3}
+    - target: {fileID: 8529345046817709543, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
+      propertyPath: collectSound
+      value: 
+      objectReference: {fileID: 8300000, guid: ef18c2016b96dd3489cf1680e66ec4d8, type: 3}
     - target: {fileID: 8529345046817709543, guid: 659213c5ec2e99e489ed60bd2c891532, type: 3}
       propertyPath: itemBackground
       value: 
@@ -43108,11 +43112,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 517485997}
-  pipe: {fileID: 1065236032}
-  pipeAnimator: {fileID: 1065236040}
   animationTime: 6
   fadeManager: {fileID: 82715943}
-  requiredCollectableName: Cheese?
+  requiredCollectableName: Cherry
 --- !u!4 &1202901643
 Transform:
   m_ObjectHideFlags: 0

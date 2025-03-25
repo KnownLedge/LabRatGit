@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class PopupManager : MonoBehaviour
 {
+    [SerializeField] Collectable collectable;
     public static PopupManager instance;
     private bool showPopup = false;
     private string popupMessage = "";
@@ -47,6 +48,7 @@ public class PopupManager : MonoBehaviour
         popupSprite = null;
         isPaused = false;
         Time.timeScale = 1;
+        Destroy(collectable.gameObject);
     }
 
     void OnGUI()
