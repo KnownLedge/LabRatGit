@@ -11,6 +11,11 @@ public class EscapeToMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F4))
         {
+            SceneManager.LoadScene("LevelSelect");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
             SceneManager.LoadScene("MainMenu");
         }
     }
