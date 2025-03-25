@@ -5,7 +5,7 @@ using System.Collections;
 
 public class FadeManager : MonoBehaviour
 {
-    [SerializeField] private Image fadeImage;
+    [SerializeField] public Image fadeImage;
     [SerializeField] private float fadeDuration = 1f;
 
     private void Start()
@@ -35,19 +35,44 @@ public class FadeManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public IEnumerator RespawnFade()
+    {
+        if (fadeImage.enabled == false)
+            fadeImage.enabled = true;
+        yield return StartCoroutine(Fade(0));
+    }
+
     public IEnumerator Fade(float targetAlpha)
     {
+        Debug.Log("Fading");
         float timeElapsed = 0f;
-        Color startColor = fadeImage.color;
-        Color targetColor = new Color(startColor.r, startColor.g, startColor.b, targetAlpha);
-
-        while (timeElapsed < fadeDuration)
+        if (targetAlpha == 0)
         {
-            fadeImage.color = Color.Lerp(startColor, targetColor, timeElapsed / fadeDuration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
+            Color startColor = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, 1f);
+            Color targetColor = new Color(startColor.r, startColor.g, startColor.b, targetAlpha);
 
-        fadeImage.color = targetColor;
+            while (timeElapsed < fadeDuration)
+            {
+                fadeImage.color = Color.Lerp(startColor, targetColor, timeElapsed / fadeDuration);
+                timeElapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            fadeImage.color = targetColor;
+        }
+        else
+        {
+            Color startColor = fadeImage.color;
+            Color targetColor = new Color(startColor.r, startColor.g, startColor.b, targetAlpha);
+
+            while (timeElapsed < fadeDuration)
+            {
+                fadeImage.color = Color.Lerp(startColor, targetColor, timeElapsed / fadeDuration);
+                timeElapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            fadeImage.color = targetColor;
+        }
     }
 }
