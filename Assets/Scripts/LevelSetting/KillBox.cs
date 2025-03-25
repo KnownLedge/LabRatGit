@@ -16,7 +16,6 @@ public class KillBox : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            fadeManager.fadeImage.enabled = true;
             StartCoroutine(fadeManager.RespawnFade());
             Ratmovement ratMove = col.gameObject.GetComponent<Ratmovement>();
             player.gameObject.transform.position = spawnPoint.position;
