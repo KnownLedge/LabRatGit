@@ -23,11 +23,13 @@ public class PopupManager : MonoBehaviour
 
     void Update()
     {
-        if (showPopup && Input.GetKeyDown(KeyCode.E))
+        if (showPopup && (Input.GetKeyDown(KeyCode.E)))
         {
             ClosePopup();
         }
     }
+
+    
 
     public void ShowPopup(string message, Sprite image)
     {
