@@ -23,11 +23,13 @@ public class PopupManager : MonoBehaviour
 
     void Update()
     {
-        if (showPopup && Input.GetKeyDown(KeyCode.E))
+        if (showPopup && (Input.GetKeyDown(KeyCode.E)))
         {
             ClosePopup();
         }
     }
+
+    
 
     public void ShowPopup(string message, Sprite image)
     {
@@ -76,6 +78,11 @@ public class PopupManager : MonoBehaviour
             float textY = imageY + (imageHeight - textHeight) / 2;
 
             GUI.Label(new Rect(textX, textY, textWidth, textHeight), popupMessage, customStyle);
+
+            textY = textY + textHeight * 1.3f;
+
+            GUI.Label(new Rect(textX, textY, textWidth, textHeight), "Press E to close", customStyle);
+
         }
     }
 }
