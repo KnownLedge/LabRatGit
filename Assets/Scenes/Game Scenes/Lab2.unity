@@ -30725,6 +30725,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectable: {fileID: 1850879574}
+  cinemachineBrain: {fileID: 0}
+  focusDuration: 3
 --- !u!1001 &968902327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40567,6 +40569,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &1355760843 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
+  m_PrefabInstance: {fileID: 1355760838}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1357944550
 GameObject:
   m_ObjectHideFlags: 0
@@ -61570,9 +61577,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2cf8ffac85ee844839d1389ee5a4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successSound: {fileID: 0}
+  collectSound: {fileID: 0}
   corkAnimator: {fileID: 1355760840}
   pipeTransport: {fileID: 1078734833}
+  Cork: {fileID: 1355760843}
+  cinemachineBrain: {fileID: 567985607}
+  focusDuration: 3
 --- !u!65 &2057698290
 BoxCollider:
   m_ObjectHideFlags: 0
