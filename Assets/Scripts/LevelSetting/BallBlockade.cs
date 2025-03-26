@@ -4,7 +4,7 @@ using Cinemachine;
 
 public class BallBlockade : MonoBehaviour
 {
-    [SerializeField] private AudioClip collectSound;
+    [SerializeField] private AudioClip successSound;
     [SerializeField] private Animator blockadeAnimator;
     [SerializeField] private Transform blockade; 
     [SerializeField] private Transform player; 
@@ -37,9 +37,9 @@ public class BallBlockade : MonoBehaviour
     {
         if (other.CompareTag("Ball"))
         {
-            if (collectSound != null)
+            if (successSound != null)
             {
-                audioSource.clip = collectSound;
+                audioSource.clip = successSound;
                 audioSource.Play();
             }
 

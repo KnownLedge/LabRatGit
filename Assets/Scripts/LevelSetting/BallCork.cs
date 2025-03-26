@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallCork : MonoBehaviour
 {
-    [SerializeField] private AudioClip collectSound;
+    [SerializeField] private AudioClip successSound;
     private AudioSource audioSource;
     [SerializeField] private Animator corkAnimator;
     [SerializeField] private PipeTransport pipeTransport;
@@ -27,9 +27,9 @@ public class BallCork : MonoBehaviour
         if (other.CompareTag("Ball"))
         {
             //PLay sound when ball in hole
-            if (collectSound != null)
+            if (successSound != null)
             {
-                audioSource.clip = collectSound;
+                audioSource.clip = successSound;
                 audioSource.Play();
             }
             corkAnimator.SetTrigger("PlayAnimation"); 
