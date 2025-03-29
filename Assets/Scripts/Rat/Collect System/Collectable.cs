@@ -10,7 +10,7 @@ public class Collectable : MonoBehaviour
     public bool Iscollected = false;
     private GameObject player;
     private ArenaTestEnter arenaTestEnterScript;
-
+   
 
     void Start()
     {
@@ -20,6 +20,7 @@ public class Collectable : MonoBehaviour
         {
             arenaTestEnterScript = arenaObject.GetComponent<ArenaTestEnter>();
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,14 +44,10 @@ public class Collectable : MonoBehaviour
             overlay.MarkCollected(index); // Mark this as collected
         }
 
+        //TB - TEST DELETE IF NEEDED
+        Iscollected = true;
+        GetComponent<CollectData>().Collected();
+
         Destroy(gameObject);
     }
-
-
-
-    public bool GetState()
-    {
-        return Iscollected;
-    }
-
 }

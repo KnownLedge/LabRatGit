@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4374931827673631220}
   - component: {fileID: 3401445619789674238}
   - component: {fileID: 8529345046817709543}
+  - component: {fileID: 4588855904080874038}
   m_Layer: 0
   m_Name: Collectable
   m_TagString: Collectable
@@ -82,6 +83,18 @@ MonoBehaviour:
   itemBackground: {fileID: 21300000, guid: 9128639c217c2e746ad645931d6905d6, type: 3}
   interactionDistance: 3
   Iscollected: 0
+--- !u!114 &4588855904080874038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749281386615762222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe59b376a910b04fbc0695c13736da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &44746257114612568
 PrefabInstance:
   m_ObjectHideFlags: 0
