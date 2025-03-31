@@ -67,7 +67,7 @@ public class Ratmovement : MonoBehaviour
     [SerializeField] protected bool isFrontGrounded = false;
     [SerializeField] protected bool isBackGrounded = false;
     public bool moveState = true;
-    public bool isJump = false;
+    public bool isJump = false; //Keep public, needed for animator
     public float prevAngle = 0f;
     public float jumpLockOut = 0f;
     //How long before the player is allowed to land on an object when jumping, designed to prevent the player 
