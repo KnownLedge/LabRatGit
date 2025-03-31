@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Ratmovement : MonoBehaviour
 {
-    private Rigidbody rb; //Player rigidbody component
-    private RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
-    private Vector3 mousePos; // Position of mouse cursor in world environment
-    [SerializeField] private LayerMask groundLayer;
+    protected Rigidbody rb; //Player rigidbody component
+    protected RigidbodyConstraints groundedConstraints; // Stores rigidbody constraints for when grounded incase we need to change them in the air.
+    protected Vector3 mousePos; // Position of mouse cursor in world environment
+    [SerializeField] protected LayerMask groundLayer;
 
     [Header("Setup")]
     [Tooltip("How fast the rat runs")]
@@ -46,26 +46,26 @@ public class Ratmovement : MonoBehaviour
     public Vector2[] speedStates;
 
     [Header("Body")]
-    [SerializeField] private Transform frontLeg;
+    [SerializeField] protected Transform frontLeg;
     [SerializeField] public Transform backLeg; //Changed to public to make killbox script easier, we can set back to private later
-    [SerializeField] private Rigidbody backRB; 
-    [SerializeField] private float groundCheckDistance = 0.2f;
+    [SerializeField] protected Rigidbody backRB; 
+    [SerializeField] protected float groundCheckDistance = 0.2f;
 
 
-    [SerializeField] private float backMoveSpeed = 5f;
-    [SerializeField] private float backJumpForce = 16f;
-    [SerializeField] private float backJumpPower = 100f;
-    [SerializeField] private float backJumpDelay = 0.1f;
-    [SerializeField] private float frontJumpDelay = 0.1f;
+    [SerializeField] protected float backMoveSpeed = 5f;
+    [SerializeField] protected float backJumpForce = 16f;
+    [SerializeField] protected float backJumpPower = 100f;
+    [SerializeField] protected float backJumpDelay = 0.1f;
+    [SerializeField] protected float frontJumpDelay = 0.1f;
 
     [Header("Balance")]
-    [SerializeField] private float balanceForceMultiplier = 10f;
-    [SerializeField] private float tiltThreshold = 60f;
-    [SerializeField] private float correctiveSpeed = 2f;
+    [SerializeField] protected float balanceForceMultiplier = 10f;
+    [SerializeField] protected float tiltThreshold = 60f;
+    [SerializeField] protected float correctiveSpeed = 2f;
 
     [Header("Debug")]
-    [SerializeField] private bool isFrontGrounded = false;
-    [SerializeField] private bool isBackGrounded = false;
+    [SerializeField] protected bool isFrontGrounded = false;
+    [SerializeField] protected bool isBackGrounded = false;
     public bool moveState = true;
     public bool isJump = false;
     public float prevAngle = 0f;
@@ -120,7 +120,13 @@ public class Ratmovement : MonoBehaviour
 
         if (moveState || jumpStyle != jumpFreedom.Locked)
         {
-            MoveRat();
+        //Input taken outside of function to simplify making ai character controller
+            if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
+            {
+                MoveRat();
+            }else{
+                backRB.velocity = new Vector3(0, backRB.velocity.y, 0);
+            }
         }
         BalanceRat();
     }
@@ -131,8 +137,7 @@ public class Ratmovement : MonoBehaviour
         if (moveState || jumpStyle != jumpFreedom.SteerAllowed)
         {
             // Normal movement logic for the rat when it's not climbing
-            if (Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.W))
-            {
+
                 rb.AddForce(new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed, ForceMode.Impulse);
 
                 //Going to apply force to back of rat to aim it towards the center of the rat, should make the body move more controlled of itself
@@ -143,9 +148,7 @@ public class Ratmovement : MonoBehaviour
            // {
                 rb.velocity = new Vector3(rb.velocity.x / driftStop, rb.velocity.y, rb.velocity.z / driftStop);
                 backRB.velocity = new Vector3(backRB.velocity.x / driftStop, backRB.velocity.y, backRB.velocity.z / driftStop);
-            }else{
-                backRB.velocity = new Vector3(0, backRB.velocity.y, 0);
-            }
+
             // Ensure the rat's velocity is capped at the max speed
             rb.velocity = new Vector3(
                 Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed),
@@ -225,7 +228,7 @@ public class Ratmovement : MonoBehaviour
         rb.AddRelativeTorque(spinForce);
     }
 
-    private void BalanceRat()
+    protected void BalanceRat()
     {
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, Vector3.up) * transform.rotation;
 
@@ -280,7 +283,7 @@ public class Ratmovement : MonoBehaviour
     //    }
     //}
 
-    private void CheckGroundedState()
+    public void CheckGroundedState() //Set public for inheritence
     {
         RaycastHit sphereRay;
         isFrontGrounded = Physics.SphereCast(frontLeg.position, frontLeg.localScale.y, Vector3.down,out sphereRay, groundCheckDistance, groundLayer, QueryTriggerInteraction.UseGlobal);
@@ -289,12 +292,12 @@ public class Ratmovement : MonoBehaviour
         //   isBackGrounded = Physics.Raycast(backLeg.position, Vector3.down, groundCheckDistance, groundLayer);
     }
 
-    private bool CanJump()
+    protected bool CanJump()
     {
         return (isFrontGrounded || isBackGrounded) && !isJump && jumpLockOut < 0f;
     }
 
-    private IEnumerator DelayedFrontLegJump(float delay)
+    protected IEnumerator DelayedFrontLegJump(float delay)
     {
         yield return new WaitForSeconds(delay);
         if(!isFrontGrounded) yield break;
@@ -303,7 +306,7 @@ public class Ratmovement : MonoBehaviour
         rb.velocity = new Vector3(forwardDirection.x * backJumpForce, jumpPower, forwardDirection.z * jumpForce);
     }
 
-    private IEnumerator DelayedBackLegJump(float delay)
+    protected IEnumerator DelayedBackLegJump(float delay)
     {
         yield return new WaitForSeconds(delay);
         if(!isBackGrounded) yield break;
