@@ -55,7 +55,7 @@ public class AIRatMove : Ratmovement
                 wayPointID += 0;
                 currentWayPoint = wayPoints[wayPointID];
                 moveForward = false;
-                restartPath();
+              //  restartPath();
             }
         }
 
