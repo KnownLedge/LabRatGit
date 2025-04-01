@@ -12,6 +12,7 @@ public class RatAnimationHandler : MonoBehaviour
     public float speedMult = 1;
     public Rigidbody rb;
     private float forwardSpeed = 0;
+    public Ratmovement ratMove; //reference to ratmovement, needed for jumping
 
     void Start()
     {
@@ -23,5 +24,6 @@ public class RatAnimationHandler : MonoBehaviour
     {
         Vector3 LocalVelocity = (transform.InverseTransformDirection(rb.velocity));
         animControl.SetFloat("ForwardSpeed",  LocalVelocity.z * speedMult);
+        animControl.SetBool("Airborne", ratMove.isJump);
     }
 }

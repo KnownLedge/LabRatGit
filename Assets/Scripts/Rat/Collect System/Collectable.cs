@@ -14,7 +14,7 @@ public class Collectable : MonoBehaviour
     public bool Iscollected = false;
     private GameObject player;
     private ArenaTestEnter arenaTestEnterScript;
-
+   
 
     void Start()
     {
@@ -77,7 +77,11 @@ public class Collectable : MonoBehaviour
     public bool GetState()
     {
         return Iscollected;
-    }
+        //TB - TEST DELETE IF NEEDED
+        Iscollected = true;
+        GetComponent<CollectData>().Collected();
 
+        Destroy(gameObject);
+    }
 }
 

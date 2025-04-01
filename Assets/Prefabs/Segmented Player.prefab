@@ -52,7 +52,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105655258231402407}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -363,6 +363,7 @@ MonoBehaviour:
   animControl: {fileID: 4706320003626652286}
   speedMult: 0.1
   rb: {fileID: 4425009471146329065}
+  ratMove: {fileID: 240549645596547042}
 --- !u!1 &801514224649000110
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +678,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1233376168407259412}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 373c2038798c11243918555ec49df28f, type: 2}
   m_CullingMode: 0
@@ -925,7 +926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &474052875814090574
 Transform:
   m_ObjectHideFlags: 0
@@ -1081,7 +1082,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3175463924989070215}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1693,7 +1694,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4853154311379617925}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1962,6 +1963,7 @@ GameObject:
   - component: {fileID: 2802299164483219215}
   - component: {fileID: 4425009471146329065}
   - component: {fileID: 240549645596547042}
+  - component: {fileID: 4190482484950105749}
   - component: {fileID: 5161274026084759175}
   - component: {fileID: 4712986449840127216}
   - component: {fileID: 2490417922204915402}
@@ -1975,6 +1977,7 @@ GameObject:
   - component: {fileID: 5977991606764208264}
   - component: {fileID: 6274294343089963611}
   - component: {fileID: 6090589088262337120}
+  - component: {fileID: 3209461616752570389}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -2141,6 +2144,22 @@ MonoBehaviour:
   isJump: 0
   prevAngle: 0
   jumpLockOut: 0
+--- !u!114 &4190482484950105749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6045902338466454178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8dbb57f00b96c5438b3aaeb95eab816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ledgeDetectDistance: 1
+  climbUpHeight: 4.75
+  climbForwardDistance: 1
+  climbDuration: 0.3
 --- !u!75 &5161274026084759175
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -2396,7 +2415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff08869b248bb9d4d855d5d98caf194e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FillColor: {r: 0.8027039, g: 0.1924171, b: 0.8867924, a: 1}
+  FillColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
 --- !u!114 &3465020809290750324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2445,6 +2464,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a7a2d27cd412a49ae3a03492dfdbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3209461616752570389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6045902338466454178}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddf277b2ca00c84fb219d84d6e810b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  moveSpeed: 12
+  maxSpeed: 16
+  jumpPower: 600
+  turnPower: 1000
+  jumpForce: 16
+  jumpLockOutTime: 0.3
+  driftStop: 1.25
+  spinForce: {x: 0, y: 0, z: 0}
+  canSpin: 0
+  jumpStyle: 0
+  speedStates: []
+  frontLeg: {fileID: 6395886302009624958}
+  backLeg: {fileID: 8139608382114148608}
+  backRB: {fileID: 1302018316519117234}
+  groundCheckDistance: 0.2
+  backMoveSpeed: 5
+  backJumpForce: 16
+  backJumpPower: 100
+  backJumpDelay: 0.1
+  frontJumpDelay: 0.1
+  balanceForceMultiplier: 10
+  tiltThreshold: 60
+  correctiveSpeed: 2
+  isFrontGrounded: 0
+  isBackGrounded: 0
+  moveState: 1
+  isJump: 0
+  prevAngle: 0
+  jumpLockOut: 0
+  moveForward: 1
+  wayPoints: []
+  currentWayPoint: {fileID: 0}
+  wayPointID: 0
+  wayPointDist: 3
 --- !u!1 &6051361789676254977
 GameObject:
   m_ObjectHideFlags: 0
@@ -2740,7 +2808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &331480336467003893
 Transform:
   m_ObjectHideFlags: 0
@@ -2986,7 +3054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2371946083479833772
 Transform:
   m_ObjectHideFlags: 0
@@ -3207,7 +3275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8980538790221254833
 Transform:
   m_ObjectHideFlags: 0
@@ -3413,7 +3481,7 @@ MonoBehaviour:
       m_Item7:
         transform: {fileID: 0}
         weight: 0
-    m_Offset: {x: 0, y: 0, z: 90}
+    m_Offset: {x: 45, y: 0, z: 90}
     m_MinLimit: -180
     m_MaxLimit: 180
     m_AimAxis: 3
@@ -3423,7 +3491,7 @@ MonoBehaviour:
     m_WorldUpAxis: 2
     m_MaintainOffset: 0
     m_ConstrainedAxes:
-      x: 1
+      x: 0
       y: 1
       z: 1
 --- !u!1001 &4507680377482586912

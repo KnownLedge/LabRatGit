@@ -1,74 +1,54 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InfoManager : MonoBehaviour
 {
     private GameObject panel;
     public List<Button> buttons;
-    private List<string> ItemDesPathWay = new List<string>
-    {
-        "Assets/Resources/UI/ItemDescription1.txt",
-        "Assets/Resources/UI/ItemDescription2.txt",
-        "Assets/Resources/UI/ItemDescription3.txt",
-    };
-
-    [SerializeField]
-    private int[] CollectCount;
+    private int[] CollectCount = new int[3];
     private bool IsActive;
     private int pageIndex;
     private int pageCount = 2;
     [SerializeField]
-    private Text LabText;
+    private Text LabText; 
 
-    [Header("Lab 1 Sprite")]
+    [Header("Lab 1 Collectables")]
     [SerializeField]
-    private Sprite[] Unlocked1;
+    private CollectableData[] Collectables1;
+    [Header("Lab 2 Collectables")]
     [SerializeField]
-    private Sprite[] Locked1;
-    [Header("Lab 2 Sprite")]
+    private CollectableData[] Collectables2;
+    [Header("Lab 3 Collectables")]
     [SerializeField]
-    private Sprite[] Unlocked2;
-    [SerializeField]
-    private Sprite[] Locked2;
-    [Header("Lab 3 Sprite")]
-    [SerializeField]
-    private Sprite[] Unlocked3;
-    [SerializeField]
-    private Sprite[] Locked3;
+    private CollectableData[] Collectables3;
 
-    private Sprite[,] Unlocked = new Sprite[3,10];
-    private Sprite[,] Locked = new Sprite[3, 10];
-
-    private bool[] bs;
+    private CollectableData[,] Collectables = new CollectableData[3,10];
 
     private void Awake()
     {
         panel = GameObject.Find("CollectableUIHud/CollectableUIPanel");
         panelSetDeActive();
-        SetSprite();
+        for (int i = 0; i < Collectables1.Count(); i++) 
+            Collectables[0, i] = Collectables1[i];        
+
+        for (int i = 0; i < Collectables2.Count(); i++)
+            Collectables[1, i] = Collectables2[i];        
+
+        for (int i = 0; i < Collectables3.Count(); i++)
+            Collectables[2, i] = Collectables3[i];
+        
     }
-   
-    void SetSprite()
+    private void Start()
     {
-        for (int i = 0; i < CollectCount[0]; i++) 
-        {
-            Unlocked[0,i] = Unlocked1[i];
-            Locked[0,i] = Locked1[i];
-        } 
-        for (int i = 0; i < CollectCount[1]; i++) 
-        {
-            Unlocked[1,i] = Unlocked2[i];
-            Locked[1,i] = Locked2[i];
-        }   
-        for (int i = 0; i < CollectCount[2]; i++) 
-        {
-            Unlocked[2,i] = Unlocked3[i];
-            Locked[2,i] = Locked3[i];
-        }
+        CollectCount[0] = Collectables1.Count();
+        CollectCount[1] = Collectables2.Count();
+        CollectCount[2] = Collectables3.Count();
     }
+
+
     private void Update()
     {
         //Activate Panel
@@ -91,8 +71,14 @@ public class InfoManager : MonoBehaviour
         IsActive = true;
         LabText.text = ($"Lab {pageIndex + 1}");
         CreateButtons(0);
+        Scrollbar scrollbar = gameObject.GetComponentInChildren<Scrollbar>();
+        if(scrollbar.value == 1)
+            scrollbar.onValueChanged.Invoke(0.9998f);
+        else
+            scrollbar.onValueChanged.Invoke(1);
 
     }
+
     void panelSetDeActive()
     {
         panel.SetActive(false);
@@ -135,17 +121,14 @@ public class InfoManager : MonoBehaviour
     {
         GameObject UIButtonsParent = GameObject.Find("CollectableUIPanel/CollectList/Grid");
         Button ButtonPrefab = Resources.Load<Button>(@"UI/Button");
-        string[] Descriptline = File.ReadAllLines(ItemDesPathWay[pageIndex]);
-        bs = CollectableManager.instance.GetBools(SCA);
         
-
         if (buttons != null)
         {
             ClearList();
             for (int i = 0; i < CollectCount[SCA]; i++)
             {
                 buttons.Add(Instantiate(ButtonPrefab, UIButtonsParent.transform));
-                buttons[i].GetComponent<CollectableButton>().IStart(Descriptline[i], Unlocked[pageIndex, i], Locked[pageIndex, i], bs[i]);
+                buttons[i].GetComponent<CollectableButton>().IStart(Collectables[SCA,i]);
             }
         }
 
@@ -154,7 +137,7 @@ public class InfoManager : MonoBehaviour
             for (int i = 0; i < CollectCount[SCA]; i++)
             {
                 buttons.Add(Instantiate(ButtonPrefab, UIButtonsParent.transform));
-                buttons[i].GetComponent<CollectableButton>().IStart(Descriptline[i], Unlocked[pageIndex,i], Locked[pageIndex,i], bs[i]);
+                buttons[i].GetComponent<CollectableButton>().IStart(Collectables[SCA, i]);
             }
         }
     }
