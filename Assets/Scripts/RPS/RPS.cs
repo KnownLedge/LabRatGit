@@ -3,17 +3,12 @@ using UnityEngine;
 
 public class RPS : MonoBehaviour
 {
-   
-
     private MeshRenderer _Screen;
+    public int cycles,CurCycle;
+    private int Correct;
     public static RPS _instance;
+    public GameObject SimonCollectable;
 
-    private List<string> _Ops = new List<string>
-    {
-        "rock",
-        "paper",
-        "scissors"
-    };
     private enum states
     {
         enter,
@@ -28,13 +23,15 @@ public class RPS : MonoBehaviour
         CurrentState = states.enter;
         _Screen = GameObject.Find("Screen").GetComponent<MeshRenderer>();//get the screen game object
         SetAIOppent();
+        if (SimonCollectable != null)
+            SimonCollectable.SetActive(false);
     }
 
     //when called a name is passed
-    public void CheckInput(string name)
+    private void CheckInput(string name)
     {
         //check if Oppent is null
-        if (Oppent != null)
+        if (Oppent != null && CurCycle < cycles)
         {// this is terrible but this is a prototype
             if (name == Oppent)
             {
@@ -47,6 +44,7 @@ public class RPS : MonoBehaviour
             if (name == "rock" && Oppent == "scissors")
             {
                 _Screen.material.SetColor("_Color", Color.green);
+                Correct++;
 
             }
             if (name == "paper" && Oppent == "scissors")
@@ -56,7 +54,7 @@ public class RPS : MonoBehaviour
             if (name == "paper" && Oppent == "rock")
             {
                 _Screen.material.SetColor("_Color", Color.green);
-
+                Correct++;
             }
             if (name == "scissors" && Oppent == "rock")
             {
@@ -65,7 +63,13 @@ public class RPS : MonoBehaviour
             if (name == "scissors" && Oppent == "paper")
             {
                 _Screen.material.SetColor("_Color", Color.green);
-
+                Correct++;
+            }
+            CurCycle++;
+            if (Correct == cycles)
+            {
+                if (SimonCollectable != null)
+                    SimonCollectable.SetActive(true);
             }
         }
     }
@@ -100,7 +104,14 @@ public class RPS : MonoBehaviour
         SetState(states.Exit);
     }
 
-    private string Oppent;
+    public string Oppent;
+
+    private List<string> _Ops = new List<string>
+    {
+        "rock",
+        "paper",
+        "scissors"
+    };
 
     private void SetAIOppent()
     {
