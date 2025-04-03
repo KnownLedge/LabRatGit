@@ -14,6 +14,8 @@ public class LevelSelectController : MonoBehaviour
     public int levelsUnlocked = 1;
     public int nextLevel = 1;
 
+    public string specificLevel = ""; //Horrible workaround for easy level selecting
+
         public float fadeTime = 3f;
     private float fadeTimer = 0f;
 
@@ -45,13 +47,16 @@ public class LevelSelectController : MonoBehaviour
 
     public void LevelTransition(int level){
         nextLevel = level;
-        Debug.Log("Still goin!");
             StartCoroutine(ScreenFade());
+    }
+
+    public void LevelTransition(string level) { 
+    specificLevel = level;
+        StartCoroutine(ScreenFadeSpecific());
     }
 
     IEnumerator ScreenFade(){
         while(fadeTimer < fadeTime){
-            Debug.Log("This is happening too!" + fadeTimer);
             fadeTimer += 0.001f;
 
             yield return new WaitForSeconds(0.001f);
@@ -59,7 +64,20 @@ public class LevelSelectController : MonoBehaviour
             fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, colAlpha);
         }
      //   sceneCheckPoint = 0;
-     Debug.Log("and so is this!");
             SceneManager.LoadScene(levelSceneNames[nextLevel - 1]);
+    }
+
+    IEnumerator ScreenFadeSpecific()
+    {
+        while (fadeTimer < fadeTime)
+        {
+            fadeTimer += 0.001f;
+
+            yield return new WaitForSeconds(0.001f);
+            float colAlpha = 1 - ((fadeTime - fadeTimer) / fadeTime);
+            fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, colAlpha);
+        }
+        //   sceneCheckPoint = 0;
+        SceneManager.LoadScene(specificLevel);
     }
 }
