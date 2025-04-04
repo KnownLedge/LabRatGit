@@ -4,10 +4,14 @@ using UnityEngine;
 public class RPS : MonoBehaviour
 {
     private MeshRenderer _Screen;
+    public bool glassScreen; //Whether the rps uses the glass monitor or just a material color
     public int cycles,CurCycle;
     private int Correct;
     public static RPS _instance;
     public GameObject SimonCollectable;
+    private GameObject wrongScreen;
+    private GameObject tiedScreen;
+    private GameObject correctScreen; 
 
     private enum states
     {
@@ -21,8 +25,18 @@ public class RPS : MonoBehaviour
     {
         _instance = this;
         CurrentState = states.enter;
-        _Screen = GameObject.Find("Screen").GetComponent<MeshRenderer>();//get the screen game object
-        SetAIOppent();
+        if (glassScreen)
+        {
+            wrongScreen = GameObject.Find("Wrong Screen");
+            tiedScreen = GameObject.Find("Tie Screen");
+            correctScreen = GameObject.Find("Correct Screen");
+            // ^ I am very sorry - Ryan
+        }
+        else
+        {
+            _Screen = GameObject.Find("Screen").GetComponent<MeshRenderer>();//get the screen game object
+        }
+            SetAIOppent();
         if (SimonCollectable != null)
             SimonCollectable.SetActive(false);
     }
@@ -35,34 +49,34 @@ public class RPS : MonoBehaviour
         {// this is terrible but this is a prototype
             if (name == Oppent)
             {
-                _Screen.material.SetColor("_Color", Color.black);
+                SetScreen(1); //Tie
             }
             if (name == "rock" && Oppent == "paper")
             {
-                _Screen.material.SetColor("_Color", Color.red);
+                SetScreen(0); // Wrong
             }
             if (name == "rock" && Oppent == "scissors")
             {
-                _Screen.material.SetColor("_Color", Color.green);
+                SetScreen(2); //Right
                 Correct++;
 
             }
             if (name == "paper" && Oppent == "scissors")
             {
-                _Screen.material.SetColor("_Color", Color.red);
+                SetScreen(0); // Wrong
             }
             if (name == "paper" && Oppent == "rock")
             {
-                _Screen.material.SetColor("_Color", Color.green);
+                SetScreen(2); //Right
                 Correct++;
             }
             if (name == "scissors" && Oppent == "rock")
             {
-                _Screen.material.SetColor("_Color", Color.red);
+                SetScreen(0); // Wrong
             }
             if (name == "scissors" && Oppent == "paper")
             {
-                _Screen.material.SetColor("_Color", Color.green);
+                SetScreen(2); //Right
                 Correct++;
             }
             CurCycle++;
@@ -70,6 +84,45 @@ public class RPS : MonoBehaviour
             {
                 if (SimonCollectable != null)
                     SimonCollectable.SetActive(true);
+            }
+        }
+    }
+
+    private void SetScreen(int result)
+    {
+        if (glassScreen)
+        {
+            if (result == 0)
+            {
+                wrongScreen.SetActive(true);
+                tiedScreen.SetActive(false);
+                correctScreen.SetActive(false);
+            }
+            else if (result == 1)
+            {
+                wrongScreen.SetActive(false);
+                tiedScreen.SetActive(true);
+                correctScreen.SetActive(false);
+            }
+            else
+            {
+                wrongScreen.SetActive(false);
+                tiedScreen.SetActive(false);
+                correctScreen.SetActive(true);
+            }
+        }
+        else
+        {
+            if(result == 0)
+            {
+                _Screen.material.SetColor("_Color", Color.red);
+            }else if (result == 1)
+            {
+                _Screen.material.SetColor("_Color", Color.black);
+            }
+            else
+            {
+                _Screen.material.SetColor("_Color", Color.green);
             }
         }
     }
@@ -92,7 +145,16 @@ public class RPS : MonoBehaviour
     }
     public void Reset()
     {
-        _Screen.material.SetColor("_Color", Color.white);
+        if (glassScreen)
+        {
+            wrongScreen.SetActive(false);
+            tiedScreen.SetActive(false);
+            correctScreen.SetActive(false);
+        }
+        else
+        {
+            _Screen.material.SetColor("_Color", Color.white);
+        }
         SetAIOppent();
     }
     public void SetStateOn()
