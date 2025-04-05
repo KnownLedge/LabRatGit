@@ -11,33 +11,33 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private Sprite[] hatSprites;
 
     [Header("UI Elements: Buttons")]
-    [SerializeField] private Button leftButton; 
-    [SerializeField] private Button rightButton; 
+    [SerializeField] private Button leftButton;
+    [SerializeField] private Button rightButton;
     [SerializeField] private Button applyButton;
 
     [Header("UI Elements: Images")]
-    [SerializeField] private Image centerImage; 
-    [SerializeField] private Image leftImage; 
-    [SerializeField] private Image rightImage; 
+    [SerializeField] private Image centerImage;
+    [SerializeField] private Image leftImage;
+    [SerializeField] private Image rightImage;
+    [SerializeField] private Image greenTickImage;
 
     [Header("UI Elements: Objects")]
     [SerializeField] private GameObject leftObject;
-    [SerializeField] private GameObject centerObject; 
+    [SerializeField] private GameObject centerObject;
     [SerializeField] private GameObject rightObject;
-
-    [Header("UI Elements: Transitions")]
-    [SerializeField] private float transitionDuration = 1.0f;
 
     [Header("References")]
     [SerializeField] private GameObject customizationMenu;
     [SerializeField] private Ratmovement ratMovement;
-    
-    // Camera Animator
+
     [SerializeField] private Animator cameraAnimator;
-    
+
     private int selectedHatIndex = 0;
+    private int appliedHatIndex = -1;
+
     private bool playerInZone = false;
     private bool isMenuActive = false;
+    private bool isAnimating = false;
 
     void Awake()
     {
@@ -67,9 +67,11 @@ public class CustomizationManager : MonoBehaviour
         }
     }
 
+
     void Update()
     {
-        if (playerInZone && Input.GetKeyDown(KeyCode.E))
+        // Check if the player is in the zone, key pressed, and animation is not playing
+        if (playerInZone && Input.GetKeyDown(KeyCode.E) && !isAnimating)
         {
             ToggleMenu(!isMenuActive);
         }
@@ -87,50 +89,70 @@ public class CustomizationManager : MonoBehaviour
 
         if (state)
         {
+            selectedHatIndex = appliedHatIndex;
+            UpdateUI();
+            UpdateTickVisibility();
+
+            // Start the opening animation
             cameraAnimator.enabled = true;
             cameraAnimator.SetTrigger("GoToCustomization");
+            StartCoroutine(WaitForAnimationToEnd(true)); // Track opening animation
         }
         else
         {
+            // Start the closing animation
             cameraAnimator.SetTrigger("GoBackToOriginal");
-            StartCoroutine(DisableAnimatorAfterAnimation());
+            StartCoroutine(WaitForAnimationToEnd(false)); // Track closing animation
         }
     }
 
-    private IEnumerator DisableAnimatorAfterAnimation()
-    {   
+    // Coroutine to track when animation ends
+    private IEnumerator WaitForAnimationToEnd(bool isOpening)
+    {
+        isAnimating = true; 
         yield return new WaitForSeconds(2);
-        cameraAnimator.enabled = false;
+        isAnimating = false; 
+
+        if (!isOpening)
+        {
+            cameraAnimator.enabled = false;
+        }
     }
+
+
 
     void ChangeSelection(int direction)
     {
-        if (hats == null || hats.Length == 0)
-        {
-            Debug.LogError("Hats array is empty or not assigned!");
-            return;
-        }
+        if (hats == null || hats.Length == 0) return;
 
         selectedHatIndex = (selectedHatIndex + direction + hats.Length) % hats.Length;
         UpdateUI();
+        UpdateTickVisibility();
     }
 
     void ApplyHat()
     {
+        appliedHatIndex = selectedHatIndex;
+        greenTickImage.gameObject.SetActive(true);
         ActivateSelectedHat();
         PlayerPrefs.SetInt(PLAYER_PREFS_HAT, selectedHatIndex);
         PlayerPrefs.Save();
+        UpdateTickVisibility();
     }
+
 
     void LoadCustomization()
     {
         if (PlayerPrefs.HasKey(PLAYER_PREFS_HAT))
         {
             selectedHatIndex = PlayerPrefs.GetInt(PLAYER_PREFS_HAT);
+            appliedHatIndex = selectedHatIndex;
         }
         ActivateSelectedHat();
         UpdateUI();
+        UpdateTickVisibility();
     }
+
 
     void ActivateSelectedHat()
     {
@@ -147,14 +169,41 @@ public class CustomizationManager : MonoBehaviour
 
     void UpdateUI()
     {
-        if (hatSprites == null || hatSprites.Length == 0)
-        {
-            Debug.LogError("Hat sprites array is empty or not assigned!");
-            return;
-        }
+        if (hatSprites == null || hatSprites.Length == 0) return;
 
         centerImage.sprite = hatSprites[selectedHatIndex];
         leftImage.sprite = hatSprites[(selectedHatIndex - 1 + hatSprites.Length) % hatSprites.Length];
         rightImage.sprite = hatSprites[(selectedHatIndex + 1) % hatSprites.Length];
     }
+
+    void UpdateTickVisibility()
+    {
+        greenTickImage.gameObject.SetActive(false);
+
+        int leftIndex = (selectedHatIndex - 1 + hatSprites.Length) % hatSprites.Length;
+        int centerIndex = selectedHatIndex;
+        int rightIndex = (selectedHatIndex + 1) % hatSprites.Length;
+
+        if (appliedHatIndex == leftIndex)
+        {
+            greenTickImage.gameObject.SetActive(true);
+            greenTickImage.transform.SetParent(leftImage.transform, true);
+        }
+        else if (appliedHatIndex == centerIndex)
+        {
+            greenTickImage.gameObject.SetActive(true);
+            greenTickImage.transform.SetParent(centerImage.transform, true);
+        }
+        else if (appliedHatIndex == rightIndex)
+        {
+            greenTickImage.gameObject.SetActive(true);
+            greenTickImage.transform.SetParent(rightImage.transform, true);
+        }
+
+        greenTickImage.rectTransform.localScale = Vector3.one;
+        greenTickImage.rectTransform.localScale /= 1.76f;
+        greenTickImage.rectTransform.anchoredPosition = new Vector2(0, -101);
+    }
+
+
 }
