@@ -7,8 +7,8 @@ public class CustomizationManager : MonoBehaviour
     private const string PLAYER_PREFS_HAT = "SelectedHat";
 
     [Header("Hat Customization")]
-    [SerializeField] private GameObject[] hats;
-    [SerializeField] private Sprite[] hatSprites;
+    [SerializeField] private GameObject[] hats; // Array of hat prefabs
+    [SerializeField] private Sprite[] hatSprites; // Hat sprites for UI buttons
 
     [Header("UI Elements: Buttons")]
     [SerializeField] private Button leftButton;
@@ -27,26 +27,31 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private GameObject rightObject;
 
     [Header("References")]
+    [SerializeField] private GameObject player; 
+    [SerializeField] private Transform playerHead;
     [SerializeField] private GameObject customizationMenu;
     [SerializeField] private Ratmovement ratMovement;
-
     [SerializeField] private Animator cameraAnimator;
+
 
     private int selectedHatIndex = 0;
     private int appliedHatIndex = -1;
 
     private bool playerInZone = false;
     private bool isMenuActive = false;
+    private bool isRotatingPlayer = false;
     private bool isAnimating = false;
+
+    private GameObject currentHat; // Variable to keep track of the currently applied hat
 
     void Awake()
     {
-        leftButton.onClick.AddListener(() => ChangeSelection(-1));
-        rightButton.onClick.AddListener(() => ChangeSelection(1));
-        applyButton.onClick.AddListener(ApplyHat);
+        leftButton.onClick.AddListener(() => ChangeSelection(-1)); // Left button to change selection to previous hat
+        rightButton.onClick.AddListener(() => ChangeSelection(1)); // Right button to change selection to next hat
+        applyButton.onClick.AddListener(ApplyHat); // Apply button to save the selected hat
 
-        LoadCustomization();
-        customizationMenu.SetActive(false);
+        LoadCustomization(); // Load saved customization on startup
+        customizationMenu.SetActive(false); // Ensure the menu is inactive at start
     }
 
     void OnTriggerEnter(Collider other)
@@ -67,15 +72,14 @@ public class CustomizationManager : MonoBehaviour
         }
     }
 
-
     void Update()
     {
-        // Check if the player is in the zone, key pressed, and animation is not playing
         if (playerInZone && Input.GetKeyDown(KeyCode.E) && !isAnimating)
         {
             ToggleMenu(!isMenuActive);
         }
     }
+
 
     void ToggleMenu(bool state)
     {
@@ -84,12 +88,12 @@ public class CustomizationManager : MonoBehaviour
 
         if (ratMovement != null)
         {
-            ratMovement.enabled = !state;
+            ratMovement.enabled = !state; // Disable player movement while the menu is active
         }
 
         if (state)
         {
-            selectedHatIndex = appliedHatIndex;
+            selectedHatIndex = appliedHatIndex; // Ensure the selected hat index is set to the applied hat index when opening the menu
             UpdateUI();
             UpdateTickVisibility();
 
@@ -119,58 +123,63 @@ public class CustomizationManager : MonoBehaviour
         }
     }
 
-
-
     void ChangeSelection(int direction)
     {
         if (hats == null || hats.Length == 0) return;
 
+        // Change the selected hat index based on the button press (left or right)
         selectedHatIndex = (selectedHatIndex + direction + hats.Length) % hats.Length;
+
+        // Immediately update the hat and UI
+        ActivateSelectedHat();
         UpdateUI();
         UpdateTickVisibility();
     }
 
     void ApplyHat()
     {
-        appliedHatIndex = selectedHatIndex;
-        greenTickImage.gameObject.SetActive(true);
-        ActivateSelectedHat();
-        PlayerPrefs.SetInt(PLAYER_PREFS_HAT, selectedHatIndex);
+        appliedHatIndex = selectedHatIndex; // Save the selected hat as the applied one
+        greenTickImage.gameObject.SetActive(true); // Show the green tick image on the applied hat
+        PlayerPrefs.SetInt(PLAYER_PREFS_HAT, selectedHatIndex); // Save the applied hat index to PlayerPrefs
         PlayerPrefs.Save();
         UpdateTickVisibility();
     }
-
 
     void LoadCustomization()
     {
         if (PlayerPrefs.HasKey(PLAYER_PREFS_HAT))
         {
-            selectedHatIndex = PlayerPrefs.GetInt(PLAYER_PREFS_HAT);
+            selectedHatIndex = PlayerPrefs.GetInt(PLAYER_PREFS_HAT); // Load saved hat index from PlayerPrefs
             appliedHatIndex = selectedHatIndex;
         }
-        ActivateSelectedHat();
+        ActivateSelectedHat(); // Activate the hat based on the loaded customization
         UpdateUI();
         UpdateTickVisibility();
     }
 
-
     void ActivateSelectedHat()
     {
-        foreach (var hat in hats)
+        if (currentHat != null)
         {
-            hat.SetActive(false);
+            Destroy(currentHat);
         }
 
         if (hats.Length > selectedHatIndex && selectedHatIndex >= 0)
         {
-            hats[selectedHatIndex].SetActive(true);
+            currentHat = Instantiate(hats[selectedHatIndex]);
+            currentHat.transform.SetParent(playerHead);
+            currentHat.transform.localPosition = Vector3.zero;
+            currentHat.SetActive(true);
         }
     }
+
+
 
     void UpdateUI()
     {
         if (hatSprites == null || hatSprites.Length == 0) return;
 
+        // Update UI images based on the selected hat
         centerImage.sprite = hatSprites[selectedHatIndex];
         leftImage.sprite = hatSprites[(selectedHatIndex - 1 + hatSprites.Length) % hatSprites.Length];
         rightImage.sprite = hatSprites[(selectedHatIndex + 1) % hatSprites.Length];
@@ -184,6 +193,7 @@ public class CustomizationManager : MonoBehaviour
         int centerIndex = selectedHatIndex;
         int rightIndex = (selectedHatIndex + 1) % hatSprites.Length;
 
+        // Show the green tick image on the applied hat's UI icon
         if (appliedHatIndex == leftIndex)
         {
             greenTickImage.gameObject.SetActive(true);
@@ -200,10 +210,9 @@ public class CustomizationManager : MonoBehaviour
             greenTickImage.transform.SetParent(rightImage.transform, true);
         }
 
+        // Adjust the green tick position and scale
         greenTickImage.rectTransform.localScale = Vector3.one;
         greenTickImage.rectTransform.localScale /= 1.76f;
         greenTickImage.rectTransform.anchoredPosition = new Vector2(0, -101);
     }
-
-
 }
