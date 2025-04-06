@@ -28,11 +28,21 @@ public class CustomizationManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject player; 
-    [SerializeField] private Transform playerHead;
     [SerializeField] private GameObject customizationMenu;
     [SerializeField] private Ratmovement ratMovement;
     [SerializeField] private Animator cameraAnimator;
 
+    [Header("HeadPosReferences")]
+    [SerializeField] private Transform chefHatHead;
+    [SerializeField] private Transform cowboyHatHead;
+    [SerializeField] private Transform flowerHatHead;
+    [SerializeField] private Transform partyHatHead;
+    [SerializeField] private Transform propellerHatHead;
+    [SerializeField] private Transform strawberryHatHead;
+    [SerializeField] private Transform topHatHead;
+    [SerializeField] private Transform wizardHatHead;
+
+    [SerializeField] private float rotationSpeed = 2f;
 
     private int selectedHatIndex = 0;
     private int appliedHatIndex = -1;
@@ -77,6 +87,16 @@ public class CustomizationManager : MonoBehaviour
         if (playerInZone && Input.GetKeyDown(KeyCode.E) && !isAnimating)
         {
             ToggleMenu(!isMenuActive);
+        }
+
+        if (isMenuActive)
+        {
+            // Allow player rotation only when RMB is held down
+            if (Input.GetMouseButton(1))  // Right Mouse Button (1)
+            {
+                float rotation = Input.GetAxis("Mouse X") * rotationSpeed;
+                player.transform.Rotate(Vector3.up, rotation, Space.World);
+            }
         }
     }
 
@@ -166,13 +186,41 @@ public class CustomizationManager : MonoBehaviour
 
         if (hats.Length > selectedHatIndex && selectedHatIndex >= 0)
         {
-            currentHat = Instantiate(hats[selectedHatIndex]);
-            currentHat.transform.SetParent(playerHead);
+            GameObject hatPrefab = hats[selectedHatIndex];
+            Transform targetHead = GetHatTargetTransform(hatPrefab.name);
+
+            if (targetHead == null)
+            {
+                Debug.LogWarning($"No head reference found for hat: {hatPrefab.name}");
+                return;
+            }
+
+            currentHat = Instantiate(hatPrefab, targetHead);
             currentHat.transform.localPosition = Vector3.zero;
+            currentHat.transform.localRotation = Quaternion.identity;
+            currentHat.transform.localScale = Vector3.one;
+            Debug.Log("Current hat position: " + currentHat.transform.localPosition);
+            Debug.Log("Current hat rotation: " + currentHat.transform.localRotation);
             currentHat.SetActive(true);
         }
     }
 
+
+    Transform GetHatTargetTransform(string hatName)
+    {
+        hatName = hatName.ToLower();
+
+        if (hatName.Contains("cowboy")) return cowboyHatHead;
+        if (hatName.Contains("party")) return partyHatHead;
+        if (hatName.Contains("chef")) return chefHatHead;
+        if (hatName.Contains("flower")) return flowerHatHead;
+        if (hatName.Contains("propeller")) return propellerHatHead;
+        if (hatName.Contains("strawberry")) return strawberryHatHead;
+        if (hatName.Contains("top")) return topHatHead;
+        if (hatName.Contains("wizard")) return wizardHatHead;
+
+        return null;
+    }
 
 
     void UpdateUI()
