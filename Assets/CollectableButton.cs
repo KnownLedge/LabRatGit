@@ -24,8 +24,8 @@ public class CollectableButton : MonoBehaviour
     {
         IsUnlocked = Data.Collected;
         ItemDescripton = Data.CollectableDescription;
-        Spriteoff = Data.Off;
-        Spriteon = Data.On;
+        Spriteoff = Data.Locked;
+        Spriteon = Data.Unlocked;
         ChildIm.sprite = IsUnlocked ? Spriteon : Spriteoff;
     }
    

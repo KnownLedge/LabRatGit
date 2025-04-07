@@ -4,10 +4,10 @@ public class ArenaTest : MonoBehaviour
 {
     [SerializeField]private ArenaTestEnter2 arenaTestEnter2Script;
     [SerializeField] private Transform[] ratSpawnPositions;
-    [SerializeField] private Transform[] cheeseSpawnPositions;
+    [SerializeField] private Transform[] collectibleSpawnPositions;
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject cheesePrefab;
-    private GameObject currentCheese;
+    [SerializeField] private GameObject collectiblePrefab;
+    private GameObject currentCollectible;
     private int spawnCount = 0;
     private int maxSpawns = 4;
 
@@ -37,7 +37,7 @@ public class ArenaTest : MonoBehaviour
             return;
 
         int ratIndex = Random.Range(0, ratSpawnPositions.Length);
-        int cheeseIndex = (ratIndex + 1) % cheeseSpawnPositions.Length;
+        int cheeseIndex = (ratIndex + 1) % collectibleSpawnPositions.Length;
         Debug.Log("Rat index: " + ratIndex);
 
         Ratmovement ratMove = player.gameObject.GetComponent<Ratmovement>();
@@ -49,7 +49,7 @@ public class ArenaTest : MonoBehaviour
         ratMove.backLeg.position = ratSpawnPositions[ratIndex].position;
         Debug.Log("Player position: " + player.transform.position);
 
-        currentCheese = Instantiate(cheesePrefab, cheeseSpawnPositions[cheeseIndex].position, Quaternion.identity);
+        currentCollectible = Instantiate(collectiblePrefab, collectibleSpawnPositions[cheeseIndex].position, Quaternion.identity);
     }
 
     private void SpawnRat()

@@ -119,15 +119,24 @@ public class Simon_light : MonoBehaviour
 
         switch (state) // determines the state
         {
+
+
+            //default state
+            default:
+                setState(States.off);
+                break;
+
+            //off state
             case States.off:
                 light.enabled = false;
                 break;
 
+            //start state
             case States.start:
                 SetOutput();
                 setState(States.output);
                 break;
-
+            //output state
             case States.output:
                 if (!isOutputing)
                 {

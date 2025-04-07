@@ -14,7 +14,9 @@ public class Collectable : MonoBehaviour
     public bool Iscollected = false;
     private GameObject player;
     private ArenaTestEnter arenaTestEnterScript;
-   
+
+    [SerializeField]
+    private CollectableData Data;
 
     void Start()
     {
@@ -25,13 +27,25 @@ public class Collectable : MonoBehaviour
         {
             arenaTestEnterScript = arenaObject.GetComponent<ArenaTestEnter>();
         }
+        itemDescription = Data.CollectableDescription;
 
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
         audioSource.playOnAwake = false;
+
+        Iscollected = Data.Collected;
+        itemDescription = Data.CollectableDescription;
     }
+
+
+    private void OnValidate()
+    {
+        Data.Collected = Iscollected;
+    }
+
+      
 
     private void OnTriggerEnter(Collider other)
     {
@@ -72,16 +86,11 @@ public class Collectable : MonoBehaviour
         {
             arenaTestEnterScript.OnCollectableCollected();
         }
-    }
-
-    public bool GetState()
-    {
-        return Iscollected;
         //TB - TEST DELETE IF NEEDED
         Iscollected = true;
-        GetComponent<CollectData>().Collected();
-
+        Data.Collected = true;
         Destroy(gameObject);
+
     }
 }
 

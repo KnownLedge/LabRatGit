@@ -7,5 +7,5 @@ public class CollectableData : ScriptableObject
 {
     public bool Collected;
     public string CollectableDescription;
-    public Sprite Off, On;
+    public Sprite Locked, Unlocked;
 }
