@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class StageEnd : MonoBehaviour
 {
+    public bool exitTransition = false;
+    public bool saveProgress = false;
+    public int levelPosition = 0;
+    public int labID = 1;
+
+
     [SerializeField] private bool stageEnded;
     [Range(0f,10f)]
     [SerializeField] private float WaitTime = 5f;

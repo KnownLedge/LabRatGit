@@ -42,7 +42,7 @@ public class Collectable : MonoBehaviour
 
     private void OnValidate()
     {
-        Data.Collected = Iscollected;
+     //   Data.Collected = Iscollected;
     }
 
       
