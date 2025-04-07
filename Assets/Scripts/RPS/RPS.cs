@@ -10,6 +10,7 @@ public class RPS : MonoBehaviour
     private int Correct;
     public static RPS _instance;
     public GameObject SimonCollectable;
+    public GameObject opponentCollectable;
     private GameObject wrongScreen;
     private GameObject tiedScreen;
     private GameObject correctScreen;
@@ -63,6 +64,8 @@ public class RPS : MonoBehaviour
         Reset();
         if (SimonCollectable != null)
             SimonCollectable.SetActive(false);
+        if(opponentCollectable != null)
+            opponentCollectable.SetActive(false );
     }
 
     //when called a name is passed
@@ -118,6 +121,8 @@ public class RPS : MonoBehaviour
                 }
                 else
                 {
+                    if (opponentCollectable != null)
+                        opponentCollectable.SetActive(true);
                     opponentDoor.enabled = true;
                     opponentButton.enabled = true;
                     StartCoroutine(ratExitPath());
