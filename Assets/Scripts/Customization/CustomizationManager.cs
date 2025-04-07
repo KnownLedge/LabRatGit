@@ -31,6 +31,7 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private GameObject customizationMenu;
     [SerializeField] private Ratmovement ratMovement;
     [SerializeField] private Animator cameraAnimator;
+    [SerializeField] private Shader shader; 
 
     [Header("HeadPosReferences")]
     [SerializeField] private Transform chefHatHead;
@@ -49,7 +50,6 @@ public class CustomizationManager : MonoBehaviour
 
     private bool playerInZone = false;
     private bool isMenuActive = false;
-    private bool isRotatingPlayer = false;
     private bool isAnimating = false;
 
     private GameObject currentHat; // Variable to keep track of the currently applied hat
@@ -99,8 +99,6 @@ public class CustomizationManager : MonoBehaviour
             }
         }
     }
-
-
     void ToggleMenu(bool state)
     {
         isMenuActive = state;
@@ -113,6 +111,7 @@ public class CustomizationManager : MonoBehaviour
 
         if (state)
         {
+            shader.enabled = false;
             selectedHatIndex = appliedHatIndex; // Ensure the selected hat index is set to the applied hat index when opening the menu
             UpdateUI();
             UpdateTickVisibility();
@@ -121,9 +120,19 @@ public class CustomizationManager : MonoBehaviour
             cameraAnimator.enabled = true;
             cameraAnimator.SetTrigger("GoToCustomization");
             StartCoroutine(WaitForAnimationToEnd(true)); // Track opening animation
+
+            // Ensure no other scripts are modifying position or rotation
+            player.GetComponent<Rigidbody>().isKinematic = true;
+
+            // Set position and rotation
+            player.transform.localPosition = new Vector3(-15.8299999f, -0.949999988f, -1.13f);
+            player.transform.localRotation = Quaternion.Euler(0, 100, 0);
         }
         else
         {
+            shader.enabled = true;
+            player.GetComponent<Rigidbody>().isKinematic = false;
+
             // Start the closing animation
             cameraAnimator.SetTrigger("GoBackToOriginal");
             StartCoroutine(WaitForAnimationToEnd(false)); // Track closing animation
@@ -134,13 +143,16 @@ public class CustomizationManager : MonoBehaviour
     private IEnumerator WaitForAnimationToEnd(bool isOpening)
     {
         isAnimating = true; 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2);  // Wait for animation to end
         isAnimating = false; 
 
         if (!isOpening)
         {
             cameraAnimator.enabled = false;
         }
+        
+        Debug.Log("Player position: " + player.transform.localPosition);
+        Debug.Log("Player rotation: " + player.transform.localRotation);
     }
 
     void ChangeSelection(int direction)
