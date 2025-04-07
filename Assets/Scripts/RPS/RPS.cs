@@ -11,7 +11,16 @@ public class RPS : MonoBehaviour
     public GameObject SimonCollectable;
     private GameObject wrongScreen;
     private GameObject tiedScreen;
-    private GameObject correctScreen; 
+    private GameObject correctScreen;
+
+    public GameObject aiPlayer;
+    private AIRatMove aiMovement;
+    public List<Transform> RockRoute;
+    public List<Transform> PaperRoute;
+    public List<Transform> ScissorRoute;
+
+    public DoorScript playerDoor;
+    public DoorScript opponentDoor;
 
     private enum states
     {
@@ -25,6 +34,10 @@ public class RPS : MonoBehaviour
     {
         _instance = this;
         CurrentState = states.enter;
+
+        if (aiPlayer != null) { 
+        aiMovement = aiPlayer.GetComponent<AIRatMove>();
+        }
         if (glassScreen)
         {
             wrongScreen = GameObject.Find("Wrong Screen");
@@ -36,7 +49,7 @@ public class RPS : MonoBehaviour
         {
             _Screen = GameObject.Find("Screen").GetComponent<MeshRenderer>();//get the screen game object
         }
-            SetAIOppent();
+        Reset();
         if (SimonCollectable != null)
             SimonCollectable.SetActive(false);
     }
@@ -50,6 +63,7 @@ public class RPS : MonoBehaviour
             if (name == Oppent)
             {
                 SetScreen(1); //Tie
+                CurCycle--;
             }
             if (name == "rock" && Oppent == "paper")
             {
@@ -80,10 +94,19 @@ public class RPS : MonoBehaviour
                 Correct++;
             }
             CurCycle++;
-            if (Correct == cycles)
+            if (CurCycle == cycles)
             {
-                if (SimonCollectable != null)
-                    SimonCollectable.SetActive(true);
+                if (Correct > cycles / 2)
+                {
+                    if (SimonCollectable != null)
+                        SimonCollectable.SetActive(true);
+
+                    playerDoor.enabled = true;
+                }
+                else
+                {
+                    opponentDoor.enabled = true;
+                }
             }
         }
     }
@@ -178,7 +201,27 @@ public class RPS : MonoBehaviour
     private void SetAIOppent()
     {
         SetStateOn();
+        
         Oppent = _Ops[Random.Range(0,_Ops.Count)];
+        setAIPath(Oppent);
+    }
+
+    private void setAIPath(string choice)
+    {
+        if(choice == "rock")
+        {
+            aiMovement.wayPoints = RockRoute;
+
+
+        }else if (choice == "paper")
+        {
+            aiMovement.wayPoints = PaperRoute;
+        }
+        else
+        {
+            aiMovement.wayPoints = ScissorRoute;
+        }
+        aiMovement.restartPath();
     }
     #endregion
 }
