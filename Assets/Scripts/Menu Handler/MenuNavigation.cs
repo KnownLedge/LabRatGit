@@ -3,32 +3,47 @@ using UnityEngine.SceneManagement;
 
 public class MenuNavigation : MonoBehaviour
 {
-    public GameObject pauseMenuUI;
-    public GameObject settingsMenuUI;
     public PauseMenu pauseMenuScript;
+    public SettingsMenu settingsMenuScript;
 
-  
     public void ResumeGame()
     {
         if (pauseMenuScript != null)
         {
-            pauseMenuScript.Resume(); 
+            pauseMenuScript.Resume();
         }
     }
-
 
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    
     public void OpenSettings()
     {
-        pauseMenuUI.SetActive(false);
-        settingsMenuUI.SetActive(true);
+        if (pauseMenuScript != null)
+        {
+            pauseMenuScript.Hide();
+        }
+
+        if (settingsMenuScript != null)
+        {
+            settingsMenuScript.Open();
+        }
     }
 
+    public void ReturnToPauseMenu()
+    {
+        if (settingsMenuScript != null)
+        {
+            settingsMenuScript.Close();
+        }
+
+        if (pauseMenuScript != null)
+        {
+            pauseMenuScript.pauseMenuUI.SetActive(true);
+        }
+    }
 
     public void ExitToMainMenu()
     {

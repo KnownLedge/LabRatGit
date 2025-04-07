@@ -43,6 +43,11 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
     }
 
+    public void Hide()
+    {
+        pauseMenuUI.SetActive(false);
+    }
+
     void Pause()
     {
         pauseMenuUI.SetActive(true);
