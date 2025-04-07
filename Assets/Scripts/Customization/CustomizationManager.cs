@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -25,6 +26,7 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private GameObject leftObject;
     [SerializeField] private GameObject centerObject;
     [SerializeField] private GameObject rightObject;
+    [SerializeField] private GameObject textObject;
 
     [Header("References")]
     [SerializeField] private GameObject player; 
@@ -56,29 +58,37 @@ public class CustomizationManager : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject); 
+
         leftButton.onClick.AddListener(() => ChangeSelection(-1)); // Left button to change selection to previous hat
         rightButton.onClick.AddListener(() => ChangeSelection(1)); // Right button to change selection to next hat
         applyButton.onClick.AddListener(ApplyHat); // Apply button to save the selected hat
 
         LoadCustomization(); // Load saved customization on startup
         customizationMenu.SetActive(false); // Ensure the menu is inactive at start
+        textObject.SetActive(false); // Ensure the text object is inactive at start
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isMenuActive)
         {
             Debug.Log("Player entered customization zone.");
             playerInZone = true;
+            textObject.SetActive(true);
+            Debug.Log("Shader enabled: " + shader.enabled);
         }
+
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isMenuActive)
         {
             Debug.Log("Player exited customization zone.");
             playerInZone = false;
+            textObject.SetActive(false);
+            Debug.Log("Shader enabled: " + shader.enabled);
         }
     }
 
@@ -111,6 +121,8 @@ public class CustomizationManager : MonoBehaviour
 
         if (state)
         {
+            textObject.SetActive(false);
+            Debug.Log("TextObject: " + textObject.activeSelf);
             shader.enabled = false;
             selectedHatIndex = appliedHatIndex; // Ensure the selected hat index is set to the applied hat index when opening the menu
             UpdateUI();
@@ -183,7 +195,12 @@ public class CustomizationManager : MonoBehaviour
         {
             selectedHatIndex = PlayerPrefs.GetInt(PLAYER_PREFS_HAT); // Load saved hat index from PlayerPrefs
             appliedHatIndex = selectedHatIndex;
+        } else {
+            // If no hat is saved, set it to -1 or another appropriate "no hat" index
+            selectedHatIndex = -1;
+            appliedHatIndex = -1;
         }
+
         ActivateSelectedHat(); // Activate the hat based on the loaded customization
         UpdateUI();
         UpdateTickVisibility();
@@ -217,6 +234,17 @@ public class CustomizationManager : MonoBehaviour
         }
     }
 
+    public void SetSelectedHat(int hatIndex)
+    {
+        if (hatIndex >= 0 && hatIndex < hats.Length)
+        {
+            selectedHatIndex = hatIndex;
+            ActivateSelectedHat(); 
+            UpdateUI(); 
+            UpdateTickVisibility(); 
+        }
+    }
+
 
     Transform GetHatTargetTransform(string hatName)
     {
@@ -233,7 +261,6 @@ public class CustomizationManager : MonoBehaviour
 
         return null;
     }
-
 
     void UpdateUI()
     {
