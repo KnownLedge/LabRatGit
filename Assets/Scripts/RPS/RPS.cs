@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class RPS : MonoBehaviour
@@ -19,8 +20,18 @@ public class RPS : MonoBehaviour
     public List<Transform> PaperRoute;
     public List<Transform> ScissorRoute;
 
+    public List<float> ratExitTimings;
+
+    public List<Transform> firstExitRoute;
+    public List<Transform> secondExitRoute;
+    public List<Transform> LastExitRoute; //These should not be publics, but im cutting corners
+
     public DoorScript playerDoor;
     public DoorScript opponentDoor;
+    public DoorButton playerButton;
+    public DoorButton opponentButton;
+
+    public AiTrigger exitAI;
 
     private enum states
     {
@@ -102,10 +113,14 @@ public class RPS : MonoBehaviour
                         SimonCollectable.SetActive(true);
 
                     playerDoor.enabled = true;
+                    playerButton.enabled = true;
+                    exitAI.enabled = true;
                 }
                 else
                 {
                     opponentDoor.enabled = true;
+                    opponentButton.enabled = true;
+                    StartCoroutine(ratExitPath());
                 }
             }
         }
@@ -208,20 +223,42 @@ public class RPS : MonoBehaviour
 
     private void setAIPath(string choice)
     {
-        if(choice == "rock")
+        if (CurCycle < cycles)
         {
-            aiMovement.wayPoints = RockRoute;
+            if (choice == "rock")
+            {
+                aiMovement.wayPoints = RockRoute;
 
 
-        }else if (choice == "paper")
-        {
-            aiMovement.wayPoints = PaperRoute;
+            }
+            else if (choice == "paper")
+            {
+                aiMovement.wayPoints = PaperRoute;
+            }
+            else
+            {
+                aiMovement.wayPoints = ScissorRoute;
+            }
+            aiMovement.restartPath();
         }
-        else
-        {
-            aiMovement.wayPoints = ScissorRoute;
-        }
+    }
+
+    IEnumerator ratExitPath()
+    {
+
+        //Destroy route transforms for button so rat can't get confused and continue going to them.
+
+
+
+        aiMovement.wayPoints = firstExitRoute;
         aiMovement.restartPath();
+        yield return new WaitForSeconds(ratExitTimings[0]);
+        aiMovement.wayPoints = secondExitRoute;
+        aiMovement.restartPath();
+        yield return new WaitForSeconds(ratExitTimings[1]);
+        aiMovement.wayPoints = LastExitRoute;
+        aiMovement.restartPath();
+        yield return new WaitForSeconds(ratExitTimings[2]);
     }
     #endregion
 }
