@@ -29,11 +29,13 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private GameObject textObject;
 
     [Header("References")]
+    [SerializeField] private GameObject segmentedPlayer;
     [SerializeField] private GameObject player; 
     [SerializeField] private GameObject customizationMenu;
     [SerializeField] private Ratmovement ratMovement;
     [SerializeField] private Animator cameraAnimator;
-    [SerializeField] private Shader shader; 
+    [SerializeField] private Shader shader;
+    [SerializeField] private AudioClip buttonSound;
 
     [Header("HeadPosReferences")]
     [SerializeField] private Transform chefHatHead;
@@ -47,6 +49,8 @@ public class CustomizationManager : MonoBehaviour
 
     [SerializeField] private float rotationSpeed = 2f;
 
+    private AudioSource audioSource; 
+
     private int selectedHatIndex = 0;
     private int appliedHatIndex = -1;
 
@@ -56,15 +60,27 @@ public class CustomizationManager : MonoBehaviour
 
     private GameObject currentHat; // Variable to keep track of the currently applied hat
 
+    private void Start()
+    {
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        audioSource.playOnAwake = false;
+    }
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(segmentedPlayer); // Ensure the segmented player is not destroyed on load
 
         leftButton.onClick.AddListener(() => ChangeSelection(-1)); // Left button to change selection to previous hat
         rightButton.onClick.AddListener(() => ChangeSelection(1)); // Right button to change selection to next hat
         applyButton.onClick.AddListener(ApplyHat); // Apply button to save the selected hat
 
-        LoadCustomization(); // Load saved customization on startup
+        UpdateUI();
+        UpdateTickVisibility();
         customizationMenu.SetActive(false); // Ensure the menu is inactive at start
         textObject.SetActive(false); // Ensure the text object is inactive at start
     }
@@ -178,6 +194,11 @@ public class CustomizationManager : MonoBehaviour
         ActivateSelectedHat();
         UpdateUI();
         UpdateTickVisibility();
+        if (buttonSound != null)
+        {
+            audioSource.clip = buttonSound;
+            audioSource.Play();
+        }
     }
 
     void ApplyHat()
@@ -187,24 +208,13 @@ public class CustomizationManager : MonoBehaviour
         PlayerPrefs.SetInt(PLAYER_PREFS_HAT, selectedHatIndex); // Save the applied hat index to PlayerPrefs
         PlayerPrefs.Save();
         UpdateTickVisibility();
-    }
-
-    void LoadCustomization()
-    {
-        if (PlayerPrefs.HasKey(PLAYER_PREFS_HAT))
+        if (buttonSound != null)
         {
-            selectedHatIndex = PlayerPrefs.GetInt(PLAYER_PREFS_HAT); // Load saved hat index from PlayerPrefs
-            appliedHatIndex = selectedHatIndex;
-        } else {
-            // If no hat is saved, set it to -1 or another appropriate "no hat" index
-            selectedHatIndex = -1;
-            appliedHatIndex = -1;
+            audioSource.clip = buttonSound;
+            audioSource.Play();
         }
-
-        ActivateSelectedHat(); // Activate the hat based on the loaded customization
-        UpdateUI();
-        UpdateTickVisibility();
     }
+
 
     void ActivateSelectedHat()
     {
@@ -265,6 +275,12 @@ public class CustomizationManager : MonoBehaviour
     void UpdateUI()
     {
         if (hatSprites == null || hatSprites.Length == 0) return;
+        if (selectedHatIndex < 0 || selectedHatIndex >= hatSprites.Length)
+        {
+            Debug.LogError($"Selected hat index {selectedHatIndex} is out of bounds. Hat sprites length: {hatSprites.Length}");
+            return;
+        }
+
 
         // Update UI images based on the selected hat
         centerImage.sprite = hatSprites[selectedHatIndex];
