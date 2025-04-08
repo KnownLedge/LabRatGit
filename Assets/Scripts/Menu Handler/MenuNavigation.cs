@@ -41,7 +41,7 @@ public class MenuNavigation : MonoBehaviour
 
         if (pauseMenuScript != null)
         {
-            pauseMenuScript.pauseMenuUI.SetActive(true);
+            pauseMenuScript.Pause();
         }
     }
 
