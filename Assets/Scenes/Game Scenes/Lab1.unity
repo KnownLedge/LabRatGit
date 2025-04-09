@@ -11834,7 +11834,6 @@ GameObject:
   m_Component:
   - component: {fileID: 320085603}
   - component: {fileID: 320085604}
-  - component: {fileID: 320085605}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -11871,20 +11870,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuScript: {fileID: 542466481}
   settingsMenuScript: {fileID: 542466482}
---- !u!114 &320085605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 320085602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 395d8aac8d1316d42b09dbffe2fe1c8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicVolume: 1
-  sfxVolume: 1
 --- !u!1001 &320122777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34504,6 +34489,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1758746851}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &920676717
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -183.48694
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 69.22875
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.7656177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974150466962349031, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8881860490098303519, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c79abfcc417091d4a8b598cc3dba7ef7, type: 3}
 --- !u!1001 &922588450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51461,23 +51503,27 @@ PrefabInstance:
       objectReference: {fileID: 320085604}
     - target: {fileID: 5080081136419461865, guid: e99588220b321d14fb4d294eaf3e5a11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5408124903850658091, guid: e99588220b321d14fb4d294eaf3e5a11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6063903984400190304, guid: e99588220b321d14fb4d294eaf3e5a11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6253320153274899412, guid: e99588220b321d14fb4d294eaf3e5a11, type: 3}
       propertyPath: m_Name
       value: SettingsmenuCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6253320153274899412, guid: e99588220b321d14fb4d294eaf3e5a11, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7527282122567299592, guid: e99588220b321d14fb4d294eaf3e5a11, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -81181,3 +81227,4 @@ SceneRoots:
   - {fileID: 374479242}
   - {fileID: 2070230410}
   - {fileID: 982022319}
+  - {fileID: 920676717}

@@ -26,6 +26,7 @@ public class MenuNavigation : MonoBehaviour
             pauseMenuScript.Hide();
         }
 
+
         if (settingsMenuScript != null)
         {
             settingsMenuScript.Open();
