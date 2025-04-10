@@ -35,6 +35,7 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private Ratmovement ratMovement;
     [SerializeField] private Animator cameraAnimator;
     [SerializeField] private Shader shader;
+    [SerializeField] private AudioManager audioManager;
     [SerializeField] private AudioClip buttonSound;
 
     [Header("HeadPosReferences")]
@@ -49,26 +50,15 @@ public class CustomizationManager : MonoBehaviour
 
     [SerializeField] private float rotationSpeed = 2f;
 
-    private AudioSource audioSource; 
 
     private int selectedHatIndex = 0;
-    private int appliedHatIndex = -1;
+    private int appliedHatIndex = 0;
 
     private bool playerInZone = false;
     private bool isMenuActive = false;
     private bool isAnimating = false;
 
     private GameObject currentHat; // Variable to keep track of the currently applied hat
-
-    private void Start()
-    {
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-
-        audioSource.playOnAwake = false;
-    }
 
     void Awake()
     {
@@ -196,8 +186,7 @@ public class CustomizationManager : MonoBehaviour
         UpdateTickVisibility();
         if (buttonSound != null)
         {
-            audioSource.clip = buttonSound;
-            audioSource.Play();
+            audioManager.PlaySFX(buttonSound);
         }
     }
 
@@ -210,8 +199,7 @@ public class CustomizationManager : MonoBehaviour
         UpdateTickVisibility();
         if (buttonSound != null)
         {
-            audioSource.clip = buttonSound;
-            audioSource.Play();
+            audioManager.PlaySFX(buttonSound);
         }
     }
 
@@ -221,13 +209,20 @@ public class CustomizationManager : MonoBehaviour
         if (currentHat != null)
         {
             Destroy(currentHat);
+            currentHat = null;
         }
 
-        if (hats.Length > selectedHatIndex && selectedHatIndex >= 0)
+        if (selectedHatIndex >= 0 && selectedHatIndex < hats.Length)
         {
             GameObject hatPrefab = hats[selectedHatIndex];
-            Transform targetHead = GetHatTargetTransform(hatPrefab.name);
 
+            if (hatPrefab == null)
+            {
+                Debug.Log("No hat selected. Player will wear no hat.");
+                return; // Do nothing, leave head empty
+            }
+
+            Transform targetHead = GetHatTargetTransform(hatPrefab.name);
             if (targetHead == null)
             {
                 Debug.LogWarning($"No head reference found for hat: {hatPrefab.name}");
@@ -238,23 +233,9 @@ public class CustomizationManager : MonoBehaviour
             currentHat.transform.localPosition = Vector3.zero;
             currentHat.transform.localRotation = Quaternion.identity;
             currentHat.transform.localScale = Vector3.one;
-            Debug.Log("Current hat position: " + currentHat.transform.localPosition);
-            Debug.Log("Current hat rotation: " + currentHat.transform.localRotation);
             currentHat.SetActive(true);
         }
     }
-
-    public void SetSelectedHat(int hatIndex)
-    {
-        if (hatIndex >= 0 && hatIndex < hats.Length)
-        {
-            selectedHatIndex = hatIndex;
-            ActivateSelectedHat(); 
-            UpdateUI(); 
-            UpdateTickVisibility(); 
-        }
-    }
-
 
     Transform GetHatTargetTransform(string hatName)
     {
