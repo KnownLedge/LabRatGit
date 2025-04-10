@@ -27,7 +27,7 @@ public class ArenaTest : MonoBehaviour
             SpawnRatAndCheese();
             arenaTestEnter2Script.isReadyToPlay = false;
         }
-        OnCheeseCollected();
+        OnCollectibleCollected();
     }
     
 
@@ -66,14 +66,13 @@ public class ArenaTest : MonoBehaviour
         Debug.Log("Player position: " + player.transform.position);
     }
 
-    private void OnCheeseCollected()
+    private void OnCollectibleCollected()
     {
-        if (/*currentCheese == null &&*/ Input.GetKeyDown(KeyCode.E))
+        if (currentCollectible == null && Input.GetKeyDown(KeyCode.F))
         {
             if (spawnCount + 1 >= maxSpawns) // Check BEFORE increasing spawnCount
             {
                 Debug.Log("All cheese collected, leaving arena...");
-                SpawnRat();
                 StartCoroutine(arenaTestEnter2Script.LeaveArena()); // Start coroutine immediately
             }
             else

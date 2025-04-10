@@ -16,6 +16,15 @@ public class ArenaTestEnter : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.LoadPlayerState(player.transform);
+        }
+        else
+        {
+            Debug.LogError("❌ SaveManager is NULL!");
+        }
     }
 
 
@@ -29,8 +38,19 @@ public class ArenaTestEnter : MonoBehaviour
 
     private IEnumerator EnterArena()
     {
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.SavePlayerState(player.transform);
+        }
+        else
+        {
+            Debug.LogError("❌ SaveManager is NULL!");
+        }
+
         player.GetComponent<Ratmovement>().enabled = false;
-        //player.gameObject.transform.position = new Vector3(-128.550003f, 78.1999969f, 15.96f);
+        player.gameObject.transform.position = new Vector3(-128.550003f, 78.1999969f, 15.96f);
+        
+        Debug.Log("Player position before arena: " + player.transform.position);
         
         Debug.Log("Player position before arena: " + player.transform.position);
         
@@ -55,6 +75,7 @@ public class ArenaTestEnter : MonoBehaviour
         Debug.Log("Ready to play");
         player.GetComponent<Ratmovement>().enabled = true;
     }
+
 
 
     public void OnCollectableCollected()

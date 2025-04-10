@@ -15,6 +15,7 @@ public class ArenaTestEnter2 : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player"); 
         StartCoroutine(EnableMovementAfterBlowOut());
+        
     }
 
     private IEnumerator EnableMovementAfterBlowOut()
@@ -39,10 +40,12 @@ public class ArenaTestEnter2 : MonoBehaviour
         Debug.Log("Player position: " + player.transform.position);
         
         //netAnimator.SetBool("isSucking", true);
-        
         yield return new WaitForSeconds(3);
         player.SetActive(false);
 
         fadeManager.FadeOutAndLoadScene("Lab1");
+
+        yield return null;
+        SaveManager.Instance.LoadPlayerState(player.transform);
     }
 }

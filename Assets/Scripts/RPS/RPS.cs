@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class RPS : MonoBehaviour
@@ -9,9 +10,29 @@ public class RPS : MonoBehaviour
     private int Correct;
     public static RPS _instance;
     public GameObject SimonCollectable;
+    public GameObject opponentCollectable;
     private GameObject wrongScreen;
     private GameObject tiedScreen;
-    private GameObject correctScreen; 
+    private GameObject correctScreen;
+
+    public GameObject aiPlayer;
+    private AIRatMove aiMovement;
+    public List<Transform> RockRoute;
+    public List<Transform> PaperRoute;
+    public List<Transform> ScissorRoute;
+
+    public List<float> ratExitTimings;
+
+    public List<Transform> firstExitRoute;
+    public List<Transform> secondExitRoute;
+    public List<Transform> LastExitRoute; //These should not be publics, but im cutting corners
+
+    public DoorScript playerDoor;
+    public DoorScript opponentDoor;
+    public DoorButton playerButton;
+    public DoorButton opponentButton;
+
+    public AiTrigger exitAI;
 
     private enum states
     {
@@ -25,6 +46,10 @@ public class RPS : MonoBehaviour
     {
         _instance = this;
         CurrentState = states.enter;
+
+        if (aiPlayer != null) { 
+        aiMovement = aiPlayer.GetComponent<AIRatMove>();
+        }
         if (glassScreen)
         {
             wrongScreen = GameObject.Find("Wrong Screen");
@@ -36,9 +61,11 @@ public class RPS : MonoBehaviour
         {
             _Screen = GameObject.Find("Screen").GetComponent<MeshRenderer>();//get the screen game object
         }
-            SetAIOppent();
+        Reset();
         if (SimonCollectable != null)
             SimonCollectable.SetActive(false);
+        if(opponentCollectable != null)
+            opponentCollectable.SetActive(false );
     }
 
     //when called a name is passed
@@ -50,6 +77,7 @@ public class RPS : MonoBehaviour
             if (name == Oppent)
             {
                 SetScreen(1); //Tie
+                CurCycle--;
             }
             if (name == "rock" && Oppent == "paper")
             {
@@ -80,10 +108,25 @@ public class RPS : MonoBehaviour
                 Correct++;
             }
             CurCycle++;
-            if (Correct == cycles)
+            if (CurCycle == cycles)
             {
-                if (SimonCollectable != null)
-                    SimonCollectable.SetActive(true);
+                if (Correct > cycles / 2)
+                {
+                    if (SimonCollectable != null)
+                        SimonCollectable.SetActive(true);
+
+                    playerDoor.enabled = true;
+                    playerButton.enabled = true;
+                    exitAI.enabled = true;
+                }
+                else
+                {
+                    if (opponentCollectable != null)
+                        opponentCollectable.SetActive(true);
+                    opponentDoor.enabled = true;
+                    opponentButton.enabled = true;
+                    StartCoroutine(ratExitPath());
+                }
             }
         }
     }
@@ -178,7 +221,49 @@ public class RPS : MonoBehaviour
     private void SetAIOppent()
     {
         SetStateOn();
+        
         Oppent = _Ops[Random.Range(0,_Ops.Count)];
+        setAIPath(Oppent);
+    }
+
+    private void setAIPath(string choice)
+    {
+        if (CurCycle < cycles)
+        {
+            if (choice == "rock")
+            {
+                aiMovement.wayPoints = RockRoute;
+
+
+            }
+            else if (choice == "paper")
+            {
+                aiMovement.wayPoints = PaperRoute;
+            }
+            else
+            {
+                aiMovement.wayPoints = ScissorRoute;
+            }
+            aiMovement.restartPath();
+        }
+    }
+
+    IEnumerator ratExitPath()
+    {
+
+        //Destroy route transforms for button so rat can't get confused and continue going to them.
+
+
+
+        aiMovement.wayPoints = firstExitRoute;
+        aiMovement.restartPath();
+        yield return new WaitForSeconds(ratExitTimings[0]);
+        aiMovement.wayPoints = secondExitRoute;
+        aiMovement.restartPath();
+        yield return new WaitForSeconds(ratExitTimings[1]);
+        aiMovement.wayPoints = LastExitRoute;
+        aiMovement.restartPath();
+        yield return new WaitForSeconds(ratExitTimings[2]);
     }
     #endregion
 }

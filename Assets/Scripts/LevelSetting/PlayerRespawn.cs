@@ -4,43 +4,31 @@ using UnityEngine;
 
 public class PlayerRespawn : MonoBehaviour
 {
-    [SerializeField] private FadeManager fadeManager;
-    [SerializeField] private float threshold;
-    [SerializeField] List<GameObject> checkpoints;
-    private GameObject player;
+    [SerializeField] FadeManager fadeManager;
+    public Transform spawnPoint; // Where the rat will respawn at
+    private GameObject player; // player reference
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
-
-    void FixedUpdate()
+    void OnTriggerEnter(Collider col) // when collision with this object, sets players position to spawnpoints position
     {
-        if (transform.position.y < threshold)
-        {
-            GetComponent<CharacterController>().enabled = false;
-            transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
-            GetComponent<CharacterController>().enabled = true;
+        if (col.gameObject.tag == "Player")
+        {   
+            StartCoroutine(respawnCoroutine());
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    IEnumerator respawnCoroutine()
     {
-        if (other.gameObject.CompareTag("Checkpoint"))
-        { 
-            //Ratmovement ratMove = col.gameObject.GetComponent<Ratmovement>();
-            Vector3 vectorPoint = other.transform.position;
-            player.gameObject.transform.position = vectorPoint;
-            //ratMove.backLeg.position = vectorPoint;
-        } 
-        else if (other.gameObject.tag == "Player")
-        {
-            StartCoroutine(fadeManager.RespawnFade());
-            Ratmovement ratMove = other.gameObject.GetComponent<Ratmovement>();
-            Vector3 vectorPoint = other.transform.position;
-            player.gameObject.transform.position = vectorPoint;
-            ratMove.backLeg.position = vectorPoint;
-        }
+        player.GetComponent<Rigidbody>().isKinematic = true;
+        StartCoroutine(fadeManager.RespawnFade());
+        Ratmovement ratMove = player.GetComponent<Ratmovement>();
+        player.gameObject.transform.position = spawnPoint.position;
+        ratMove.backLeg.position = spawnPoint.position;
+        yield return new WaitForSeconds(1f); 
+        player.GetComponent<Rigidbody>().isKinematic = false;
     }
 
 }

@@ -21,7 +21,6 @@ public class Collectable : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-
         GameObject arenaObject = GameObject.Find("ArenaTestEnter");
         if (arenaObject != null)
         {
@@ -37,12 +36,13 @@ public class Collectable : MonoBehaviour
 
         Iscollected = Data.Collected;
         itemDescription = Data.CollectableDescription;
+        arenaTestEnterScript = FindObjectOfType<ArenaTestEnter>();
     }
 
 
     private void OnValidate()
     {
-        Data.Collected = Iscollected;
+     //   Data.Collected = Iscollected;
     }
 
       
@@ -52,6 +52,15 @@ public class Collectable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             CollectItem();
+            // PopupManager.instance.ShowPopup(itemDescription, itemBackground);
+            // InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
+            // InventoryManager.instance.AddItem(newItem);
+            Destroy(gameObject);
+
+            if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
+            {
+                arenaTestEnterScript.OnCollectableCollected();
+            }
         }
     }
 
