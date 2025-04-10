@@ -69,6 +69,7 @@ public class PipeTransport : MonoBehaviour
 
     private IEnumerator TransportPlayer(GameObject player, Transform entry, Transform exit, Collider entryTrigger, Collider exitTrigger)
     {
+        player.GetComponent<Rigidbody>().isKinematic = true;
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb == null) yield break;
 
@@ -123,6 +124,7 @@ public class PipeTransport : MonoBehaviour
            StartCoroutine(SwitchCameraAndEnableAxisCamera());
            Debug.Log("SwitchCameraAndEnableAxisCamera");
         }
+        player.GetComponent<Rigidbody>().isKinematic = false;
 
         yield return new WaitForSeconds(cooldownTime);
         entryTrigger.enabled = true;
