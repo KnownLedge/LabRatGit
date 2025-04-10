@@ -5199,6 +5199,10 @@ PrefabInstance:
       propertyPath: levelsUnlocked
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
+      propertyPath: progressTracker
+      value: 
+      objectReference: {fileID: 1863511873}
     - target: {fileID: 5145166047925380478, guid: 888e532716a2c9340aba7690958f5492, type: 3}
       propertyPath: m_LocalPosition.x
       value: 129.7
@@ -9554,6 +9558,10 @@ PrefabInstance:
       propertyPath: levelsUnlocked
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
+      propertyPath: progressTracker
+      value: 
+      objectReference: {fileID: 1863511873}
     - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
       propertyPath: levelSceneNames.Array.size
       value: 2
@@ -34120,6 +34128,18 @@ PrefabInstance:
       propertyPath: levelsUnlocked
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
+      propertyPath: progressTracker
+      value: 
+      objectReference: {fileID: 1863511873}
+    - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
+      propertyPath: levelSceneNames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
+      propertyPath: levelSceneNames.Array.data[0]
+      value: Lab2
+      objectReference: {fileID: 0}
     - target: {fileID: 5145166047925380478, guid: 888e532716a2c9340aba7690958f5492, type: 3}
       propertyPath: m_LocalPosition.x
       value: 129.7
@@ -41894,7 +41914,7 @@ MonoBehaviour:
   ThirdLabLvlSelect: {fileID: 225575020}
   levels:
   - Lab1
-  - RPS Scene
+  - RPS_Scene
   - Lab2
   - Lab3_Test1
   levelPipe: {fileID: 1270854956}
