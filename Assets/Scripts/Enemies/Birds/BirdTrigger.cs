@@ -5,20 +5,8 @@ public class BirdTrigger : MonoBehaviour
     [SerializeField] private AudioClip birdSound;
     [SerializeField] private Bird bird; 
     [SerializeField] private GameObject player;
-
-    private AudioSource audioSource;
+    [SerializeField] private AudioManager audioManager;
     private bool playerInside = false;
-
-    private void Start()
-    {
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-
-        audioSource.playOnAwake = false;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == player)
@@ -27,8 +15,7 @@ public class BirdTrigger : MonoBehaviour
 
             if (birdSound != null)
             {
-                audioSource.clip = birdSound;
-                audioSource.Play();
+                audioManager.PlaySFX(birdSound);
             }
 
             if (!bird.IsAttackingOrReturning())
@@ -43,11 +30,6 @@ public class BirdTrigger : MonoBehaviour
         if (other.gameObject == player)
         {
             playerInside = false;
-            if (birdSound != null)
-            {
-                audioSource.clip = birdSound;
-                audioSource.Stop();
-            }
         }
     }
 
