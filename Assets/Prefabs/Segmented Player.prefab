@@ -1585,7 +1585,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4346383172942286033}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.96283615, y: 0.029318273, z: -0.2417748, w: 0.11675594}
+  m_LocalRotation: {x: 0.91372776, y: 0.029096011, z: -0.3793199, w: 0.14272879}
   m_LocalPosition: {x: -0.015868688, y: -3.101335e-18, z: -6.166224e-18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1970,6 +1970,7 @@ GameObject:
   - component: {fileID: 1974305362389342866}
   - component: {fileID: 3088983404345651378}
   - component: {fileID: 1638803047664045776}
+  - component: {fileID: 7583155845371742581}
   - component: {fileID: 265642342134151318}
   - component: {fileID: 6599408432253752537}
   - component: {fileID: 4293317842884451002}
@@ -2277,7 +2278,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 0}
+  collectableOverlay: {fileID: 6090589088262337120}
   isPaused: 0
+--- !u!114 &7583155845371742581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6045902338466454178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8d7d678db74ac4989a87247da43c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsMenuUI: {fileID: 0}
+  musicSlider: {fileID: 0}
+  sfxSlider: {fileID: 0}
 --- !u!136 &265642342134151318
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2440,6 +2457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd44d6911b40d649b9307099627ff3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectable: {fileID: 0}
 --- !u!114 &6274294343089963611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2464,6 +2482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a7a2d27cd412a49ae3a03492dfdbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overlayVisible: 1
 --- !u!114 &3209461616752570389
 MonoBehaviour:
   m_ObjectHideFlags: 0

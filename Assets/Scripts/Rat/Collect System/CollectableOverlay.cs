@@ -5,6 +5,8 @@ public class CollectableOverlay : MonoBehaviour
 {
     private List<Sprite> collectableImages = new List<Sprite>();
     private List<bool> collectedStatus = new List<bool>();
+    public bool overlayVisible = true;
+
 
     void Start()
     {
@@ -18,6 +20,11 @@ public class CollectableOverlay : MonoBehaviour
 
         GameObject[] collectables = GameObject.FindGameObjectsWithTag("Collectable");
 
+        System.Array.Sort(collectables, (a, b) =>
+        {
+            return a.transform.GetHierarchyOrder().CompareTo(b.transform.GetHierarchyOrder());
+        });
+
         foreach (GameObject collectable in collectables)
         {
             Collectable collectableScript = collectable.GetComponent<Collectable>();
@@ -28,6 +35,7 @@ public class CollectableOverlay : MonoBehaviour
             }
         }
     }
+
 
     public int GetIndexOfItem(Sprite itemSprite)
     {
@@ -45,6 +53,8 @@ public class CollectableOverlay : MonoBehaviour
 
     void OnGUI()
     {
+        if (!overlayVisible) return;
+
         float iconSize = 100f;
         float spacing = 10f;
         float startX = (Screen.width - (collectableImages.Count * (iconSize + spacing))) / 2;
@@ -56,10 +66,28 @@ public class CollectableOverlay : MonoBehaviour
 
             if (!collectedStatus[i])
             {
-                GUI.color = new Color(0, 0, 0, 0.8f); // Darken uncollected items
+                GUI.color = new Color(0, 0, 0, 0.8f);
             }
             GUI.DrawTexture(iconRect, collectableImages[i].texture, ScaleMode.ScaleToFit, true);
-            GUI.color = Color.white; // Reset color
+            GUI.color = Color.white;
         }
     }
+
+
+
 }
+
+public static class TransformExtensions
+{
+    public static string GetHierarchyOrder(this Transform transform)
+    {
+        string path = transform.name;
+        while (transform.parent != null)
+        {
+            transform = transform.parent;
+            path = transform.name + "/" + path;
+        }
+        return path;
+    }
+}
+

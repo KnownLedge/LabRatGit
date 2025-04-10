@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class StageEnd : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class StageEnd : MonoBehaviour
     public int levelPosition = 0;
     public int labID = 1;
 
+    private string overwriteFile;
 
     [SerializeField] private bool stageEnded;
     [Range(0f,10f)]
@@ -20,13 +22,16 @@ public class StageEnd : MonoBehaviour
         {
             Debug.Log("end stage");
             stageEnded = !stageEnded; //Why would we not just put true :(
-
-            if (PlayerPrefs.GetInt("LevelsCompleted") < levelPosition && saveProgress)
+            overwriteFile = Application.dataPath + "/levelsCleared.txt";
+            if (File.Exists(overwriteFile))
             {
-                PlayerPrefs.SetInt("LevelsCompleted", levelPosition);
-                PlayerPrefs.SetInt("LastVisitedLab", labID);
-            }
 
+
+                if (int.Parse(GetLineAtIndex(0)) < levelPosition && saveProgress)
+                {
+                    OverWriteText(levelPosition.ToString());
+                }
+            }
             StartCoroutine(ReturnToMenu());
         }
     }
@@ -34,6 +39,34 @@ public class StageEnd : MonoBehaviour
     {
         yield return new WaitForSeconds(WaitTime);
         SceneManager.LoadScene("Hub", LoadSceneMode.Single);
+    }
+
+
+    private string GetLineAtIndex(int index)
+    {
+        string[] lines = File.ReadAllLines(overwriteFile);
+
+        if (index < lines.Length)
+        {
+            return lines[index];
+        }
+
+        return "0";
+    }
+
+    private void OverWriteText(string inputText)
+    {
+        if (!File.Exists(overwriteFile))
+        {
+            File.WriteAllText(path: overwriteFile, contents: inputText);
+        }
+        else
+        {
+            using (var writer = new StreamWriter(overwriteFile))
+            {
+                writer.WriteLine(inputText);
+            }
+        }
     }
 
 

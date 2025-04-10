@@ -8,12 +8,15 @@ public class BallCork : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private Animator corkAnimator;
     [SerializeField] private PipeTransport pipeTransport;
-    [SerializeField] private GameObject cork; 
-    [SerializeField] private CinemachineBrain cinemachineBrain; // Reference to your main camera's Cinemachine Brain
+    [SerializeField] private GameObject cork;
+    [SerializeField] private CinemachineBrain cinemachineBrain;
     [SerializeField] private float focusDuration = 3f; // Time to focus on the cork
-    [SerializeField] private float fadeDuration = 3f; // Time for cork to dissapear
+    [SerializeField] private float fadeDuration = 3f; // Time for cork to disappear
 
     private CinemachineVirtualCamera tempCamera;
+
+    // Track the last trigger hit by its name
+    private string lastTriggerName = "";
 
     private void Start()
     {
@@ -27,10 +30,9 @@ public class BallCork : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    // When the ball enters the trigger, play the cork animation and enable pipe triggers
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ball"))
+        if (other.CompareTag("Ball")) // Ensure it's the ball entering the trigger
         {
             if (openSound != null)
             {
@@ -38,12 +40,35 @@ public class BallCork : MonoBehaviour
                 audioSource.Play();
             }
 
-            corkAnimator.SetTrigger("PlayAnimation");
-            StartCoroutine(FadeOutCork());
+            string triggerName = other.gameObject.name; // Use the trigger's name to identify it
 
+            // Prevent the same trigger from being hit multiple times without resetting animations
+            // if (triggerName == lastTriggerName)
+            // {
+            //     corkAnimator.SetBool("PlayAnimation1", false);
+            //     corkAnimator.SetBool("PlayAnimation2", false);
+            //     corkAnimator.SetBool("PlayAnimation3", false);
+            // }
+            Debug.Log($"Trigger hit: {triggerName}");
+            if (triggerName == "Trigger1")
+            {
+                corkAnimator.SetTrigger("PlayAnimation1");
+            }
+            else if (triggerName == "Trigger2")
+            {
+                corkAnimator.SetTrigger("PlayAnimation2");
+            }
+            else if (triggerName == "Trigger3")
+            {
+                corkAnimator.SetTrigger("PlayAnimation3");
+            }
+
+            lastTriggerName = triggerName; // Update last trigger name
+
+            // Trigger the other functions as needed
+            StartCoroutine(FadeOutCork());
             pipeTransport.triggerA.enabled = true;
             pipeTransport.triggerB.enabled = true;
-
             StartCoroutine(FocusOnCork());
         }
     }
@@ -96,14 +121,9 @@ public class BallCork : MonoBehaviour
 
         tempCamera.transform.position = Camera.main.transform.position;
 
-        Debug.Log("Cork Position: " + cork.transform.position);
-        Debug.Log("Camera Position: " + tempCamera.transform.position);
-
         // Manually adjust the camera's rotation so it faces the cork
         Vector3 directionToCork = cork.transform.position - tempCamera.transform.position;
-        tempCamera.transform.rotation = Quaternion.LookRotation(directionToCork); 
-
-        Debug.Log("Camera's Look Direction: " + directionToCork.normalized);
+        tempCamera.transform.rotation = Quaternion.LookRotation(directionToCork);
 
         yield return new WaitForSeconds(focusDuration);
 
