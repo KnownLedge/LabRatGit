@@ -8323,11 +8323,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.41999996
+      value: 0.42
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.44836998
+      value: -0.44837
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9503,7 +9503,7 @@ GameObject:
   - component: {fileID: 236382747}
   - component: {fileID: 236382746}
   m_Layer: 6
-  m_Name: texturedRatBall
+  m_Name: Trigger2
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30697,10 +30697,10 @@ MonoBehaviour:
   openSound: {fileID: 0}
   corkAnimator: {fileID: 217071692}
   pipeTransport: {fileID: 1186729302}
-  cork: {fileID: 0}
+  cork: {fileID: 217071691}
   cinemachineBrain: {fileID: 942902650}
-  focusDuration: 3
-  fadeDuration: 3
+  focusDuration: 4
+  fadeDuration: 2
 --- !u!65 &797547388
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38142,7 +38142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectable: {fileID: 1850879574}
-  cinemachineBrain: {fileID: 0}
+  cinemachineBrain: {fileID: 1640199066}
   focusDuration: 3
 --- !u!1 &970806262
 GameObject:
@@ -41353,7 +41353,7 @@ Transform:
   m_GameObject: {fileID: 1078663581}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.14, y: 11.73, z: -1.66}
+  m_LocalPosition: {x: 13.44, y: 11.73, z: -1.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44698,7 +44698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.711628
+      value: 13.71163
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
       propertyPath: m_LocalRotation.w
@@ -50712,7 +50712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3499999
+      value: 1.35
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7187e92154d166e4fa83d888d6bcac90, type: 3}
       propertyPath: m_LocalPosition.z
@@ -55492,7 +55492,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c625e0e2e5f12b348a82742d70f843e2, type: 3}
       propertyPath: m_Name
-      value: texturedRatBall
+      value: Trigger1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c625e0e2e5f12b348a82742d70f843e2, type: 3}
       propertyPath: m_Layer
@@ -58891,7 +58891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: eb28ad4660e07314b9452029c147fd8a, type: 3}
       propertyPath: m_Name
-      value: goal floor (1)
+      value: goal floor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58924,10 +58924,10 @@ MonoBehaviour:
   openSound: {fileID: 0}
   corkAnimator: {fileID: 1177909252}
   pipeTransport: {fileID: 2070758120}
-  cork: {fileID: 0}
+  cork: {fileID: 1177909251}
   cinemachineBrain: {fileID: 1640199066}
-  focusDuration: 3
-  fadeDuration: 3
+  focusDuration: 4
+  fadeDuration: 2
 --- !u!65 &1545379225
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68203,7 +68203,7 @@ GameObject:
   - component: {fileID: 1816681772}
   - component: {fileID: 1816681771}
   m_Layer: 6
-  m_Name: texturedRatBall (1)
+  m_Name: Trigger3
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77441,7 +77441,7 @@ GameObject:
   - component: {fileID: 2057698289}
   - component: {fileID: 2057698290}
   m_Layer: 6
-  m_Name: Cube (1)
+  m_Name: cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77548,10 +77548,10 @@ MonoBehaviour:
   openSound: {fileID: 0}
   corkAnimator: {fileID: 1355760840}
   pipeTransport: {fileID: 1078734833}
-  cork: {fileID: 0}
+  cork: {fileID: 1355760839}
   cinemachineBrain: {fileID: 567985607}
-  focusDuration: 3
-  fadeDuration: 3
+  focusDuration: 4
+  fadeDuration: 2
 --- !u!65 &2057698290
 BoxCollider:
   m_ObjectHideFlags: 0
