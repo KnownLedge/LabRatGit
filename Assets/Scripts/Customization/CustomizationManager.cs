@@ -122,7 +122,7 @@ public class CustomizationManager : MonoBehaviour
 
         if (ratMovement != null)
         {
-            ratMovement.enabled = !state; // Disable player movement while the menu is active
+            ratMovement.enabled = false; // Disable player movement while the menu is active
         }
 
         if (state)
@@ -167,6 +167,10 @@ public class CustomizationManager : MonoBehaviour
         if (!isOpening)
         {
             cameraAnimator.enabled = false;
+            if (ratMovement != null)
+            {
+                ratMovement.enabled = true; // Disable player movement while the menu is active
+            }
         }
         
         Debug.Log("Player position: " + player.transform.localPosition);
