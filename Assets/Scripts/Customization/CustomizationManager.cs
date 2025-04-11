@@ -63,7 +63,6 @@ public class CustomizationManager : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject); 
-        DontDestroyOnLoad(segmentedPlayer); // Ensure the segmented player is not destroyed on load
 
         leftButton.onClick.AddListener(() => ChangeSelection(-1)); // Left button to change selection to previous hat
         rightButton.onClick.AddListener(() => ChangeSelection(1)); // Right button to change selection to next hat

@@ -8,6 +8,11 @@ public class FadeManager : MonoBehaviour
     [SerializeField] public Image fadeImage;
     [SerializeField] private float fadeDuration = 1f;
 
+    private void Start()
+    {
+        StartCoroutine(Fade(0));
+    }
+
     private void Awake()
     {
         if (fadeImage != null)
