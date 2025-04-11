@@ -54,6 +54,8 @@ public class WaterMazePlatform : MonoBehaviour
         if (other.gameObject.GetComponentInParent<Ratmovement>())
         {
             Debug.Log("Overlap Ocurred");
+            other.gameObject.GetComponentInParent<Rigidbody>().isKinematic = true;
+            other.gameObject.transform.parent = transform;
             onPlatform = true;
         }
     }

@@ -43,24 +43,30 @@ public class BallCork : MonoBehaviour
             string triggerName = other.gameObject.name; // Use the trigger's name to identify it
 
             // Prevent the same trigger from being hit multiple times without resetting animations
-            // if (triggerName == lastTriggerName)
-            // {
-            //     corkAnimator.SetBool("PlayAnimation1", false);
-            //     corkAnimator.SetBool("PlayAnimation2", false);
-            //     corkAnimator.SetBool("PlayAnimation3", false);
-            // }
-            Debug.Log($"Trigger hit: {triggerName}");
+            if (triggerName == lastTriggerName)
+            {
+                corkAnimator.SetBool("PlayAnimation1", false);
+                corkAnimator.SetBool("PlayAnimation2", false);
+                corkAnimator.SetBool("PlayAnimation3", false);
+            }
+
             if (triggerName == "Trigger1")
             {
-                corkAnimator.SetTrigger("PlayAnimation1");
+                corkAnimator.SetBool("PlayAnimation1", true);
+                corkAnimator.SetBool("PlayAnimation2", false);
+                corkAnimator.SetBool("PlayAnimation3", false);
             }
             else if (triggerName == "Trigger2")
             {
-                corkAnimator.SetTrigger("PlayAnimation2");
+                corkAnimator.SetBool("PlayAnimation1", false);
+                corkAnimator.SetBool("PlayAnimation2", true);
+                corkAnimator.SetBool("PlayAnimation3", true);
             }
             else if (triggerName == "Trigger3")
             {
-                corkAnimator.SetTrigger("PlayAnimation3");
+                corkAnimator.SetBool("PlayAnimation1", false);
+                corkAnimator.SetBool("PlayAnimation2", false);
+                corkAnimator.SetBool("PlayAnimation3", true);
             }
 
             lastTriggerName = triggerName; // Update last trigger name
