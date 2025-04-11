@@ -361,9 +361,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animControl: {fileID: 4706320003626652286}
-  speedMult: 0.1
+  speedMult: 0.25
   rb: {fileID: 4425009471146329065}
   ratMove: {fileID: 240549645596547042}
+  ledgeClimb: {fileID: 4190482484950105749}
 --- !u!1 &801514224649000110
 GameObject:
   m_ObjectHideFlags: 0
@@ -2161,6 +2162,7 @@ MonoBehaviour:
   climbUpHeight: 4.75
   climbForwardDistance: 1
   climbDuration: 0.3
+  isClimbing: 0
 --- !u!75 &5161274026084759175
 ConstantForce:
   m_ObjectHideFlags: 0

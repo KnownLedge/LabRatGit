@@ -268,7 +268,7 @@ public class Ratmovement : MonoBehaviour
             if (normal.y > 0) 
             { //If colliding with the bottom of the rat
                 enterGrounded();
-                rb.constraints = groundedConstraints;
+         //       rb.constraints = groundedConstraints;
             }
         }
     }

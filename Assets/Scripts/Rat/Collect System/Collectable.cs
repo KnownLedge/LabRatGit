@@ -39,28 +39,16 @@ public class Collectable : MonoBehaviour
         arenaTestEnterScript = FindObjectOfType<ArenaTestEnter>();
     }
 
-
     private void OnValidate()
     {
      //   Data.Collected = Iscollected;
     }
-
-      
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             CollectItem();
-            // PopupManager.instance.ShowPopup(itemDescription, itemBackground);
-            // InventoryItem newItem = new InventoryItem(itemName, itemDescription, itemImage);
-            // InventoryManager.instance.AddItem(newItem);
-            Destroy(gameObject);
-
-            if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
-            {
-                arenaTestEnterScript.OnCollectableCollected();
-            }
         }
     }
 

@@ -58,13 +58,13 @@ public class Simon_light : MonoBehaviour
         switches[1] = GameObject.Find("Green-light");
         switches[2] = GameObject.Find("Blue-light");
         switches[3] = GameObject.Find("Yellow-light");
-        if (barriers != null)
-        {
-            for (int i = 0; i < barriers.Length; i++)
-            {
-                barriers[i].SetActive(false);
-            }
-        }
+        //if (barriers != null)
+        //{
+        //    for (int i = 0; i < barriers.Length; i++)
+        //    {
+        //        barriers[i].SetActive(false);
+        //    }
+        //}
     }
 
     private void SetOutput()
@@ -178,6 +178,7 @@ public class Simon_light : MonoBehaviour
                 outputRange -= currentcycles;
                 currentcycles = 0;
                 setState(States.off);
+                Debug.Log("FINISH");
                 Finish();
                 break;
         }
@@ -231,7 +232,7 @@ public class Simon_light : MonoBehaviour
             setState(States.start);
             for (int i = 0; i < barriers.Length; i++)
             {
-                barriers[i].SetActive(true);
+              //  barriers[i].SetActive(true);
             }
         }
     }
