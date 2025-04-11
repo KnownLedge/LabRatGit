@@ -113,7 +113,7 @@ public class ArenaTest : MonoBehaviour
         int seconds = Mathf.CeilToInt(duration);
         while (seconds > 0)
         {
-            countdownText.text = $"Ready to play in: {seconds}";
+            countdownText.text = $"{seconds}";
             yield return new WaitForSeconds(1f);
             seconds--;
         }
