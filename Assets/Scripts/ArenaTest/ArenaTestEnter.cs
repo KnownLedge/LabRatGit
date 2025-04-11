@@ -5,11 +5,8 @@ using UnityEngine.SceneManagement;
 public class ArenaTestEnter : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    //[SerializeField] private GameObject net;
-    //[SerializeField] private Animator netAnimator;
     [SerializeField] private float animationTime = 6f;
     [SerializeField] private FadeManager fadeManager;
-
     private bool isCollectableCollected = false;
     public string requiredCollectableName = "SpecialItem";
 
@@ -17,16 +14,8 @@ public class ArenaTestEnter : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
 
-        if (SaveManager.Instance != null)
-        {
-            SaveManager.Instance.LoadPlayerState(player.transform);
-        }
-        else
-        {
-            Debug.LogError("❌ SaveManager is NULL!");
-        }
+        StartCoroutine(fadeManager.Fade(0));
     }
-
 
     void Update()
     {
@@ -38,17 +27,13 @@ public class ArenaTestEnter : MonoBehaviour
 
     private IEnumerator EnterArena()
     {
-        if (SaveManager.Instance != null)
-        {
-            SaveManager.Instance.SavePlayerState(player.transform);
-        }
-        else
-        {
-            Debug.LogError("❌ SaveManager is NULL!");
-        }
 
-        player.GetComponent<Ratmovement>().enabled = false;
-        player.gameObject.transform.position = new Vector3(-128.550003f, 78.1999969f, 15.96f);
+        // Ensure no other scripts are modifying position or rotation
+        player.GetComponent<Rigidbody>().isKinematic = true;
+
+        // Set position and rotation
+        player.transform.localPosition = new Vector3(11.7725601f,0.657999992f,17.1599998f);
+        player.transform.localRotation = Quaternion.Euler(0, 90, 0);
         
         Debug.Log("Player position before arena: " + player.transform.position);
         
@@ -56,26 +41,11 @@ public class ArenaTestEnter : MonoBehaviour
         
         //netAnimator.SetTrigger("GoingDown");
         
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(0.5f);
         //player.SetActive(false);
 
         fadeManager.FadeOutAndLoadScene("Arena_Test");
     }
-
-    private IEnumerator EnableMovementAfterBlowOut()
-    {
-        player.GetComponent<Ratmovement>().enabled = false;
-        // netAnimator.SetBool("isBlowing", true);
-        Debug.Log("Blowing");
-
-        yield return StartCoroutine(fadeManager.Fade(0));
-        yield return new WaitForSeconds(animationTime);
-        
-        //netAnimator.SetBool("isBlowing", false);
-        Debug.Log("Ready to play");
-        player.GetComponent<Ratmovement>().enabled = true;
-    }
-
 
 
     public void OnCollectableCollected()
