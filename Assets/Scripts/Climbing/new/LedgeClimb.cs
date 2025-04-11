@@ -8,7 +8,7 @@ public class LedgeClimb : MonoBehaviour
     public float climbForwardDistance = 1f; // Distance to move the player forward onto the ledge
     public float climbDuration = 0.3f; // Duration of the climbing animation
     private bool hasTouchedGround = false; // Ensures the player has touched the ground before climbing again
-    private bool isClimbing = false; // Check for if the player is currently climbing
+    public bool isClimbing = false; // Check for if the player is currently climbing
     private Rigidbody rb;
     private Ratmovement ratMovement;
     private BackCollisionHandler backCollisionHandler;
