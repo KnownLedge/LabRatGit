@@ -73,6 +73,7 @@ public class CustomizationManager : MonoBehaviour
         UpdateTickVisibility();
         customizationMenu.SetActive(false); // Ensure the menu is inactive at start
         textObject.SetActive(false); // Ensure the text object is inactive at start
+
         shader = player.GetComponent<Shader>();//get the shader from the player game object
     }
 
@@ -104,6 +105,7 @@ public class CustomizationManager : MonoBehaviour
         if (playerInZone && Input.GetKeyDown(KeyCode.E) && !isAnimating)
         {
             ToggleMenu(!isMenuActive);
+            
         }
 
         if (isMenuActive)
@@ -145,6 +147,8 @@ public class CustomizationManager : MonoBehaviour
             // Set position and rotation
             player.transform.localPosition = new Vector3(-15.8299999f, -0.949999988f, -1.13f);
             player.transform.localRotation = Quaternion.Euler(0, 100, 0);
+
+           
             Destroy(shader);//remove the shader
         }
         else
