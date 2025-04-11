@@ -4612,7 +4612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cfd24a1f784fd4ea7837b1d9c6ede6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Lab1
+  sceneToLoad: Hub
 --- !u!114 &265960603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17426,6 +17426,7 @@ MonoBehaviour:
   climbUpHeight: 4.75
   climbForwardDistance: 1
   climbDuration: 0.3
+  isClimbing: 0
 --- !u!1001 &1005222416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33562,7 +33563,6 @@ MonoBehaviour:
   settingsMenuUI: {fileID: 1098621934}
   musicSlider: {fileID: 545374808}
   sfxSlider: {fileID: 790167939}
-  EscDisable: 0
 --- !u!1001 &2030073696
 PrefabInstance:
   m_ObjectHideFlags: 0
