@@ -26,18 +26,18 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I)) // for closing and opening the inventory
-        {
-            showInventory = !showInventory;
-            isPaused = !isPaused;
-            Time.timeScale = isPaused ? 0 : 1;
-            if (!showInventory)
-            {
-                currentIndex = 0; // resets selected inventory item when the menu isnt enabled
-                selectedItemDescription = ""; // wipes description 
-                selectedItemImage = null; // clear image when closing inventory
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.I)) // for closing and opening the inventory
+        //{
+        //    showInventory = !showInventory;
+        //    isPaused = !isPaused;
+        //    Time.timeScale = isPaused ? 0 : 1;
+        //    if (!showInventory)
+        //    {
+        //        currentIndex = 0; // resets selected inventory item when the menu isnt enabled
+        //        selectedItemDescription = ""; // wipes description 
+        //        selectedItemImage = null; // clear image when closing inventory
+        //    }
+        //}
 
         if (showInventory)  // code for moving cursor up and down the inventory. Arrow keys could be swapped for W and S since the game is paused
         {

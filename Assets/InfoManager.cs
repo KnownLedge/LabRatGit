@@ -8,13 +8,16 @@ public class InfoManager : MonoBehaviour
 {
     private GameObject panel;
     public List<Button> buttons;
-    private int[] CollectCount = new int[3];
+    private int[] CollectCount = new int[4];
     private bool IsActive;
     private int pageIndex;
-    private int pageCount = 2;
+    private int pageCount = 3;
     [SerializeField]
     private Text LabText; 
 
+    [Header("Hub Collectables")]
+    [SerializeField]
+    private CollectableData[] CollectablesHub; 
     [Header("Lab 1 Collectables")]
     [SerializeField]
     private CollectableData[] Collectables1;
@@ -25,7 +28,7 @@ public class InfoManager : MonoBehaviour
     [SerializeField]
     private CollectableData[] Collectables3;
 
-    private CollectableData[,] Collectables = new CollectableData[3,10];
+    private CollectableData[,] Collectables = new CollectableData[4,10];
 
     private void Awake()
     {
@@ -39,28 +42,33 @@ public class InfoManager : MonoBehaviour
 
         for (int i = 0; i < Collectables3.Count(); i++)
             Collectables[2, i] = Collectables3[i];
-        
+        for (int i = 0; i < CollectablesHub.Count(); i++) 
+            Collectables[3,i] = CollectablesHub[i];
     }
     private void Start()
     {
         CollectCount[0] = Collectables1.Count();
         CollectCount[1] = Collectables2.Count();
         CollectCount[2] = Collectables3.Count();
+        CollectCount[3] = CollectablesHub.Count();
     }
 
 
     private void Update()
     {
         //Activate Panel
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             if (IsActive == false)
             {
                 panelSetActive();
+                Time.timeScale = 0f;
             }
             else 
             {
                 panelSetDeActive();
+                Time.timeScale = 1.0f;
+
             }
         }
     }
@@ -101,7 +109,9 @@ public class InfoManager : MonoBehaviour
         if (pageIndex > pageCount)
             pageIndex = 0;
         CreateButtons(pageIndex);
-        LabText.text = ($"Lab {pageIndex + 1}");
+        if (pageIndex == 3)
+            Debug.Log("hbu");
+        LabText.text = ( pageIndex == 3 ? ("HUB") : ($"Lab {pageIndex + 1}"));
         return pageIndex;
     }
 
@@ -111,7 +121,7 @@ public class InfoManager : MonoBehaviour
         if (pageIndex < 0)
             pageIndex = pageCount;
         CreateButtons(pageIndex);
-        LabText.text = ($"Lab {pageIndex + 1}");
+        LabText.text = (pageIndex == 3 ? ("HUB") : ($"Lab {pageIndex + 1}"));
         return pageIndex;
     }
 
