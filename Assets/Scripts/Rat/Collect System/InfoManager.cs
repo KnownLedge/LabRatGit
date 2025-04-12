@@ -109,8 +109,7 @@ public class InfoManager : MonoBehaviour
         if (pageIndex > pageCount)
             pageIndex = 0;
         CreateButtons(pageIndex);
-        if (pageIndex == 3)
-            Debug.Log("hbu");
+       
         LabText.text = ( pageIndex == 3 ? ("HUB") : ($"Lab {pageIndex + 1}"));
         return pageIndex;
     }

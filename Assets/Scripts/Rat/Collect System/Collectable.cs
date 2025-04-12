@@ -26,7 +26,8 @@ public class Collectable : MonoBehaviour
         {
             arenaTestEnterScript = arenaObject.GetComponent<ArenaTestEnter>();
         }
-        itemDescription = Data.CollectableDescription;
+        if (Data.CollectableDescription != null) 
+            itemDescription = Data.CollectableDescription;
 
         if (audioSource == null)
         {
