@@ -6,6 +6,7 @@ public class BallCork : MonoBehaviour
 {
     [SerializeField] private AudioClip openSound;
     private AudioSource audioSource;
+    private bool triggered;
     [SerializeField] private Animator corkAnimator;
     [SerializeField] private PipeTransport pipeTransport;
     [SerializeField] private GameObject cork;
@@ -28,54 +29,59 @@ public class BallCork : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
         audioSource.playOnAwake = false;
+        
     }
 
     private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Ball")) // Ensure it's the ball entering the trigger
+    {  
+        if(!triggered)
         {
-            if (openSound != null)
+            if (other.CompareTag("Ball")) // Ensure it's the ball entering the trigger
             {
-                audioSource.clip = openSound;
-                audioSource.Play();
-            }
+                if (openSound != null)
+                {
+                    audioSource.clip = openSound;
+                    audioSource.Play();
+                }
 
-            string triggerName = other.gameObject.name; // Use the trigger's name to identify it
+                string triggerName = other.gameObject.name; // Use the trigger's name to identify it
 
-            // Prevent the same trigger from being hit multiple times without resetting animations
-            if (triggerName == lastTriggerName)
-            {
-                corkAnimator.SetBool("PlayAnimation1", false);
-                corkAnimator.SetBool("PlayAnimation2", false);
-                corkAnimator.SetBool("PlayAnimation3", false);
-            }
+                // Prevent the same trigger from being hit multiple times without resetting animations
+                if (triggerName == lastTriggerName)
+                {
+                    corkAnimator.SetBool("PlayAnimation1", false);
+                    corkAnimator.SetBool("PlayAnimation2", false);
+                    corkAnimator.SetBool("PlayAnimation3", false);
+                }
 
-            if (triggerName == "Trigger1")
-            {
-                corkAnimator.SetBool("PlayAnimation1", true);
-                corkAnimator.SetBool("PlayAnimation2", false);
-                corkAnimator.SetBool("PlayAnimation3", false);
-            }
-            else if (triggerName == "Trigger2")
-            {
-                corkAnimator.SetBool("PlayAnimation1", false);
-                corkAnimator.SetBool("PlayAnimation2", true);
-                corkAnimator.SetBool("PlayAnimation3", true);
-            }
-            else if (triggerName == "Trigger3")
-            {
-                corkAnimator.SetBool("PlayAnimation1", false);
-                corkAnimator.SetBool("PlayAnimation2", false);
-                corkAnimator.SetBool("PlayAnimation3", true);
-            }
+                if (triggerName == "Trigger1")
+                {
+                    corkAnimator.SetBool("PlayAnimation1", true);
+                    corkAnimator.SetBool("PlayAnimation2", false);
+                    corkAnimator.SetBool("PlayAnimation3", false);
+                }
+                else if (triggerName == "Trigger2")
+                {
+                    corkAnimator.SetBool("PlayAnimation1", false);
+                    corkAnimator.SetBool("PlayAnimation2", true);
+                    corkAnimator.SetBool("PlayAnimation3", true);
+                }
+                else if (triggerName == "Trigger3")
+                {
+                    corkAnimator.SetBool("PlayAnimation1", false);
+                    corkAnimator.SetBool("PlayAnimation2", false);
+                    corkAnimator.SetBool("PlayAnimation3", true);
+                }
 
-            lastTriggerName = triggerName; // Update last trigger name
+                lastTriggerName = triggerName; // Update last trigger name
 
-            // Trigger the other functions as needed
-            StartCoroutine(FadeOutCork());
-            pipeTransport.triggerA.enabled = true;
-            pipeTransport.triggerB.enabled = true;
-            StartCoroutine(FocusOnCork());
+                // Trigger the other functions as needed
+                StartCoroutine(FadeOutCork());
+                pipeTransport.triggerA.enabled = true;
+                pipeTransport.triggerB.enabled = true;
+                StartCoroutine(FocusOnCork());
+                triggered = !triggered;
+            }
         }
     }
 
