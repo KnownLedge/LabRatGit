@@ -4,6 +4,12 @@ public class TimeController : MonoBehaviour
 {
     void Awake()
     {
+        if (FindObjectsOfType<TimeController>().Length > 1)
+        {
+            Debug.LogWarning("Multiple CustomizationManager instances detected!");
+            Destroy(gameObject);  // Destroy the duplicate manager
+        }
+
         DontDestroyOnLoad(gameObject);
     }
 

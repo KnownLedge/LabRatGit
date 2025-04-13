@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public class ArenaTest : MonoBehaviour
 {
     [SerializeField] private Transform[] ratSpawnPositions;
-    [SerializeField] private Transform[] collectibleSpawnPositions;
+    [SerializeField] private Transform[] collectableSpawnPositions;
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject collectiblePrefab;
+    [SerializeField] private GameObject collectablePrefab;
     [SerializeField] private FadeManager fadeManager;
     [SerializeField] private Text countdownText;
-    private GameObject currentCollectible;
+    private GameObject currentCollectable;
     private int spawnCount = 0;
     private int maxSpawns = 4;
 
@@ -21,7 +21,7 @@ public class ArenaTest : MonoBehaviour
 
     void Update()
     {
-        OnCollectibleCollected();
+        OnCollectableCollected();
     }
 
     private IEnumerator InitializeArena()
@@ -49,8 +49,8 @@ public class ArenaTest : MonoBehaviour
         player.transform.position = spawnPos; 
         player.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
 
-        Vector3 cheesePos = collectibleSpawnPositions[collectableIndex].position;
-        currentCollectible = Instantiate(collectiblePrefab, cheesePos, Quaternion.identity);
+        Vector3 cheesePos = collectableSpawnPositions[collectableIndex].position;
+        currentCollectable = Instantiate(collectablePrefab, cheesePos, Quaternion.identity);
 
         Debug.Log($"[SPAWN] Selected Rat Index: {ratIndex}");
         Debug.Log($"[SPAWN] Selected Cheese Index: {collectableIndex}");
@@ -65,9 +65,9 @@ public class ArenaTest : MonoBehaviour
         player.GetComponent<Ratmovement>().enabled = true;
     }
 
-    private void OnCollectibleCollected()
+    private void OnCollectableCollected()
     {
-        if (currentCollectible == null && Input.GetKeyDown(KeyCode.E))
+        if (currentCollectable == null)
         {
             spawnCount++;
             if (spawnCount >= maxSpawns)
@@ -87,7 +87,8 @@ public class ArenaTest : MonoBehaviour
     {
         player.GetComponent<Ratmovement>().enabled = false;
         player.GetComponent<Rigidbody>().isKinematic = true;
-
+        fadeManager.fadeDuration = 0.5f;
+        StartCoroutine(fadeManager.Fade(0));
         SpawnRatAndCheese();
         yield return new WaitForSeconds(0.5f);
         EnablePlayerControl();
@@ -98,6 +99,7 @@ public class ArenaTest : MonoBehaviour
         player.GetComponent<Ratmovement>().enabled = false;
         player.GetComponent<Rigidbody>().isKinematic = true;
 
+        fadeManager.fadeDuration = 3f;
         yield return new WaitForSeconds(0.5f);
         fadeManager.FadeOutAndLoadScene("Lab1(For Arena_Test, made by Illia)");
 
