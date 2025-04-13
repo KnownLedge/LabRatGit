@@ -34,6 +34,7 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private Shader shader;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private AudioClip buttonSound;
+    [SerializeField] private BoxCollider boxCollider; 
 
     [Header("HeadPosReferences")]
     [SerializeField] private Transform chefHatHead;
@@ -59,11 +60,17 @@ public class CustomizationManager : MonoBehaviour
 
     void Start()
     {
-        ActivateSelectedHat(); // Activate the selected hat at the start
+        //ActivateSelectedHat(); // Activate the selected hat at the start
     }
 
     void Awake()
     {
+        if (FindObjectsOfType<CustomizationManager>().Length > 1)
+        {
+            Debug.LogWarning("Multiple CustomizationManager instances detected!");
+            Destroy(gameObject);  // Destroy the duplicate manager
+        }
+
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to scene loaded event 
 
@@ -81,15 +88,24 @@ public class CustomizationManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Scene loaded: " + scene.name);
-        ReassignReferences(); // Reassign references when a new scene is loaded
+        StartCoroutine(DelayedReassign()); // Reassign references when a new scene is loaded
+    }
+
+    IEnumerator DelayedReassign()
+    {
+        yield return new WaitForEndOfFrame(); // or WaitForSeconds(0.1f)
+        ReassignReferences();
+        Destroy(shader);//remove the shader
         LoadHat();
+        shader = player.AddComponent<Shader>();//re-add the shader
     }
 
     void ReassignReferences()
     {
         player = GameObject.Find("Player"); // Find the player object by tag
-        shader = player.GetComponent<Shader>();//get the shader from the player game object
         ratMovement = player.GetComponent<Ratmovement>(); // Get the Ratmovement component from the player object
+        cameraAnimator = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>(); // Find the camera object by tag and get its Camera component
+        shader = player.GetComponent<Shader>();//get the shader from the player game object
         cowboyHatHead = GameObject.Find("CowboyHat")?.transform;
         partyHatHead = GameObject.Find("PartyHat")?.transform;
         chefHatHead = GameObject.Find("ChefHat")?.transform;
@@ -103,7 +119,7 @@ public class CustomizationManager : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isMenuActive)
+        if (other.CompareTag("Player") && !isMenuActive && SceneManager.GetActiveScene().name == "Hub")
         {
             Debug.Log("Player entered customization zone.");
             playerInZone = true;
@@ -115,7 +131,7 @@ public class CustomizationManager : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && !isMenuActive)
+        if (other.CompareTag("Player") && !isMenuActive && SceneManager.GetActiveScene().name == "Hub")
         {
             Debug.Log("Player exited customization zone.");
             playerInZone = false;
@@ -129,7 +145,6 @@ public class CustomizationManager : MonoBehaviour
         if (playerInZone && Input.GetKeyDown(KeyCode.E) && !isAnimating)
         {
             ToggleMenu(!isMenuActive);
-            
         }
 
         if (isMenuActive)
@@ -146,7 +161,7 @@ public class CustomizationManager : MonoBehaviour
     {
         isMenuActive = state;
         customizationMenu.SetActive(state);
-
+        
         if (ratMovement != null)
         {
             ratMovement.enabled = false; // Disable player movement while the menu is active
@@ -237,14 +252,15 @@ public class CustomizationManager : MonoBehaviour
 
     }
 
-
     void ActivateSelectedHat()
     {
         if (currentHat != null)
         {
+            Debug.Log("Destroying current hat: " + currentHat.name);
             Destroy(currentHat);
             currentHat = null;
         }
+        else Debug.Log("Current hat is null, no need to destroy.");
 
         if (selectedHatIndex >= 0 && selectedHatIndex < hats.Length)
         {
@@ -305,7 +321,6 @@ public class CustomizationManager : MonoBehaviour
         }
     }
 
-
     Transform GetHatTargetTransform(string hatName)
     {
         hatName = hatName.ToLower();
@@ -330,7 +345,6 @@ public class CustomizationManager : MonoBehaviour
             Debug.LogError($"Selected hat index {selectedHatIndex} is out of bounds. Hat sprites length: {hatSprites.Length}");
             return;
         }
-
 
         // Update UI images based on the selected hat
         centerImage.sprite = hatSprites[selectedHatIndex];
