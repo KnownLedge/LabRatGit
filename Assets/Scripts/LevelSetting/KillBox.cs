@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class KillBox : MonoBehaviour
 {
+    [SerializeField] FadeManager fadeManager;
     public Transform spawnPoint; // Where the rat will respawn at
     private GameObject player; // player reference
 
@@ -15,9 +16,13 @@ public class KillBox : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
+            StartCoroutine(fadeManager.RespawnFade());
             Ratmovement ratMove = col.gameObject.GetComponent<Ratmovement>();
             player.gameObject.transform.position = spawnPoint.position;
             ratMove.backLeg.position = spawnPoint.position;
+
+            col.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         }
     }
+
 }

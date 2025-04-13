@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class Simon_Switch : Simon_light
@@ -9,8 +11,10 @@ public class Simon_Switch : Simon_light
         on,
         off
     }
-    
+    private bool triggered;
     private ButtonState state;
+
+    private IEnumerator Coor;
 
     //the game will crash if not included
     protected override void Start() 
@@ -35,8 +39,9 @@ public class Simon_Switch : Simon_light
 
     protected override void OnTriggerEnter(Collider other)
     {
-        if (state == ButtonState.on)
+        if (state == ButtonState.on && triggered == false)
         {
+            triggered = true;//prevent the player 
             buttonlight.enabled = false;
             light.color = Mat.color;
             Simon_light simon_Light = transform.parent.GetComponent<Simon_light>();
@@ -44,6 +49,8 @@ public class Simon_Switch : Simon_light
             SetFalse();
         }
     }
+
+   
     protected override void Finish()
     {
         buttonlight.enabled = false;
@@ -51,8 +58,11 @@ public class Simon_Switch : Simon_light
     }
     protected void OnTriggerExit(Collider other)
     {
-        buttonlight.enabled = true;
-        SetTrue();
+        if (other.CompareTag("Player") && triggered == true)
+        {
+            Coor = Co();
+            StartCoroutine(Coor);//resets the trigger
+        }
     }
     public void SetFalse()
     {
@@ -61,6 +71,8 @@ public class Simon_Switch : Simon_light
     public void SetTrue()
     {
         SetState(ButtonState.on);
+        buttonlight.enabled = true;
+
     }
     private ButtonState SetState(ButtonState newstate)
     {
@@ -68,6 +80,11 @@ public class Simon_Switch : Simon_light
         return state;
     }
 
+    private IEnumerator Co()
+    {
+        yield return new WaitForSeconds(3f);
+        triggered = false;
+        SetTrue();
 
-    
+    }
 }

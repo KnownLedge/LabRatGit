@@ -1,70 +1,145 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
 
 public class ArenaTest : MonoBehaviour
 {
-    [SerializeField]private ArenaTestEnter2 arenaTestEnter2Script;
     [SerializeField] private Transform[] ratSpawnPositions;
-    [SerializeField] private Transform[] cheeseSpawnPositions;
+    [SerializeField] private Transform[] collectableSpawnPositions;
+    [SerializeField] private Transform[] endFlagSpawnPositions;
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject cheesePrefab;
-    private GameObject currentCheese;
+    [SerializeField] private GameObject collectablePrefab;
+    [SerializeField] private GameObject endFlagPrefab;
+    [SerializeField] private FadeManager fadeManager;
+    [SerializeField] private Text countdownText;
+    [SerializeField] private StageEnd stageEnd;
+    private GameObject currentCollectable;
+    private bool endFlagSpawned = false;
+    private int endFlagIndex = 0;
     private int spawnCount = 0;
     private int maxSpawns = 4;
 
     void Start()
     {
-        if(arenaTestEnter2Script.isReadyToPlay)
-        {
-            SpawnRatAndCheese();
-        }
+        StartCoroutine(InitializeArena());
     }
 
     void Update()
     {
-        if(arenaTestEnter2Script.isReadyToPlay)
-        {
-            SpawnRatAndCheese();
-            arenaTestEnter2Script.isReadyToPlay = false;
-        }
-        OnCheeseCollected();
+        OnCollectableCollected();
     }
+
+    private IEnumerator InitializeArena()
+    {
+        SpawnRatAndCheese();
+
+        // Start fade and countdown at the same time
+        Coroutine fade = StartCoroutine(fadeManager.Fade(0));
+        yield return StartCoroutine(ShowCountdown(3)); // Countdown from 3
+
+        yield return fade; // Wait for fade to complete if it’s longer than 3 seconds
+        EnablePlayerControl();
+    }
+
 
     private void SpawnRatAndCheese()
     {
-        if (spawnCount >= maxSpawns)
-            return;
+        player.GetComponent<Rigidbody>().isKinematic = true;
+        player.GetComponent<Ratmovement>().enabled = false;
 
         int ratIndex = Random.Range(0, ratSpawnPositions.Length);
-        int cheeseIndex = (ratIndex + 1) % cheeseSpawnPositions.Length;
-        Debug.Log("Rat index: " + ratIndex);
+        int collectableIndex = ratIndex;
+        endFlagIndex = ratIndex;
 
-        Ratmovement ratMove = player.gameObject.GetComponent<Ratmovement>();
-        player.gameObject.transform.position = ratSpawnPositions[ratIndex].position;
-        ratMove.backLeg.position = ratSpawnPositions[ratIndex].position;
-        Debug.Log("Player position: " + player.transform.position);
+        Vector3 spawnPos = ratSpawnPositions[ratIndex].position;
+        player.transform.position = spawnPos; 
+        player.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
 
-        currentCheese = Instantiate(cheesePrefab, cheeseSpawnPositions[cheeseIndex].position, Quaternion.identity);
+        Vector3 cheesePos = collectableSpawnPositions[collectableIndex].position;
+        currentCollectable = Instantiate(collectablePrefab, cheesePos, Quaternion.identity);
+
+        Debug.Log($"[SPAWN] Selected Rat Index: {ratIndex}");
+        Debug.Log($"[SPAWN] Selected Cheese Index: {collectableIndex}");
+        Debug.Log($"[SPAWN] Rat Spawn Position: {spawnPos}");
+        Debug.Log($"[SPAWN] Cheese Spawned at: {cheesePos}");
     }
 
-    private void OnCheeseCollected()
+
+    private void EnablePlayerControl()
     {
-        if(currentCheese == null)
-        {
-            if(Input.GetKeyDown(KeyCode.F))
-            {
-                if(spawnCount < maxSpawns)
-                {
-                    Debug.Log("Cheese collected");
-                    spawnCount++;
-                    SpawnRatAndCheese();
-                }
-                else
-                {
-                    
-                }
-            }
-
-        }
-        
+        player.GetComponent<Rigidbody>().isKinematic = false;
+        player.GetComponent<Ratmovement>().enabled = true;
     }
+
+    private void OnCollectableCollected()
+    {
+        if (currentCollectable == null)
+        {
+            spawnCount++;
+            if (spawnCount >= maxSpawns)
+            {
+                Debug.Log("All cheese collected, leaving arena...");
+                LeaveArena();
+            }
+            else
+            {
+                Debug.Log("Cheese collected");
+                StartCoroutine(RespawnSequence());
+            }
+        }
+    }
+
+    private IEnumerator RespawnSequence()
+    {
+        player.GetComponent<Ratmovement>().enabled = false;
+        player.GetComponent<Rigidbody>().isKinematic = true;
+        
+        fadeManager.fadeDuration = 0.5f;
+        StartCoroutine(fadeManager.Fade(0));
+
+        SpawnRatAndCheese();
+        yield return new WaitForSeconds(0.5f);
+        EnablePlayerControl();
+    }
+
+    private void LeaveArena()
+    {
+        fadeManager.fadeDuration = 3f;
+        if(!endFlagSpawned)
+        {
+            Vector3 endFlasPos = endFlagSpawnPositions[endFlagIndex].position;
+            GameObject endFlag = Instantiate(endFlagPrefab, endFlasPos, Quaternion.identity);
+            endFlagSpawned = true;
+            
+            StageEnd stageEndComponent = endFlag.GetComponent<StageEnd>();
+            if (stageEndComponent != null)
+            {
+                stageEndComponent.saveProgress = true;
+                stageEndComponent.levelPosition = 5;
+            }
+            else
+            {
+                Debug.LogError("StageEnd component not found on endFlag GameObject.");
+            }
+        }
+    }
+
+    private IEnumerator ShowCountdown(float duration)
+    {
+        if (countdownText == null)
+            yield break;
+
+        countdownText.enabled = true;
+
+        int seconds = Mathf.CeilToInt(duration);
+        while (seconds > 0)
+        {
+            countdownText.text = $"{seconds}";
+            yield return new WaitForSeconds(1f);
+            seconds--;
+        }
+
+        countdownText.enabled = false;
+    }
+
 }

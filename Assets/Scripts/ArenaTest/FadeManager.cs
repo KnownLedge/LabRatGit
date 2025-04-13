@@ -5,29 +5,62 @@ using System.Collections;
 
 public class FadeManager : MonoBehaviour
 {
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] public Image fadeImage;
+    public float fadeDuration = 1f;
+
+    private void Start()
+    {
+        StartCoroutine(Fade(0));
+    }
 
     private void Awake()
     {
-        fadeImage.enabled = false;
-    }
-
-    public void FadeOutAndLoadScene(string sceneName)
-    {
-        if(fadeImage.enabled == false)
+        if (fadeImage != null)
+        {
+            // Fully black at start
+            fadeImage.color = new Color(0, 0, 0, 1f);
             fadeImage.enabled = true;
-        StartCoroutine(FadeOutCoroutine(sceneName));
+        }
+        else
+        {
+            Debug.LogError("[FadeManager] fadeImage is not assigned.");
+        }
     }
 
-    private IEnumerator FadeOutCoroutine(string sceneName)
+    public IEnumerator FadeOutAndLoadScene(string sceneName)
     {
-        yield return StartCoroutine(Fade(1)); //Fade to black
+        if (fadeImage == null)
+        {
+            Debug.LogError("[FadeManager] fadeImage is not assigned.");
+            yield break;
+        }
+
+        fadeImage.enabled = true;
+        yield return StartCoroutine(Fade(1)); // Fade to black
         SceneManager.LoadScene(sceneName);
+    }
+
+    public IEnumerator RespawnFade()
+    {
+        if (fadeImage != null)
+        {
+            fadeImage.enabled = true;
+            yield return StartCoroutine(Fade(0)); // Fade to transparent
+        }
     }
 
     public IEnumerator Fade(float targetAlpha)
     {
+        if(targetAlpha == 0)
+        {
+            Color tempColor = fadeImage.color;
+            tempColor.a = 1f;
+            fadeImage.color = tempColor;
+        }
+
+        Debug.Log("[FadeManager] Fading to alpha " + targetAlpha);
+        fadeImage.enabled = true;
+
         float timeElapsed = 0f;
         Color startColor = fadeImage.color;
         Color targetColor = new Color(startColor.r, startColor.g, startColor.b, targetAlpha);
@@ -40,5 +73,10 @@ public class FadeManager : MonoBehaviour
         }
 
         fadeImage.color = targetColor;
+
+        if (targetAlpha == 0f)
+        {
+            fadeImage.enabled = false;
+        }
     }
 }

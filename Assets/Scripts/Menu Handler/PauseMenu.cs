@@ -4,31 +4,26 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI;
+    public CollectableOverlay collectableOverlay; // Add this in Inspector
 
     public bool isPaused = false;
 
     void Start()
     {
-        // Ensure the game starts unpaused
         isPaused = false;
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
+
+        if (collectableOverlay != null)
+            collectableOverlay.overlayVisible = true;
     }
 
     void Update()
     {
-        // If the Escape key is pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // If the game is paused
-            if (isPaused)
+            if (!isPaused)
             {
-                // Resume the game
-                Resume();
-            }
-            else // If the game is not paused
-            {
-                // Pause the game
                 Pause();
             }
         }
@@ -37,28 +32,30 @@ public class PauseMenu : MonoBehaviour
         {
             SceneManager.LoadScene("Title");
         }
-
     }
 
-    // Function to resume the game
     public void Resume()
     {
-        // Hide the pause menu UI
         pauseMenuUI.SetActive(false);
-        // Resume game time
         Time.timeScale = 1f;
-        // Update the paused state to false
         isPaused = false;
+
+        if (collectableOverlay != null)
+            collectableOverlay.overlayVisible = true;
     }
 
-    // Function to pause the game
-    void Pause()
+    public void Hide()
     {
-        // Show the pause menu UI
+        pauseMenuUI.SetActive(false);
+    }
+
+    public void Pause()
+    {
         pauseMenuUI.SetActive(true);
-        // Freeze game time
         Time.timeScale = 0f;
-        // Update the paused state to true
         isPaused = true;
+
+        if (collectableOverlay != null)
+            collectableOverlay.overlayVisible = false;
     }
 }

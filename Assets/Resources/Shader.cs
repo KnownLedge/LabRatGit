@@ -28,9 +28,8 @@ public class Shader : MonoBehaviour
             UpdateShader = true;
         }
     }
-
     [SerializeField]
-    private Color FillColor = Color.white;
+    private Color FillColor = new Color(.34f, .34f, .34f, 1f);
 
     private bool UpdateShader;
 
