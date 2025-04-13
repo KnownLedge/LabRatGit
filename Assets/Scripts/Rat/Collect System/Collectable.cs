@@ -13,7 +13,6 @@ public class Collectable : MonoBehaviour
     public float interactionDistance = 3f;
     public bool Iscollected = false;
     private GameObject player;
-    private ArenaTestEnter arenaTestEnterScript;
 
     [SerializeField]
     private CollectableData Data;
@@ -21,11 +20,6 @@ public class Collectable : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        GameObject arenaObject = GameObject.Find("ArenaTestEnter");
-        if (arenaObject != null)
-        {
-            arenaTestEnterScript = arenaObject.GetComponent<ArenaTestEnter>();
-        }
         if (Data.CollectableDescription != null) 
             itemDescription = Data.CollectableDescription;
 
@@ -37,7 +31,6 @@ public class Collectable : MonoBehaviour
 
         Iscollected = Data.Collected;
         itemDescription = Data.CollectableDescription;
-        arenaTestEnterScript = FindObjectOfType<ArenaTestEnter>();
     }
 
     private void OnValidate()
@@ -79,16 +72,10 @@ public class Collectable : MonoBehaviour
             int index = overlay.GetIndexOfItem(itemImage); // Find correct index
             overlay.MarkCollected(index); // Mark this as collected
         }
-
-        if (arenaTestEnterScript != null && itemName != null && itemName == arenaTestEnterScript.requiredCollectableName)
-        {
-            arenaTestEnterScript.OnCollectableCollected();
-        }
         //TB - TEST DELETE IF NEEDED
         Iscollected = true;
         Data.Collected = true;
         Destroy(gameObject);
-
     }
 }
 
