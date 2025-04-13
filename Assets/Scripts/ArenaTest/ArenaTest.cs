@@ -6,11 +6,16 @@ public class ArenaTest : MonoBehaviour
 {
     [SerializeField] private Transform[] ratSpawnPositions;
     [SerializeField] private Transform[] collectableSpawnPositions;
+    [SerializeField] private Transform[] endFlagSpawnPositions;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject collectablePrefab;
+    [SerializeField] private GameObject endFlagPrefab;
     [SerializeField] private FadeManager fadeManager;
     [SerializeField] private Text countdownText;
+    [SerializeField] private StageEnd stageEnd;
     private GameObject currentCollectable;
+    private bool endFlagSpawned = false;
+    private int endFlagIndex = 0;
     private int spawnCount = 0;
     private int maxSpawns = 4;
 
@@ -44,6 +49,7 @@ public class ArenaTest : MonoBehaviour
 
         int ratIndex = Random.Range(0, ratSpawnPositions.Length);
         int collectableIndex = ratIndex;
+        endFlagIndex = ratIndex;
 
         Vector3 spawnPos = ratSpawnPositions[ratIndex].position;
         player.transform.position = spawnPos; 
@@ -73,7 +79,7 @@ public class ArenaTest : MonoBehaviour
             if (spawnCount >= maxSpawns)
             {
                 Debug.Log("All cheese collected, leaving arena...");
-                StartCoroutine(LeaveArena());
+                LeaveArena();
             }
             else
             {
@@ -87,22 +93,35 @@ public class ArenaTest : MonoBehaviour
     {
         player.GetComponent<Ratmovement>().enabled = false;
         player.GetComponent<Rigidbody>().isKinematic = true;
+        
         fadeManager.fadeDuration = 0.5f;
         StartCoroutine(fadeManager.Fade(0));
+
         SpawnRatAndCheese();
         yield return new WaitForSeconds(0.5f);
         EnablePlayerControl();
     }
 
-    private IEnumerator LeaveArena()
+    private void LeaveArena()
     {
-        player.GetComponent<Ratmovement>().enabled = false;
-        player.GetComponent<Rigidbody>().isKinematic = true;
-
         fadeManager.fadeDuration = 3f;
-        yield return new WaitForSeconds(0.5f);
-        fadeManager.FadeOutAndLoadScene("Lab1(For Arena_Test, made by Illia)");
-
+        if(!endFlagSpawned)
+        {
+            Vector3 endFlasPos = endFlagSpawnPositions[endFlagIndex].position;
+            GameObject endFlag = Instantiate(endFlagPrefab, endFlasPos, Quaternion.identity);
+            endFlagSpawned = true;
+            
+            StageEnd stageEndComponent = endFlag.GetComponent<StageEnd>();
+            if (stageEndComponent != null)
+            {
+                stageEndComponent.saveProgress = true;
+                stageEndComponent.levelPosition = 5;
+            }
+            else
+            {
+                Debug.LogError("StageEnd component not found on endFlag GameObject.");
+            }
+        }
     }
 
     private IEnumerator ShowCountdown(float duration)

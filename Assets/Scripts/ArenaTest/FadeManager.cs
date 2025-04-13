@@ -27,17 +27,15 @@ public class FadeManager : MonoBehaviour
         }
     }
 
-    public void FadeOutAndLoadScene(string sceneName)
+    public IEnumerator FadeOutAndLoadScene(string sceneName)
     {
-        if (fadeImage != null)
+        if (fadeImage == null)
         {
-            fadeImage.enabled = true;
-            StartCoroutine(FadeOutCoroutine(sceneName));
+            Debug.LogError("[FadeManager] fadeImage is not assigned.");
+            yield break;
         }
-    }
 
-    private IEnumerator FadeOutCoroutine(string sceneName)
-    {
+        fadeImage.enabled = true;
         yield return StartCoroutine(Fade(1)); // Fade to black
         SceneManager.LoadScene(sceneName);
     }
@@ -59,7 +57,7 @@ public class FadeManager : MonoBehaviour
             tempColor.a = 1f;
             fadeImage.color = tempColor;
         }
-        
+
         Debug.Log("[FadeManager] Fading to alpha " + targetAlpha);
         fadeImage.enabled = true;
 
