@@ -6,7 +6,7 @@ using System.Collections;
 public class FadeManager : MonoBehaviour
 {
     [SerializeField] public Image fadeImage;
-    [SerializeField] private float fadeDuration = 1f;
+    public float fadeDuration = 1f;
 
     private void Start()
     {
@@ -53,6 +53,13 @@ public class FadeManager : MonoBehaviour
 
     public IEnumerator Fade(float targetAlpha)
     {
+        if(targetAlpha == 0)
+        {
+            Color tempColor = fadeImage.color;
+            tempColor.a = 1f;
+            fadeImage.color = tempColor;
+        }
+        
         Debug.Log("[FadeManager] Fading to alpha " + targetAlpha);
         fadeImage.enabled = true;
 
