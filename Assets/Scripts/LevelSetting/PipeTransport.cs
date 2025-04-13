@@ -16,6 +16,7 @@ public class PipeTransport : MonoBehaviour
     [SerializeField] private float accelerationFactor = 5f;
     [SerializeField] private float exitForce = 5f;
     [SerializeField] private float cooldownTime = 1.5f;
+    private bool onCoolDown = false;
 
     [Header("Waypoints")]
     [SerializeField] private List<Transform> waypointsA; //A->B
@@ -30,7 +31,7 @@ public class PipeTransport : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !onCoolDown)
         {
             if (ratmovement == null && other.gameObject.GetComponentInParent<Ratmovement>()){
                 // If Ratmovement wasn't set in editor, find it and set it here if possible
@@ -69,10 +70,12 @@ public class PipeTransport : MonoBehaviour
 
     private IEnumerator TransportPlayer(GameObject player, Transform entry, Transform exit, Collider entryTrigger, Collider exitTrigger)
     {
-        player.GetComponent<Rigidbody>().isKinematic = true;
         Rigidbody rb = player.GetComponent<Rigidbody>();
-        if (rb == null) yield break;
+        rb.velocity = Vector3.zero;
+        rb.isKinematic = true;
 
+        if (rb == null) yield break;
+        onCoolDown = true;
         entryTrigger.enabled = false;
         exitTrigger.enabled = false;
 
@@ -114,7 +117,10 @@ public class PipeTransport : MonoBehaviour
         rb.isKinematic = false;
 
         Vector3 exitDirection = player.transform.forward;
-        rb.AddForce(exitDirection * exitForce, ForceMode.Impulse);
+        // rb.AddForce(exitDirection * exitForce, ForceMode.Impulse);
+
+        rb.velocity = Vector3.zero; //Resetting velocity to attempt to stop rat seizures exiting pipe
+        
 
         rb.freezeRotation = false;
         ratmovement.enabled = true;
@@ -127,6 +133,7 @@ public class PipeTransport : MonoBehaviour
         player.GetComponent<Rigidbody>().isKinematic = false;
 
         yield return new WaitForSeconds(cooldownTime);
+        onCoolDown = false;
         entryTrigger.enabled = true;
         exitTrigger.enabled = true;
         cameraSwitcher.EnableTriggers();
