@@ -45919,15 +45919,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
       propertyPath: levelSceneNames.Array.data[0]
-      value: Lab2
+      value: Arena_Test
       objectReference: {fileID: 0}
     - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
       propertyPath: levelSceneNames.Array.data[1]
-      value: Simon_Test
+      value: Lab2
       objectReference: {fileID: 0}
     - target: {fileID: 2977240445725396149, guid: 888e532716a2c9340aba7690958f5492, type: 3}
       propertyPath: levelSceneNames.Array.data[2]
-      value: Arena_Test
+      value: Simon_Test
       objectReference: {fileID: 0}
     - target: {fileID: 3810927803772405536, guid: 888e532716a2c9340aba7690958f5492, type: 3}
       propertyPath: m_Enabled
@@ -46276,7 +46276,6 @@ MonoBehaviour:
   centerObject: {fileID: 837535594}
   rightObject: {fileID: 1071811141}
   textObject: {fileID: 2027594255}
-  segmentedPlayer: {fileID: 1884960953}
   player: {fileID: 1922421437}
   customizationMenu: {fileID: 570322522}
   ratMovement: {fileID: 1884960950}
@@ -56587,7 +56586,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4712986449840127216, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+    - {fileID: 2490417922204915402, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+    - {fileID: 1974305362389342866, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+    - {fileID: 3088983404345651378, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4941440690126662583, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
@@ -56649,11 +56652,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff08869b248bb9d4d855d5d98caf194e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1884960953 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1455985901723170575, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
-  m_PrefabInstance: {fileID: 1884960949}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1885831790
 PrefabInstance:
   m_ObjectHideFlags: 0
