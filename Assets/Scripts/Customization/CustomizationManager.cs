@@ -5,8 +5,6 @@ using System.Collections;
 
 public class CustomizationManager : MonoBehaviour
 {
-    private const string PLAYER_PREFS_HAT = "SelectedHat";
-
     [Header("Hat Customization")]
     [SerializeField] private GameObject[] hats; // Array of hat prefabs
     [SerializeField] private Sprite[] hatSprites; // Hat sprites for UI buttons
@@ -29,7 +27,6 @@ public class CustomizationManager : MonoBehaviour
     [SerializeField] private GameObject textObject;
 
     [Header("References")]
-    [SerializeField] private GameObject segmentedPlayer;
     [SerializeField] private GameObject player; 
     [SerializeField] private GameObject customizationMenu;
     [SerializeField] private Ratmovement ratMovement;
@@ -50,19 +47,25 @@ public class CustomizationManager : MonoBehaviour
 
     [SerializeField] private float rotationSpeed = 2f;
 
-
     private int selectedHatIndex = 0;
     private int appliedHatIndex = 0;
 
     private bool playerInZone = false;
     private bool isMenuActive = false;
     private bool isAnimating = false;
+    private const string PLAYER_PREFS_HAT = "SelectedHat";
 
     private GameObject currentHat; // Variable to keep track of the currently applied hat
 
+    void Start()
+    {
+        ActivateSelectedHat(); // Activate the selected hat at the start
+    }
+
     void Awake()
     {
-        DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to scene loaded event 
 
         leftButton.onClick.AddListener(() => ChangeSelection(-1)); // Left button to change selection to previous hat
         rightButton.onClick.AddListener(() => ChangeSelection(1)); // Right button to change selection to next hat
@@ -75,6 +78,28 @@ public class CustomizationManager : MonoBehaviour
 
         shader = player.GetComponent<Shader>();//get the shader from the player game object
     }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Scene loaded: " + scene.name);
+        ReassignReferences(); // Reassign references when a new scene is loaded
+        LoadHat();
+    }
+
+    void ReassignReferences()
+    {
+        player = GameObject.Find("Player"); // Find the player object by tag
+        shader = player.GetComponent<Shader>();//get the shader from the player game object
+        ratMovement = player.GetComponent<Ratmovement>(); // Get the Ratmovement component from the player object
+        cowboyHatHead = GameObject.Find("CowboyHat")?.transform;
+        partyHatHead = GameObject.Find("PartyHat")?.transform;
+        chefHatHead = GameObject.Find("ChefHat")?.transform;
+        flowerHatHead = GameObject.Find("FlowerHat")?.transform;
+        propellerHatHead = GameObject.Find("PropellerHat")?.transform;
+        strawberryHatHead = GameObject.Find("StrawberryHat")?.transform;
+        topHatHead = GameObject.Find("TopHat")?.transform;
+        wizardHatHead = GameObject.Find("WizardHat")?.transform;
+    }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -202,13 +227,14 @@ public class CustomizationManager : MonoBehaviour
     {
         appliedHatIndex = selectedHatIndex; // Save the selected hat as the applied one
         greenTickImage.gameObject.SetActive(true); // Show the green tick image on the applied hat
-        PlayerPrefs.SetInt(PLAYER_PREFS_HAT, selectedHatIndex); // Save the applied hat index to PlayerPrefs
-        PlayerPrefs.Save();
         UpdateTickVisibility();
         if (buttonSound != null)
         {
             audioManager.PlaySFX(buttonSound);
         }
+        PlayerPrefs.SetInt(PLAYER_PREFS_HAT, appliedHatIndex);
+        PlayerPrefs.Save();
+
     }
 
 
@@ -244,6 +270,41 @@ public class CustomizationManager : MonoBehaviour
             currentHat.SetActive(true);
         }
     }
+
+    void LoadHat()
+    {
+        appliedHatIndex = PlayerPrefs.GetInt(PLAYER_PREFS_HAT, 0); // default to 0 if not found
+        selectedHatIndex = appliedHatIndex;
+
+        if (selectedHatIndex >= 0 && selectedHatIndex < hats.Length)
+        {
+            Debug.Log("Selected hat index: " + selectedHatIndex);
+            GameObject hatPrefab = hats[selectedHatIndex];
+            Debug.Log("Hat prefab: " + hatPrefab.name);
+
+            if (hatPrefab == null)
+            {
+                Debug.Log("No hat selected. Player will wear no hat.");
+                return;
+            }
+
+            Transform targetHead = GetHatTargetTransform(hatPrefab.name);
+            if (targetHead == null)
+            {
+                Debug.LogWarning($"No head reference found for hat: {hatPrefab.name}");
+                return;
+            }
+
+            currentHat = Instantiate(hatPrefab, targetHead);
+            currentHat.transform.localPosition = Vector3.zero;
+            currentHat.transform.localRotation = Quaternion.identity;
+            currentHat.transform.localScale = Vector3.one;
+            currentHat.SetActive(true);
+
+            Debug.Log("Hat loaded: " + hatPrefab.name);
+        }
+    }
+
 
     Transform GetHatTargetTransform(string hatName)
     {
