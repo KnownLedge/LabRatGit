@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using System.IO;
 //add this script to a button and choose a scene to load thats been added to the build menu
 //click the " + " and drag the script onto the section marked "None (Object)"
 //then click "No Function" and select "MenuButtonManager" then select "LoadScene ()"
@@ -15,6 +16,15 @@ public class MenuButtonManager : MonoBehaviour
             if (sceneToLoad == "Quit")
             {
                 Application.Quit();//game will close if selected
+            }else if(sceneToLoad == "NewGame")
+            {
+                string overwriteFile = Application.dataPath + "/levelsCleared.txt";
+                if (!File.Exists(overwriteFile))
+                {
+                    File.WriteAllText(path: overwriteFile, contents: "0");
+                }
+                SceneManager.LoadScene("Hub");
+                Time.timeScale = 1f;
             }
             else
             {
