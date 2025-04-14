@@ -9,6 +9,7 @@ public class WaterMazePlatform : MonoBehaviour
     public float lerpTimer = 0;
     public Transform platform;
     public Vector3 startPos;
+    public float platHeight = 20f;
    // public float winTimer = 2f;
     public Scenemanager sceneControl; //Really shouldn't be using this for these objects, but I want this done for vertical slice
 
@@ -53,9 +54,11 @@ public class WaterMazePlatform : MonoBehaviour
     {
         if (other.gameObject.GetComponentInParent<Ratmovement>())
         {
-            Debug.Log("Overlap Ocurred");
             other.gameObject.GetComponentInParent<Rigidbody>().isKinematic = true;
-            other.gameObject.transform.parent = transform;
+            //other.gameObject.transform.parent = transform;
+            Vector3 boxShape = GetComponent<BoxCollider>().bounds.center;
+            boxShape.y = platHeight;
+            other.gameObject.transform.parent.position = boxShape;
             onPlatform = true;
         }
     }
