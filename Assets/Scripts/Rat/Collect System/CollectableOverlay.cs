@@ -66,7 +66,7 @@ public class CollectableOverlay : MonoBehaviour
 
             if (!collectedStatus[i])
             {
-                GUI.color = new Color(0, 0, 0, 0.8f);
+                GUI.color = new Color(0, 0, 0, 0.33f);
             }
             GUI.DrawTexture(iconRect, collectableImages[i].texture, ScaleMode.ScaleToFit, true);
             GUI.color = Color.white;
