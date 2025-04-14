@@ -11,6 +11,12 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        if (FindObjectsOfType<AudioManager>().Length > 1)
+        {
+            Debug.LogWarning("Multiple Audio Manager instances detected!");
+            Destroy(gameObject);  // Destroy the duplicate manager
+        }
+
         if (Instance == null)
         {
             Instance = this;

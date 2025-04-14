@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Bird : MonoBehaviour
@@ -49,9 +50,9 @@ public class Bird : MonoBehaviour
         }
     }
 
-    public bool IsAttackingOrReturning()
+    public bool IsAttacking()
     {
-        return isAttacking || isReturning;
+        return isAttacking;
     }
 
     public bool AttackFinished()
@@ -59,13 +60,15 @@ public class Bird : MonoBehaviour
         return attackFinished;
     }
 
-    public void RespawnPlayer(GameObject player)
+    public IEnumerator RespawnPlayer(GameObject player)
     {
         Debug.Log("Player hit! Respawning...");
-        
+        player.GetComponent<Rigidbody>().isKinematic = true;
         StartCoroutine(fadeManager.RespawnFade());
         Ratmovement ratMove = player.gameObject.GetComponent<Ratmovement>();
         player.transform.position = spawnPoint.position;
         ratMove.backLeg.position = spawnPoint.position;
+        yield return new WaitForSeconds(0.1f); 
+        player.GetComponent<Rigidbody>().isKinematic = false;
     }
 }

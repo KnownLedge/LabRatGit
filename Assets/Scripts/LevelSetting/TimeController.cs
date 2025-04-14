@@ -6,7 +6,7 @@ public class TimeController : MonoBehaviour
     {
         if (FindObjectsOfType<TimeController>().Length > 1)
         {
-            Debug.LogWarning("Multiple CustomizationManager instances detected!");
+            Debug.LogWarning("Multiple Time Controller instances detected!");
             Destroy(gameObject);  // Destroy the duplicate manager
         }
 
