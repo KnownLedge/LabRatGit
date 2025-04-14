@@ -7720,12 +7720,32 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e338b82dbfed91c438eb76153764404e, type: 2}
     - target: {fileID: 2275767704972238816, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844387357342296622, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3233537488755788261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
+      propertyPath: Collectables2.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3233537488755788261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
+      propertyPath: Collectables2.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: cfab60c2cc48ae040bcf4d59e3b294f2, type: 2}
+    - target: {fileID: 3233537488755788261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
+      propertyPath: Collectables2.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d6ebe4a18aafdec47bb514fcdae2a401, type: 2}
+    - target: {fileID: 3233537488755788261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
+      propertyPath: Collectables2.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 77f438aec7e11ee4092df9e576bc2c47, type: 2}
+    - target: {fileID: 3233537488755788261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
+      propertyPath: Collectables2.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: e8d605f32e6438541a3d8b54b543cbd7, type: 2}
     - target: {fileID: 3377450685466367695, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_Name
       value: CollectableUIHud
@@ -7820,11 +7840,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5749321119654371261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5749321119654371261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33155,7 +33175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2cf8ffac85ee844839d1389ee5a4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openSound: {fileID: 0}
+  openSound: {fileID: 8300000, guid: 9e4368839253b4a4b9ba4bf310563836, type: 3}
   corkAnimator: {fileID: 217071692}
   pipeTransport: {fileID: 1186729302}
   cork: {fileID: 217071691}
@@ -63252,7 +63272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2cf8ffac85ee844839d1389ee5a4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openSound: {fileID: 0}
+  openSound: {fileID: 8300000, guid: 9e4368839253b4a4b9ba4bf310563836, type: 3}
   corkAnimator: {fileID: 1177909252}
   pipeTransport: {fileID: 2070758120}
   cork: {fileID: 1177909251}
@@ -83418,7 +83438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2cf8ffac85ee844839d1389ee5a4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openSound: {fileID: 0}
+  openSound: {fileID: 8300000, guid: 9e4368839253b4a4b9ba4bf310563836, type: 3}
   corkAnimator: {fileID: 1355760840}
   pipeTransport: {fileID: 1078734833}
   cork: {fileID: 1355760839}

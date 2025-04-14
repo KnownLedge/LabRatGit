@@ -106,14 +106,14 @@ public class CustomizationManager : MonoBehaviour
         ratMovement = player.GetComponent<Ratmovement>(); // Get the Ratmovement component from the player object
         cameraAnimator = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>(); // Find the camera object by tag and get its Camera component
         shader = player.GetComponent<Shader>();//get the shader from the player game object
-        cowboyHatHead = GameObject.Find("CowboyHat")?.transform;
-        partyHatHead = GameObject.Find("PartyHat")?.transform;
-        chefHatHead = GameObject.Find("ChefHat")?.transform;
-        flowerHatHead = GameObject.Find("FlowerHat")?.transform;
-        propellerHatHead = GameObject.Find("PropellerHat")?.transform;
-        strawberryHatHead = GameObject.Find("StrawberryHat")?.transform;
-        topHatHead = GameObject.Find("TopHat")?.transform;
-        wizardHatHead = GameObject.Find("WizardHat")?.transform;
+        cowboyHatHead = GameObject.Find("face/CowboyHat")?.transform;
+        partyHatHead = GameObject.Find("face/PartyHat")?.transform;
+        chefHatHead = GameObject.Find("face/ChefHat")?.transform;
+        flowerHatHead = GameObject.Find("face/FlowerHat")?.transform;
+        propellerHatHead = GameObject.Find("face/PropellerHat")?.transform;
+        strawberryHatHead = GameObject.Find("face/StrawberryHat")?.transform;
+        topHatHead = GameObject.Find("face/TopHat")?.transform;
+        wizardHatHead = GameObject.Find("face/WizardHat")?.transform;
     }
 
 
