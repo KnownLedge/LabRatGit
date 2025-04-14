@@ -47802,10 +47802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1912c84c11bc7da47b9db8c96231c32e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 517485997}
-  animationTime: 6
-  fadeManager: {fileID: 82715943}
-  requiredCollectableName: arena
 --- !u!4 &1202901643
 Transform:
   m_ObjectHideFlags: 0
@@ -84047,15 +84043,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2275767704972238816, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2942915968045867846, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5749321119654371261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5749321119654371261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5749321119654371261, guid: bcda917e6516d164b8dca37168b0467b, type: 3}
       propertyPath: m_AnchorMin.y
