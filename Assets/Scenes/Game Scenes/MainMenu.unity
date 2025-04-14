@@ -1656,6 +1656,10 @@ PrefabInstance:
       value: MenuManager
       objectReference: {fileID: 0}
     - target: {fileID: 7661415403291176451, guid: d1d1a031a527fe344acac95cde6c9bb5, type: 3}
+      propertyPath: pauseMenuScript
+      value: 
+      objectReference: {fileID: 1004547594}
+    - target: {fileID: 7661415403291176451, guid: d1d1a031a527fe344acac95cde6c9bb5, type: 3}
       propertyPath: settingsMenuScript
       value: 
       objectReference: {fileID: 2029788113}
@@ -17591,6 +17595,17 @@ MonoBehaviour:
   climbForwardDistance: 1
   climbDuration: 0.3
   isClimbing: 0
+--- !u!114 &1004547594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1638803047664045776, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+  m_PrefabInstance: {fileID: 1004547573}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004547576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e7752cd3f9b924a90d7c243285fec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1005222416
 PrefabInstance:
   m_ObjectHideFlags: 0
