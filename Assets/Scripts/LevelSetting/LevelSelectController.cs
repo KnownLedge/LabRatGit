@@ -46,7 +46,7 @@ public class LevelSelectController : MonoBehaviour
                     if (progressTracker.levels[i] == levelSceneNames[j])
                     {
                         levelsUnlocked++;
-                        trueSceneOrder[i] = levelSceneNames[j];
+                        trueSceneOrder[j] = levelSceneNames[j];
                     }
                 }
 
