@@ -64,7 +64,7 @@ public class BallCork : MonoBehaviour
                 {
                     corkAnimator.SetBool("PlayAnimation1", false);
                     corkAnimator.SetBool("PlayAnimation2", true);
-                    corkAnimator.SetBool("PlayAnimation3", true);
+                    corkAnimator.SetBool("PlayAnimation3", false);
                 }
                 else if (triggerName == "Trigger3")
                 {
@@ -88,8 +88,10 @@ public class BallCork : MonoBehaviour
     private IEnumerator FadeOutCork()
     {
         yield return new WaitForSeconds(2f); // Wait for the animation to finish
+        corkAnimator.enabled = false; // Prevent Animator from interfering
+
         Renderer renderer = cork.GetComponent<Renderer>();
-        Material material = renderer.material;
+        Material material = renderer.material = new Material(renderer.material);
         Color color = material.color;
         float startAlpha = color.a;
 
