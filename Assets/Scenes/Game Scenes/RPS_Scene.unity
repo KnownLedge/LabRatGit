@@ -2676,25 +2676,45 @@ PrefabInstance:
       value: Collectable 1
       objectReference: {fileID: 0}
     - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
+      propertyPath: m_Size.x
+      value: 3.475909
+      objectReference: {fileID: 0}
+    - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
       propertyPath: m_Size.y
-      value: 10.49888
+      value: 14.524587
       objectReference: {fileID: 0}
     - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
       propertyPath: m_Size.z
-      value: 9.550395
+      value: 11.6727495
+      objectReference: {fileID: 0}
+    - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
       propertyPath: m_Center.x
-      value: 4.6422437e-15
+      value: 1.2379555
       objectReference: {fileID: 0}
     - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
       propertyPath: m_Center.y
-      value: 1.6054512
+      value: 2.194509
       objectReference: {fileID: 0}
     - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
       propertyPath: m_Center.z
-      value: -1.5075616
+      value: -1.5725862
       objectReference: {fileID: 0}
+    - target: {fileID: 3401445619789674238, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4964020322544004864, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
+      propertyPath: Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 6624b7fb9e129054cb0390332fe331c1, type: 2}
+    - target: {fileID: 4964020322544004864, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
+      propertyPath: itemBackground
+      value: 
+      objectReference: {fileID: 21300000, guid: 0a7e9295182c73a4f92829a48e83a48a, type: 3}
     - target: {fileID: 6507132554908090228, guid: 7c41089ad85891749bd6cb8304cee178, type: 3}
       propertyPath: m_LocalPosition.x
       value: 50.7
@@ -3523,6 +3543,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
+--- !u!1 &624913190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 624913192}
+  - component: {fileID: 624913191}
+  m_Layer: 0
+  m_Name: BackgroundMusic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &624913191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624913190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b68eca73d7e2754ab2f14273a20320c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicClip: {fileID: 8300000, guid: 8354237c4bcea0445bf616546bd40222, type: 3}
+--- !u!4 &624913192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624913190}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -161.69392, y: 80.011505, z: 1.7281748}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &639177335
 GameObject:
   m_ObjectHideFlags: 0
@@ -11709,3 +11774,4 @@ SceneRoots:
   - {fileID: 1003306383}
   - {fileID: 1707467469}
   - {fileID: 1250548392}
+  - {fileID: 624913192}

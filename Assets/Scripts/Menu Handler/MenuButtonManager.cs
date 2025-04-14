@@ -19,9 +19,14 @@ public class MenuButtonManager : MonoBehaviour
             }else if(sceneToLoad == "NewGame")
             {
                 string overwriteFile = Application.dataPath + "/levelsCleared.txt";
-                if (!File.Exists(overwriteFile))
+                if (File.Exists(overwriteFile))
                 {
-                    File.WriteAllText(path: overwriteFile, contents: "0");
+
+
+                    using (var writer = new StreamWriter(overwriteFile))
+                    {
+                        writer.WriteLine("0");
+                    }
                 }
                 SceneManager.LoadScene("Hub");
                 Time.timeScale = 1f;
