@@ -2205,7 +2205,7 @@ PrefabInstance:
     - target: {fileID: 6556754908879703182, guid: 62428f3141a482a44ad51fd2b573b21b, type: 3}
       propertyPath: fadeManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 82715943}
     - target: {fileID: 6625608138535495595, guid: 62428f3141a482a44ad51fd2b573b21b, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -12276,7 +12276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuScript: {fileID: 542466481}
-  settingsMenuScript: {fileID: 542466482}
+  settingsMenuScript: {fileID: 0}
 --- !u!1001 &320122777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21380,17 +21380,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10e7752cd3f9b924a90d7c243285fec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &542466482 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5194932985896647965, guid: 6a9e6bbaa7c54d141a3d91aa62b0c798, type: 3}
-  m_PrefabInstance: {fileID: 1208626061}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517485997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b8d7d678db74ac4989a87247da43c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &544420877
